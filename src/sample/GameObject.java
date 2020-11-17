@@ -11,11 +11,30 @@ public enum GameObject {
 
     //constant value not in capital letter
     //rule 4 violated
-    private final char symbol;
+    private final char SYMBOL;
 
     GameObject(final char symbol) {
-        this.symbol = symbol;
+        this.SYMBOL = symbol;
     }
+
+
+    /**
+     * This method is used to get the symbol of a GameObject object
+     * @return GameObject returns the symbol of a GameObject object
+     */
+    public char getCharSymbol() {
+        return SYMBOL;
+    }
+
+
+    /**
+     * This method is used to get the symbol of a GameObject object
+     * @return GameObject returns a string object version of the symbol
+     */
+    public String getStringSymbol() {
+        return String.valueOf(SYMBOL);
+    }
+
 
     /**
      * This method is used to add two integers. This is
@@ -26,26 +45,11 @@ public enum GameObject {
      */
     public static GameObject fromChar(char c) {
         for (GameObject t : GameObject.values()) {
-            if (Character.toUpperCase(c) == t.symbol) {    //constant value not in capital letter, rule 5 violated
+            if (Character.toUpperCase(c) == t.getCharSymbol()) {    //constant value not in capital letter, rule 5 violated
                 return t;
             }
         }
         return WALL;
     }
-    //accessor methods not declared at the top of the enumeration, rule 4 violated
-    /**
-     * This method is used to get the symbol of a GameObject object
-     * @return GameObject returns a string object version of the symbol
-     */
-    public String getStringSymbol() {
-        return String.valueOf(symbol);
-    }
 
-    /**
-     * This method is used to get the symbol of a GameObject object
-     * @return GameObject returns the symbol of a GameObject object
-     */
-    public char getCharSymbol() {
-        return symbol;
-    }
 }
