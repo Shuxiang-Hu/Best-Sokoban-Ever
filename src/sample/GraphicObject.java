@@ -8,9 +8,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 class GraphicObject extends Rectangle {
-
+    /**
+     * Constructs a GraphicObject object with color, size and style
+     * @param obj specifies the type of the GraphicObject object
+     */
     GraphicObject(GameObject obj) {
         Paint color;
+        //specify the color of the GraphicObject object
+        //add fading animation for DIAMOND
         switch (obj) {
             case WALL:
                 color = Color.BLACK;
@@ -24,6 +29,7 @@ class GraphicObject extends Rectangle {
                 color = Color.DEEPSKYBLUE;
 
                 // TODO: fix memory leak.
+                //add fading effect to current GraphicObject object
                 if (StartMeUp.isDebugActive()) {
                     FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
                     ft.setFromValue(1.0);
