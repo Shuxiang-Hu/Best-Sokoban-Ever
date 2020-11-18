@@ -11,7 +11,7 @@ import java.util.logging.SimpleFormatter;
 
 public class GameLogger extends Logger {
 
-    private static Logger logger = Logger.getLogger("GameLogger");
+    private static Logger logger = Logger.getLogger("GameLogger"); //class variable not beginning with "m_"
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
 
