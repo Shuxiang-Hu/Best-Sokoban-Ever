@@ -14,7 +14,14 @@ public enum GameObject {
     private final char SYMBOL;
 
     GameObject(final char symbol) {
-        this.SYMBOL = symbol;
+        char symbolToAssign = 'W';
+        for (GameObject t : GameObject.values()) {
+            if (Character.toUpperCase(symbol) == t.getCharSymbol()) {
+                symbolToAssign=symbol;
+                break;
+            }
+        }
+        this.SYMBOL=symbolToAssign;
     }
 
 
@@ -45,7 +52,7 @@ public enum GameObject {
      */
     public static GameObject fromChar(char c) {
         for (GameObject t : GameObject.values()) {
-            if (Character.toUpperCase(c) == t.getCharSymbol()) {    //constant value not in capital letter, rule 5 violated
+            if (Character.toUpperCase(c) == t.getCharSymbol()) {
                 return t;
             }
         }
