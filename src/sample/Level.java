@@ -15,7 +15,12 @@ public final class Level implements Iterable<GameObject> {
     private final int index;
     private int numberOfDiamonds = 0;
     private Point keeperPosition = new Point(0, 0);
-
+/**
+ * Constructs a game Level with its name, index and layout
+ * @param levelName - the name of current game level
+ * @param levelIndex - the index of current game level
+ * @param raw_level - the layout of the grid of this game level
+ * */
     public Level(String levelName, int levelIndex, List<String> raw_level) {
         if (StartMeUp.isDebugActive()) {
             System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
@@ -38,6 +43,8 @@ public final class Level implements Iterable<GameObject> {
                 // The game object is null when the we're adding a floor or a diamond
                 GameObject curTile = GameObject.fromChar(raw_level.get(row).charAt(col));
 
+                //if curTile is a Diamond, then add it to diamondsGrid and add floor to the same position in objectsGrid
+                //if it is a keeper, then set keeperPosition
                 if (curTile == GameObject.DIAMOND) {
                     numberOfDiamonds++;
                     diamondsGrid.putGameObjectAt(curTile, row, col);
@@ -52,6 +59,23 @@ public final class Level implements Iterable<GameObject> {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    int getIndex() {
+        return index;
+    }
+
+    Point getKeeperPosition() {
+        return keeperPosition;
+    }
+
+    /**
+     * Checks if current game level has been completed
+     * @return true if current game level has be completed by the player
+     * (i.e all the crates are filled with a diamond)
+     */
     boolean isComplete() {
         int cratedDiamondsCount = 0;
         for (int row = 0; row < objectsGrid.ROWS; row++) {
@@ -65,22 +89,24 @@ public final class Level implements Iterable<GameObject> {
         return cratedDiamondsCount >= numberOfDiamonds;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    int getIndex() {
-        return index;
-    }
 
-    Point getKeeperPosition() {
-        return keeperPosition;
-    }
 
+    /**
+     * Finds a GameObject object from a source point by a give delta
+     * @param source the source point
+     * @param delta the amount of movement
+     * @return a GameObject object from a source point by a give delta
+     */
     GameObject getTargetObject(Point source, Point delta) {
         return objectsGrid.getTargetFromSource(source, delta);
     }
 
+    /**
+     * Finds a GameObject object at a given point in the objectsGrid
+     * @param p the position of the GameObject object
+     * @return a GameObject object at a given point
+     */
     GameObject getObjectAt(Point p) {
         return objectsGrid.getGameObjectAt(p);
     }
@@ -89,6 +115,12 @@ public final class Level implements Iterable<GameObject> {
         moveGameObjectTo(object, source, translatePoint(source, delta));
     }
 
+    /**
+     * Moves a GameObject from one position to another in object grid
+     * @param object the object to move
+     * @param source the start point
+     * @param destination the destination
+     */
     public void moveGameObjectTo(GameObject object, Point source, Point destination) {
         objectsGrid.putGameObjectAt(getObjectAt(destination), source);
         objectsGrid.putGameObjectAt(object, destination);
