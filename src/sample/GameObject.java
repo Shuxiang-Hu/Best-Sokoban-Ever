@@ -12,7 +12,15 @@ public enum GameObject {
     private final char SYMBOL;
 
     GameObject(final char SYMBOL) {
-        this.SYMBOL = SYMBOL;
+        char charToAssign = 'W';
+        char[] validChars = {'W',' ','C','D','S','O','='};
+        for(char c : validChars ){
+            if(SYMBOL == c){
+                charToAssign = c;
+                break;
+            }
+        }
+        this.SYMBOL=charToAssign;
     }
 
     /**
