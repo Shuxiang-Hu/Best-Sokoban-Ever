@@ -22,6 +22,11 @@ public class StartMeUp {
     private int movesCount = 0;
     private MediaPlayer player;
 
+    /**
+     * create a StartMeUp Object
+     * @param input the game file
+     * @param production whether to create media player
+     */
     public StartMeUp(InputStream input, boolean production) {
         try {
             logger = new GameLogger();
@@ -39,19 +44,34 @@ public class StartMeUp {
             logger.warning("Cannot load the music file: " + e.getStackTrace());
         }
     }
-
+    /**
+     * checks if the debug configuration is active
+     * @return true if debug is active, otherwise false
+     */
     public static boolean isDebugActive() {
         return debug;
     }
 
+    /**
+     * gets the movesCount
+     * @return the number of moves so far
+     */
     public int getMovesCount() {
         return movesCount;
     }
 
+    /**
+     * gets the mapSetName
+     * @return the mapSetName
+     */
     public String getMapSetName() {
         return mapSetName;
     }
 
+    /**
+     * read in user input and move accordingly
+     * @param code movement direction
+     */
     public void handleKey(KeyCode code) {
         switch (code) {
             case UP:
@@ -79,6 +99,11 @@ public class StartMeUp {
         }
     }
 
+    /**
+     * moves the keeper by a given delta if possible and updates movesCount
+     * @param delta movement delta
+     */
+
     public void move(Point delta) {
         if (isGameComplete()) {
             return;
@@ -99,6 +124,7 @@ public class StartMeUp {
 
         boolean keeperMoved = false;
 
+        //decide what to do according to target position
         switch (keeperTarget) {
 
             case WALL:
@@ -126,6 +152,8 @@ public class StartMeUp {
                 throw new AssertionError("This should not have happened. Report this problem to the developer.");
         }
 
+        //if keeper made a move, then update movesCount
+        //checks if game is complete and go to next level if so
         if (keeperMoved) {
             keeperPosition.translate((int) delta.getX(), (int) delta.getY());
             movesCount++;
@@ -139,6 +167,11 @@ public class StartMeUp {
         }
     }
 
+    /**
+     * loads the maps for different level from a input
+     * @param input the map layout for different levels
+     * @return a list of game Levels
+     */
     public List<Level> loadGameFile(InputStream input) {
         List<Level> levels = new ArrayList<>(5);
         int levelIndex = 0;
@@ -195,10 +228,18 @@ public class StartMeUp {
         return levels;
     }
 
+    /**
+     * checks if current game has been completed
+     * @return true if the current game has been completed
+     */
     public boolean isGameComplete() {
         return gameComplete;
     }
 
+    /**
+     * create a media player to play the theme
+     * @throws LineUnavailableException if line can not be used
+     */
     public void createPlayer() throws LineUnavailableException {
 //        File filePath = new File(getClass().getClassLoader().getResource("music/puzzle_theme.wav").toString());
 //        Media music = new Media(filePath.toURI().toString());
@@ -206,19 +247,33 @@ public class StartMeUp {
 //        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
     }
 
+    /**
+     * makes the player play music
+     */
     public void playMusic() {
 //        player.play();
     }
 
+    /**
+     * stop the player from playing music
+     */
     public void stopMusic() {
 //        player.stop();
     }
 
+    /**
+     * checks if the play is playing
+     * @return true if music is on, otherwise false
+     */
     public boolean isPlayingMusic() {
 //        return player.getStatus() == MediaPlayer.Status.PLAYING;
         return false;
     }
 
+    /**
+     * gets next game level
+     * @return next Level, null if all levels are completed
+     */
     public Level getNextLevel() {
         if (currentLevel == null) {
             return levels.get(0);
@@ -233,10 +288,17 @@ public class StartMeUp {
         return null;
     }
 
+    /**
+     * gets current game level
+     * @return current game level
+     */
     public Level getCurrentLevel() {
         return currentLevel;
     }
 
+    /**
+     *  toggle debug status
+     */
     public void toggleDebug() {
         debug = !debug;
     }
