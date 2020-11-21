@@ -22,7 +22,7 @@ public final class Level implements Iterable<GameObject> {
  * @param raw_level - the layout of the grid of this game level
  * */
     public Level(String levelName, int levelIndex, List<String> raw_level) {
-        if (StartMeUp.isDebugActive()) {
+        if (GameModel.isDebugActive()) {
             System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
         }
 

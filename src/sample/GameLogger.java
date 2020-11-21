@@ -28,7 +28,7 @@ public class GameLogger extends Logger {
         File directory = new File(System.getProperty("user.dir") + "/" + "logs");
         directory.mkdirs();
 
-        FileHandler fh = new FileHandler(directory + "/" + StartMeUp.GAME_NAME + ".log");
+        FileHandler fh = new FileHandler(directory + "/" + GameModel.GAME_NAME + ".log");
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);

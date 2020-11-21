@@ -71,7 +71,7 @@ public class GameGrid implements Iterable {
      */
     public GameObject getGameObjectAt(int col, int row) throws ArrayIndexOutOfBoundsException {
         if (isPointOutOfBounds(col, row)) {
-            if (StartMeUp.isDebugActive()) {
+            if (GameModel.isDebugActive()) {
                 System.out.printf("Trying to get null GameObject from COL: %d  ROW: %d", col, row);
             }
             throw new ArrayIndexOutOfBoundsException("The point [" + col + ":" + row + "] is outside the map.");

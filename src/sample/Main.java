@@ -30,7 +30,7 @@ import java.io.InputStream;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private StartMeUp gameEngine;
+    private GameModel gameEngine;
     private GridPane gameGrid;
     private File saveFile;
     private MenuBar MENU;
@@ -95,7 +95,7 @@ public class Main extends Application {
         root.add(gameGrid, 0, 1);
 
         //open the game window
-        primaryStage.setTitle(StartMeUp.GAME_NAME);
+        primaryStage.setTitle(GameModel.GAME_NAME);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         loadDefaultSaveFile(primaryStage);
@@ -122,7 +122,7 @@ public class Main extends Application {
      * @param input game file
      */
     public void initializeGame(InputStream input) {
-        gameEngine = new StartMeUp(input, true);
+        gameEngine = new GameModel(input, true);
         reloadGrid();
     }
 
@@ -146,8 +146,8 @@ public class Main extends Application {
         saveFile = fileChooser.showOpenDialog(primaryStage);
 
         if (saveFile != null) {
-            if (StartMeUp.isDebugActive()) {
-                StartMeUp.logger.info("Loading save file: " + saveFile.getName());
+            if (GameModel.isDebugActive()) {
+                GameModel.logger.info("Loading save file: " + saveFile.getName());
             }
             initializeGame(new FileInputStream(saveFile));
         }}private void reloadGrid() {

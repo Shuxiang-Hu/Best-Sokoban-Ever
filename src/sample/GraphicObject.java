@@ -30,7 +30,7 @@ class GraphicObject extends Rectangle {
 
                 // TODO: fix memory leak.
                 //add fading effect to current GraphicObject object
-                if (StartMeUp.isDebugActive()) {
+                if (GameModel.isDebugActive()) {
                     FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
                     ft.setFromValue(1.0);
                     ft.setToValue(0.2);
@@ -55,7 +55,7 @@ class GraphicObject extends Rectangle {
 
             default:
                 String message = "Error in Level constructor. Object not recognized.";
-                StartMeUp.logger.severe(message);
+                GameModel.logger.severe(message);
                 throw new AssertionError(message);
         }
 
@@ -68,7 +68,7 @@ class GraphicObject extends Rectangle {
             this.setArcWidth(50);
         }
 
-        if (StartMeUp.isDebugActive()) {
+        if (GameModel.isDebugActive()) {
             this.setStroke(Color.RED);
             this.setStrokeWidth(0.25);
         }

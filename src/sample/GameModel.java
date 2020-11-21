@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class StartMeUp {
+public class GameModel {
 
     public static final String GAME_NAME = "BestSokobanEverV6";
     public static GameLogger logger;
@@ -27,7 +27,7 @@ public class StartMeUp {
      * @param input the game file
      * @param production whether to create media player
      */
-    public StartMeUp(InputStream input, boolean production) {
+    public GameModel(InputStream input, boolean production) {
         try {
             logger = new GameLogger();
             levels = loadGameFile(input);
@@ -114,7 +114,7 @@ public class StartMeUp {
         Point targetObjectPoint = GameGrid.translatePoint(keeperPosition, delta);
         GameObject keeperTarget = currentLevel.getObjectAt(targetObjectPoint);
 
-        if (StartMeUp.isDebugActive()) {
+        if (GameModel.isDebugActive()) {
             System.out.println("Current level state:");
             System.out.println(currentLevel.toString());
             System.out.println("Keeper pos: " + keeperPosition);
