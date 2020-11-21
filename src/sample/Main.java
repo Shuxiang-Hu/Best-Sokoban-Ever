@@ -41,6 +41,11 @@ public class Main extends Application {
         System.out.println("Done!");
     }
 
+    /**
+     * starts the game window
+     * @param primaryStage the game window
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 /*
@@ -49,12 +54,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
 */
-
-
-
-
         this.primaryStage = primaryStage;
 
+        //initialize menus
         MENU = new MenuBar();
 
         MenuItem menuItemSaveGame = new MenuItem("Save Game");
@@ -85,36 +87,58 @@ public class Main extends Application {
         menuAbout.setOnAction(actionEvent -> showAbout());
         menuAbout.getItems().addAll(menuItemGame);
         MENU.getMenus().addAll(menuFile, menuLevel, menuAbout);
+
+        //set layout of the game screen
         gameGrid = new GridPane();
         GridPane root = new GridPane();
         root.add(MENU, 0, 0);
         root.add(gameGrid, 0, 1);
+
+        //open the game window
         primaryStage.setTitle(StartMeUp.GAME_NAME);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         loadDefaultSaveFile(primaryStage);
     }
 
+    /**
+     * read the game file and initialize game with it
+     * @param primaryStage the game window
+     */
     void loadDefaultSaveFile(Stage primaryStage) { this.primaryStage = primaryStage;
         System.out.println("Hi");
         InputStream in = getClass().getClassLoader().getResourceAsStream("sample/SampleGame.skb");
         System.out.println(in);
         initializeGame(in);
         System.out.println("Hi");
+
+        //enable the screen to read in and show user inputs
         setEventFilter();
         System.out.println("Hi");
     }
 
+    /**
+     * initialize the game
+     * @param input game file
+     */
     public void initializeGame(InputStream input) {
         gameEngine = new StartMeUp(input, true);
         reloadGrid();
     }
 
+    /**
+     * enable the game to deal with user inputs
+     */
     public void setEventFilter() {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameEngine.handleKey(event.getCode());
             reloadGrid();
         });}
+
+    /**
+     * loads the user-chosen game file
+     * @throws FileNotFoundException
+     */
     public void loadGameFile() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Save File");
@@ -141,6 +165,9 @@ public class Main extends Application {
         primaryStage.sizeToScene();
     }
 
+    /**
+     * shows victory message
+     */
     public void showVictoryMessage() {
         String dialogTitle = "Game Over!";
         String dialogMessage = "You completed " + gameEngine.getMapSetName() + " in " + gameEngine.getMovesCount() + " moves!";
@@ -149,6 +176,12 @@ public class Main extends Application {
         newDialog(dialogTitle, dialogMessage, mb);
     }
 
+    /**
+     * shows a dialog window
+     * @param dialogTitle title of the dialog window
+     * @param dialogMessage message in the dialog window
+     * @param dialogMessageEffect effect of the dialog window
+     */
     public void newDialog(String dialogTitle, String dialogMessage, Effect dialogMessageEffect) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -174,16 +207,32 @@ public class Main extends Application {
         dialog.show();
     }
 
+    /**
+     * adds a GameObject object to given a position in grid
+     * @param gameObject
+     * @param location the position of the added object
+     */
     public void addObjectToGrid(GameObject gameObject, Point location) {
         GraphicObject graphicObject = new GraphicObject(gameObject);
         gameGrid.add(graphicObject, location.y, location.x);
     }
 
+    /**
+     * closes the game
+     */
     public void closeGame() {
         System.exit(0);
     }
+
+    /**
+     * saves the game
+     */
     public void saveGame() {
     }
+
+    /**
+     * load a saved game
+     */
     public void loadGame() {
         try {
             loadGameFile();
@@ -192,18 +241,32 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * undoes a move
+     */
     public void undo() { closeGame(); }
     public void resetLevel() {}
 
+    /**
+     * shows message in a dialog window
+     */
     public void showAbout() {
         String title = "About This Game";
         String message = "Enjoy the Game!\n";
 
         newDialog(title, message, null);
     }
+
+    /**
+     * toggles music
+     */
     public void toggleMusic() {
         // TODO
     }
+
+    /**
+     * toggles debug status
+     */
     public void toggleDebug() {
         gameEngine.toggleDebug();
         reloadGrid();
