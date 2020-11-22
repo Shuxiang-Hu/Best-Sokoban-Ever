@@ -30,7 +30,8 @@ import java.io.InputStream;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private GameModel gameEngine;
+    private GameModel gameModel;
+    private GameController gameController;
     private GridPane gameGrid;
     private File saveFile;
     private MenuBar MENU;
@@ -61,9 +62,24 @@ public class Main extends Application {
 
         MenuItem menuItemSaveGame = new MenuItem("Save Game");
         menuItemSaveGame.setDisable(true);
-        menuItemSaveGame.setOnAction(actionEvent -> saveGame());
+        menuItemSaveGame.setOnAction(actionEvent -> gameController.requestSaveGame());
         MenuItem menuItemLoadGame = new MenuItem("Load Game");
-        menuItemLoadGame.setOnAction(actionEvent -> loadGame());
+        menuItemLoadGame.setOnAction(actionEvent -> {
+            saveFile = gameController.requestLoadGame().showOpenDialog(this.primaryStage);
+            if (saveFile != null) {
+                if (GameModel.isDebugActive()) {
+                    GameModel.logger.info("Loading save file: " + saveFile.getName());
+                }
+                try{
+                    initializeGame(new FileInputStream(saveFile));
+                }
+                catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
         MenuItem menuItemExit = new MenuItem("Exit");
         menuItemExit.setOnAction(actionEvent -> closeGame());
         Menu menuFile = new Menu("File");
@@ -71,11 +87,14 @@ public class Main extends Application {
 
         MenuItem menuItemUndo = new MenuItem("Undo");
         menuItemUndo.setDisable(true);
-        menuItemUndo.setOnAction(actionEvent -> undo());
+        menuItemUndo.setOnAction(actionEvent -> gameController.requestUndo());
         RadioMenuItem radioMenuItemMusic = new RadioMenuItem("Toggle Music");
-        radioMenuItemMusic.setOnAction(actionEvent -> toggleMusic());
+        radioMenuItemMusic.setOnAction(actionEvent -> gameController.callToggleMusic());
         RadioMenuItem radioMenuItemDebug = new RadioMenuItem("Toggle Debug");
-        radioMenuItemDebug.setOnAction(actionEvent -> toggleDebug());
+        radioMenuItemDebug.setOnAction(actionEvent -> {
+            gameController.callToggleDebug();
+            reloadGrid();
+        });
         MenuItem menuItemResetLevel = new MenuItem("Reset Level");
         Menu menuLevel = new Menu("Level");
         menuLevel.setOnAction(actionEvent -> resetLevel());
@@ -105,7 +124,8 @@ public class Main extends Application {
      * read the game file and initialize game with it
      * @param primaryStage the game window
      */
-    void loadDefaultSaveFile(Stage primaryStage) { this.primaryStage = primaryStage;
+    void loadDefaultSaveFile(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         System.out.println("Hi");
         InputStream in = getClass().getClassLoader().getResourceAsStream("sample/SampleGame.skb");
         System.out.println(in);
@@ -122,7 +142,8 @@ public class Main extends Application {
      * @param input game file
      */
     public void initializeGame(InputStream input) {
-        gameEngine = new GameModel(input, true);
+        gameModel = new GameModel(input, true);
+        gameController = new GameController(gameModel);
         reloadGrid();
     }
 
@@ -131,32 +152,23 @@ public class Main extends Application {
      */
     public void setEventFilter() {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            gameEngine.handleKey(event.getCode());
+            gameController.handleKeyInput(event.getCode());
             reloadGrid();
-        });}
+        });
+    }
+
+
 
     /**
-     * loads the user-chosen game file
-     * @throws FileNotFoundException
+     * reloads the grid for the next game level
      */
-    public void loadGameFile() throws FileNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Save File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
-        saveFile = fileChooser.showOpenDialog(primaryStage);
-
-        if (saveFile != null) {
-            if (GameModel.isDebugActive()) {
-                GameModel.logger.info("Loading save file: " + saveFile.getName());
-            }
-            initializeGame(new FileInputStream(saveFile));
-        }}private void reloadGrid() {
-        if (gameEngine.isGameComplete()) {
+    private void reloadGrid() {
+        if (gameModel.isGameComplete()) {
             showVictoryMessage();
             return;
         }
 
-        Level currentLevel = gameEngine.getCurrentLevel();
+        Level currentLevel = gameModel.getCurrentLevel();
         Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
         gameGrid.getChildren().clear();
         while (levelGridIterator.hasNext()) {
@@ -170,7 +182,7 @@ public class Main extends Application {
      */
     public void showVictoryMessage() {
         String dialogTitle = "Game Over!";
-        String dialogMessage = "You completed " + gameEngine.getMapSetName() + " in " + gameEngine.getMovesCount() + " moves!";
+        String dialogMessage = "You completed " + gameModel.getMapSetName() + " in " + gameModel.getMovesCount() + " moves!";
         MotionBlur mb = new MotionBlur(2, 3);
 
         newDialog(dialogTitle, dialogMessage, mb);
@@ -209,7 +221,7 @@ public class Main extends Application {
 
     /**
      * adds a GameObject object to given a position in grid
-     * @param gameObject
+     * @param gameObject the game object to be added
      * @param location the position of the added object
      */
     public void addObjectToGrid(GameObject gameObject, Point location) {
@@ -224,15 +236,20 @@ public class Main extends Application {
         System.exit(0);
     }
 
-    /**
-     * saves the game
-     */
-    public void saveGame() {
+    public void loadGameFile() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
+        saveFile = fileChooser.showOpenDialog(primaryStage);
+
+        if (saveFile != null) {
+            if (GameModel.isDebugActive()) {
+                GameModel.logger.info("Loading save file: " + saveFile.getName());
+            }
+            initializeGame(new FileInputStream(saveFile));
+        }
     }
 
-    /**
-     * load a saved game
-     */
     public void loadGame() {
         try {
             loadGameFile();
@@ -241,10 +258,6 @@ public class Main extends Application {
         }
     }
 
-    /**
-     * undoes a move
-     */
-    public void undo() { closeGame(); }
     public void resetLevel() {}
 
     /**
@@ -257,20 +270,9 @@ public class Main extends Application {
         newDialog(title, message, null);
     }
 
-    /**
-     * toggles music
-     */
-    public void toggleMusic() {
-        // TODO
-    }
 
-    /**
-     * toggles debug status
-     */
-    public void toggleDebug() {
-        gameEngine.toggleDebug();
-        reloadGrid();
-    }
+
+
 
 
 
