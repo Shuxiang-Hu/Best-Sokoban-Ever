@@ -1,8 +1,10 @@
 package sample;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.awt.*;
@@ -242,24 +244,24 @@ public class GameModel {
      * @throws LineUnavailableException if line can not be used
      */
     public void createPlayer() throws LineUnavailableException {
-//        File filePath = new File(getClass().getClassLoader().getResource("music/puzzle_theme.wav").toString());
-//        Media music = new Media(filePath.toURI().toString());
-//        player = new MediaPlayer(music);
-//        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
+        File filePath = new File("src/sample/puzzle_theme.wav");
+        Media music = new Media(filePath.toURI().toString());
+        player = new MediaPlayer(music);
+        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
     }
 
     /**
      * makes the player play music
      */
     public void playMusic() {
-//        player.play();
+        player.play();
     }
 
     /**
      * stop the player from playing music
      */
     public void stopMusic() {
-//        player.stop();
+        player.stop();
     }
 
     /**
@@ -267,8 +269,8 @@ public class GameModel {
      * @return true if music is on, otherwise false
      */
     public boolean isPlayingMusic() {
-//        return player.getStatus() == MediaPlayer.Status.PLAYING;
-        return false;
+        return player.getStatus() == MediaPlayer.Status.PLAYING;
+
     }
 
     /**
@@ -308,7 +310,12 @@ public class GameModel {
      * toggles music
      */
     public void toggleMusic() {
-        // TODO
+        if(isPlayingMusic()){
+            stopMusic();
+        }
+        else {
+            playMusic();
+        }
     }
 
     /**
