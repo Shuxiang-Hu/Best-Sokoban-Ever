@@ -2,6 +2,7 @@ package sample;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.awt.*;
@@ -301,6 +302,34 @@ public class GameModel {
      */
     public void toggleDebug() {
         debug = !debug;
+    }
+
+    /**
+     * toggles music
+     */
+    public void toggleMusic() {
+        // TODO
+    }
+
+    /**
+     * undoes a move
+     */
+    public void undo() {}
+
+    /**
+     * saves the game
+     */
+    public void saveGame() {
+    }
+
+    /**
+     * loads the user-chosen game file
+     */
+    public FileChooser loadGameFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
+        return fileChooser;
     }
 
 }
