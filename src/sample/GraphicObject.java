@@ -8,6 +8,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 class GraphicObject extends Rectangle {
+    private static Paint backgroundColor = Color.BLACK;
+
+
+
     /**
      * Constructs a GraphicObject object with color, size and style
      * @param obj specifies the type of the GraphicObject object
@@ -18,7 +22,7 @@ class GraphicObject extends Rectangle {
         //add fading animation for DIAMOND
         switch (obj) {
             case WALL:
-                color = Color.BLACK;
+                color = backgroundColor;
                 break;
 
             case CRATE:
@@ -73,5 +77,11 @@ class GraphicObject extends Rectangle {
             this.setStrokeWidth(0.25);
         }
     }
+    public static Paint getBackgroundColor() {
+        return backgroundColor;
+    }
 
+    public static void setBackgroundColor(Paint newBackgroundColor) {
+        GraphicObject.backgroundColor = newBackgroundColor;
+    }
 }

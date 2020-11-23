@@ -35,10 +35,8 @@ public class Main extends Application {
 
         //open the game window
         primaryStage.setTitle(GameModel.GAME_NAME);
-        primaryStage.setScene(new Scene(gameViewer.configureGameScreen()));
+        primaryStage.setScene(new Scene(gameViewer.configureStartScreen()));
         primaryStage.show();
-
-        gameViewer.reloadGrid();
         //enable the screen to read in and show user inputs
         gameViewer.setEventFilter();
 
