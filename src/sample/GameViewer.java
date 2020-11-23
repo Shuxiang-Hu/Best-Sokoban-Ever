@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -11,9 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -53,72 +52,72 @@ public class GameViewer {
 
     public VBox configureStartScreen(){
         //set up buttons for various colors
-        Label prompt = new Label("Select background color and start game");
+        Label prompt1 = new Label("Background color");
         Button blackButton = new Button("Black");
-        blackButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.BLACK);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        blackButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.BLACK));
 
         Button greenButton = new Button("Green");
-        greenButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.GREEN);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        greenButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.GREEN));
 
         Button purpleButton = new Button("Purple");
-        purpleButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.PURPLE);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        purpleButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.PURPLE));
 
         Button grayButton = new Button("Gray");
-        grayButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.GRAY);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        grayButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.GRAY));
 
         Button darkblueButton = new Button("Dark Blue");
-        darkblueButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.DARKBLUE);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        darkblueButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.DARKBLUE));
 
         Button darkGrayButton = new Button("Darkgray");
-        darkGrayButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.DARKGRAY);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        darkGrayButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.DARKGRAY));
 
         Button brownButton = new Button("Brown");
-        brownButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.BROWN);
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
-            reloadGrid();
-        });
+        brownButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.BROWN));
 
         Button silverButton = new Button("Silver");
-        silverButton.setOnAction(event -> {
-            GraphicObject.setBackgroundColor(Color.SILVER);
+        silverButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.SILVER));
+
+        //initialize buttons for diamond color selection
+        Label prompt2 = new Label("Diamond color");
+        Button goldButton = new Button("Gold");
+        goldButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.GOLD));
+
+        Button deepSkyBlueButton = new Button("Deep Sky Blue");
+        deepSkyBlueButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.DEEPSKYBLUE));
+
+        Button violetButton = new Button("Violet");
+        violetButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.VIOLET));
+
+        //initialize start button
+        Button startButton = new Button("START");
+        startButton.setOnAction(actionEvent -> {
             Main.primaryStage.setScene(new Scene(configureGameScreen()));
             reloadGrid();
         });
 
+        //set layout of elements in start screen
+        VBox backgroundColorButtonLayout = new VBox();
+        backgroundColorButtonLayout.setAlignment(Pos.TOP_LEFT);
+        VBox.setMargin(backgroundColorButtonLayout, new Insets(0,200,0,0));
+        VBox diamondColorButtonLayout = new VBox();
+        diamondColorButtonLayout.setAlignment(Pos.TOP_RIGHT);
+        VBox.setMargin(diamondColorButtonLayout, new Insets(0,0,0,200));
+        HBox buttonLayout = new HBox();
         VBox startScreenLayout = new VBox();
-        startScreenLayout.getChildren().
-                addAll(prompt,purpleButton,blackButton,brownButton,greenButton,darkGrayButton,grayButton,silverButton,darkblueButton);
+        backgroundColorButtonLayout.getChildren().
+                addAll(prompt1,purpleButton,blackButton,brownButton,greenButton,darkGrayButton,grayButton,silverButton,darkblueButton);
+        diamondColorButtonLayout.getChildren().addAll(prompt2,goldButton,deepSkyBlueButton,violetButton);
+        buttonLayout.getChildren().addAll(backgroundColorButtonLayout,diamondColorButtonLayout);
+        buttonLayout.setAlignment(Pos.CENTER);
+        startScreenLayout.getChildren().addAll(buttonLayout,startButton);
+        startScreenLayout.setAlignment(Pos.CENTER);
+        startScreenLayout.setBackground(new Background(new BackgroundFill(Color.DEEPSKYBLUE,null,null)));
         return startScreenLayout;
+
     }
     public GridPane configureGameScreen(){
         //initialize menus
         MenuBar mainMenuBar = new MenuBar();
-
         MenuItem menuItemSaveGame = new MenuItem("Save Game");
         menuItemSaveGame.setDisable(true);
         menuItemSaveGame.setOnAction(actionEvent -> gameController.requestSaveGame());
@@ -218,7 +217,6 @@ public class GameViewer {
     public void showAbout() {
         String title = "About This Game";
         String message = "Enjoy the Game!\n";
-
         newDialog(title, message, null);
     }
 

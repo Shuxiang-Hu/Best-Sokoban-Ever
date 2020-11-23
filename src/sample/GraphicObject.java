@@ -9,8 +9,15 @@ import javafx.util.Duration;
 
 class GraphicObject extends Rectangle {
     private static Paint backgroundColor = Color.BLACK;
+    private static Paint diamondColor = Color.DEEPSKYBLUE;
 
+    public static Paint getDiamondColor() {
+        return diamondColor;
+    }
 
+    public static void setDiamondColor(Paint diamondColor) {
+        GraphicObject.diamondColor = diamondColor;
+    }
 
     /**
      * Constructs a GraphicObject object with color, size and style
@@ -30,7 +37,7 @@ class GraphicObject extends Rectangle {
                 break;
 
             case DIAMOND:
-                color = Color.DEEPSKYBLUE;
+                color = diamondColor;
 
                 // TODO: fix memory leak.
                 //add fading effect to current GraphicObject object

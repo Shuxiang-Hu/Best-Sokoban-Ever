@@ -14,8 +14,6 @@ public class Main extends Application {
     private GameController gameController;
     private GameViewer gameViewer;
 
-
-
     public static void main(String[] args) {
         launch(args);
         System.out.println("Done!");
@@ -31,15 +29,15 @@ public class Main extends Application {
 
         loadDefaultSaveFile(primaryStage);
 
-
-
         //open the game window
         primaryStage.setTitle(GameModel.GAME_NAME);
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(400);
         primaryStage.setScene(new Scene(gameViewer.configureStartScreen()));
         primaryStage.show();
+
         //enable the screen to read in and show user inputs
         gameViewer.setEventFilter();
-
     }
 
     /**
@@ -63,9 +61,4 @@ public class Main extends Application {
         gameViewer = new GameViewer(gameModel,gameController);
 
     }
-
-
-
-
-
 }
