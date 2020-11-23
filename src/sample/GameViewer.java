@@ -3,6 +3,8 @@ package sample;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -12,12 +14,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.*;
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -46,6 +51,70 @@ public class GameViewer {
         this.gameModel = gameModel;
     }
 
+    public VBox configureStartScreen(){
+        //set up buttons for various colors
+        Label prompt = new Label("Select background color and start game");
+        Button blackButton = new Button("Black");
+        blackButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.BLACK);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button greenButton = new Button("Green");
+        greenButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.GREEN);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button purpleButton = new Button("Purple");
+        purpleButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.PURPLE);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button grayButton = new Button("Gray");
+        grayButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.GRAY);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button darkblueButton = new Button("Dark Blue");
+        darkblueButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.DARKBLUE);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button darkGrayButton = new Button("Darkgray");
+        darkGrayButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.DARKGRAY);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button brownButton = new Button("Brown");
+        brownButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.BROWN);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        Button silverButton = new Button("Silver");
+        silverButton.setOnAction(event -> {
+            GraphicObject.setBackgroundColor(Color.SILVER);
+            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            reloadGrid();
+        });
+
+        VBox startScreenLayout = new VBox();
+        startScreenLayout.getChildren().
+                addAll(prompt,purpleButton,blackButton,brownButton,greenButton,darkGrayButton,grayButton,silverButton,darkblueButton);
+        return startScreenLayout;
+    }
     public GridPane configureGameScreen(){
         //initialize menus
         MenuBar mainMenuBar = new MenuBar();
