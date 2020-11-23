@@ -24,6 +24,7 @@ public class GameModel {
     private boolean gameComplete = false;
     private int movesCount = 0;
     private MediaPlayer player;
+    private File saveFile;
 
     /**
      * create a StartMeUp Object
@@ -329,14 +330,18 @@ public class GameModel {
     public void saveGame() {
     }
 
+    public File getSaveFile() {
+        return saveFile;
+    }
+
     /**
      * loads the user-chosen game file
      */
-    public FileChooser loadGameFile(){
+    public void loadGameFile(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
-        return fileChooser;
+        saveFile = fileChooser.showOpenDialog(Main.primaryStage);
     }
 
 }

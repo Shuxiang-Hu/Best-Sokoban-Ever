@@ -6,7 +6,7 @@ import javafx.stage.FileChooser;
 import java.io.FileNotFoundException;
 
 public class GameController {
-    private final GameModel gameModel;
+    private GameModel gameModel;
 
     public GameController(GameModel gameModel) {
         this.gameModel = gameModel;
@@ -16,6 +16,12 @@ public class GameController {
         gameModel.handleKey(code);
     }
 
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel =gameModel;
+    }
     /**
      * calls toggleDebug
      */
@@ -41,7 +47,7 @@ public class GameController {
     /**
      * load a saved game
      */
-    public FileChooser requestLoadGame() {
-        return gameModel.loadGameFile();
+    public void requestLoadGame() {
+        gameModel.loadGameFile();
     }
 }
