@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -18,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.awt.*;
 
@@ -29,6 +33,14 @@ public class GameViewer {
     private GameModel gameModel;
     private GameController gameController;
     private GridPane gameGrid;
+    private final Label timeCounter = new Label();
+    private final Label moveCounter = new Label();
+    private final Label totalMoveCounter = new Label();
+    private Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),actionEvent -> {
+        long timeInterval = System.currentTimeMillis() - gameModel.getStartTime();
+        timeCounter.setText("Time Count: "+timeInterval/1000);
+
+    } ));
     GameViewer(GameModel gameModel,GameController gameController){
         this.gameModel = gameModel;
         this.gameController = gameController;
@@ -166,10 +178,25 @@ public class GameViewer {
         menuAbout.getItems().addAll(menuItemGame);
         mainMenuBar.getMenus().addAll(menuFile, menuLevel, menuAbout);
 
+        //initialize counters
+        moveCounter.setText(" Move Count: " + gameController.getGameModel().getMovesCount());
+        Label counterSeparator1 = new Label("      ");
+        totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
+        Label counterSeparator2 = new Label("      ");
+        timeCounter.setText("Time Count: 0");
+        HBox counterLayout = new HBox();
+        counterLayout.getChildren().addAll(moveCounter,counterSeparator1,totalMoveCounter,counterSeparator2,timeCounter);
+        counterLayout.setAlignment(Pos.CENTER);
+        HBox topLayout = new HBox();
+        topLayout.getChildren().addAll(mainMenuBar,counterLayout);
+
+        //start the time counter
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
         //set layout of the game screen
         gameGrid = new GridPane();
         GridPane root = new GridPane();
-        root.add(mainMenuBar, 0, 0);
+        root.add(topLayout, 0, 0);
         root.add(gameGrid, 0, 1);
         return root;
     }
@@ -224,6 +251,7 @@ public class GameViewer {
      * reloads the grid for the next game level
      */
     public void reloadGrid() {
+
         if (gameController.getGameModel().isGameComplete()) {
             showVictoryMessage();
             return;
@@ -245,7 +273,6 @@ public class GameViewer {
         String dialogTitle = "Game Over!";
         String dialogMessage = "You completed " + gameController.getGameModel().getMapSetName() + " in " + gameController.getGameModel().getMovesCount() + " moves!";
         MotionBlur mb = new MotionBlur(2, 3);
-
         newDialog(dialogTitle, dialogMessage, mb);
     }
 
@@ -264,6 +291,8 @@ public class GameViewer {
     public void setEventFilter() {
         Main.primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameController.handleKeyInput(event.getCode());
+            moveCounter.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
+            totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
             reloadGrid();
         });
     }
