@@ -23,7 +23,22 @@ public class GameModel {
     private List<Level> levels;
     private boolean gameComplete = false;
     private int movesCount = 0;
+    private int totalMoveCount = 0;
+    private long startTime = 0;
     private MediaPlayer player;
+
+    public void setMovesCount(int movesCount) {
+        this.movesCount = movesCount;
+    }
+
+    public int getTotalMoveCount() {
+        return totalMoveCount;
+    }
+
+    public void setTotalMoveCount(int totalMoveCount) {
+        this.totalMoveCount = totalMoveCount;
+    }
+
     private File saveFile;
 
     /**
@@ -161,6 +176,7 @@ public class GameModel {
         if (keeperMoved) {
             keeperPosition.translate((int) delta.getX(), (int) delta.getY());
             movesCount++;
+            totalMoveCount ++;
             if (currentLevel.isComplete()) {
                 if (isDebugActive()) {
                     System.out.println("Level complete!");
@@ -274,11 +290,21 @@ public class GameModel {
 
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
     /**
      * gets next game level
      * @return next Level, null if all levels are completed
      */
     public Level getNextLevel() {
+        movesCount = 0;
+        startTime = System.currentTimeMillis();
         if (currentLevel == null) {
             return levels.get(0);
         }
