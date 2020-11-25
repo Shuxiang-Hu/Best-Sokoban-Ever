@@ -155,7 +155,7 @@ public class GameViewer {
         });
         MenuItem menuItemResetLevel = new MenuItem("Reset Level");
         Menu menuLevel = new Menu("Level");
-        menuLevel.setOnAction(actionEvent -> resetLevel());
+        menuLevel.setOnAction(actionEvent -> {gameController.requestResetLevel();reloadGrid();});
         menuLevel.getItems().addAll(menuItemUndo, radioMenuItemMusic, radioMenuItemDebug,
                 new SeparatorMenuItem(), menuItemResetLevel);
 
@@ -271,7 +271,7 @@ public class GameViewer {
         gameGrid.add(graphicObject, location.y, location.x);
     }
 
-    public void resetLevel() {}
+
 
     /**
      * enable the game to deal with user inputs

@@ -11,13 +11,26 @@ public final class Level implements Iterable<GameObject> {
 
     private final String name;
     private final GameGrid objectsGrid;
+    private final GameGrid initialObjectGrid;
     private final GameGrid previousObjectGrid;
     private final GameGrid diamondsGrid;
     private final int index;
+
+
+
     private int numberOfDiamonds = 0;
+    private Point initialKeeperPosition;
     private Point keeperPosition = new Point(0, 0);
     private Point previousKeeperPosition = new Point(0, 0);
     private boolean undo;
+
+    public Point getInitialKeeperPosition() {
+        return initialKeeperPosition;
+    }
+
+    public GameGrid getInitialObjectGrid() {
+        return initialObjectGrid;
+    }
 
     public Point getPreviousKeeperPosition() {
         return previousKeeperPosition;
@@ -52,6 +65,7 @@ public final class Level implements Iterable<GameObject> {
         int rows = raw_level.size();
         int columns = raw_level.get(0).trim().length();
 
+        initialObjectGrid = new GameGrid(rows,columns);
         objectsGrid = new GameGrid(rows, columns);
         previousObjectGrid = new GameGrid(rows,columns);
         diamondsGrid = new GameGrid(rows, columns);
@@ -72,9 +86,11 @@ public final class Level implements Iterable<GameObject> {
                     curTile = GameObject.FLOOR;
                 } else if (curTile == GameObject.KEEPER) {
                     keeperPosition = new Point(row, col);
+                    initialKeeperPosition = new Point(row,col);
                 }
 
                 objectsGrid.putGameObjectAt(curTile, row, col);
+                initialObjectGrid.putGameObjectAt(curTile,row,col);
                 curTile = null;
             }
         }

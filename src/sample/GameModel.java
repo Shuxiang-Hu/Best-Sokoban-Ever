@@ -348,4 +348,12 @@ public class GameModel {
     public void saveGame() {
         gameSaver.writeLevels(levels, currentLevel.getIndex(), mapSetName);
     }
+
+    public void resetLevel() {
+        Level.resetGameGrid(currentLevel.getObjectsGrid(),currentLevel.getInitialObjectGrid());
+        currentLevel.setKeeperPosition(currentLevel.getInitialKeeperPosition());
+        totalMoveCount -= movesCount;
+        movesCount = 0;
+        startTime = System.currentTimeMillis();
+    }
 }
