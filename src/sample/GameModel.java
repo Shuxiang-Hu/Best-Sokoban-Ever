@@ -93,6 +93,7 @@ public class GameModel {
      * @param code movement direction
      */
     public void handleKey(KeyCode code) {
+
         switch (code) {
             case UP:
                 move(new Point(-1, 0));
@@ -148,6 +149,7 @@ public class GameModel {
         switch (keeperTarget) {
 
             case WALL:
+                System.out.println("Try to move to a floor.");
                 break;
 
             case CRATE:
@@ -156,19 +158,24 @@ public class GameModel {
                 if (crateTarget != GameObject.FLOOR) {
                     break;
                 }
-
+                Level.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
+                System.out.println("Move a crate.");
                 keeperMoved = true;
                 break;
 
             case FLOOR:
+                Level.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
+                System.out.println("Move to a floor.");
                 keeperMoved = true;
                 break;
 
             default:
-                logger.severe("The object to be moved was not a recognised GameObject.");
+                logger.severe("The object to be moved was not a recognised GameObject."+keeperTarget.toString());
                 throw new AssertionError("This should not have happened. Report this problem to the developer.");
         }
 
@@ -178,11 +185,13 @@ public class GameModel {
             keeperPosition.translate((int) delta.getX(), (int) delta.getY());
             movesCount++;
             totalMoveCount ++;
+            //record previous game status and enable undo
+            currentLevel.setUndo(true);
+
             if (currentLevel.isComplete()) {
                 if (isDebugActive()) {
                     System.out.println("Level complete!");
                 }
-
                 currentLevel = getNextLevel();
             }
         }
@@ -257,30 +266,6 @@ public class GameModel {
         return gameComplete;
     }
 
-//    @Deprecated
-//    public void createPlayer() throws LineUnavailableException {
-//        File filePath = new File("src/sample/puzzle_theme.wav");
-//        Media music = new Media(filePath.toURI().toString());
-//        player = new MediaPlayer(music);
-//        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
-//    }
-//
-//    @Deprecated
-//    public void playMusic() {
-//        player.play();
-//    }
-//
-//    @Deprecated
-//    public void stopMusic() {
-//        player.stop();
-//    }
-//
-//    @Deprecated
-//    public boolean isPlayingMusic() {
-//        return player.getStatus() == MediaPlayer.Status.PLAYING;
-//
-//    }
-
     public long getStartTime() {
         return startTime;
     }
@@ -320,14 +305,16 @@ public class GameModel {
         debug = !debug;
     }
 
-
-//    @Deprecated
-//    public void toggleMusic() {}
-
     /**
      * undoes a move
      */
-    public void undo() {}
+    public void undo() {
+        if(currentLevel.isUndoActive()){
+            Level.resetGameGrid(currentLevel.getObjectsGrid(), currentLevel.getPreviousObjectGrid());//undo a step
+            currentLevel.setKeeperPosition(currentLevel.getPreviousKeeperPosition());
+            currentLevel.setUndo(false);//disable undo
+        }
+    }
 
     /**
      * saves the game

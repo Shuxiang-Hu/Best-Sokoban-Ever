@@ -80,6 +80,14 @@ public class GameGrid implements Iterable {
         return gameObjects[col][row];
     }
 
+    public int getROWS() {
+        return ROWS;
+    }
+
+    public int getCOLUMNS() {
+        return COLUMNS;
+    }
+
     /**
      * This method is get the GameObject at a given position
      * Object, given certain delta x and delta y
