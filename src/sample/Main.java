@@ -10,7 +10,7 @@ import java.io.InputStream;
 public class Main extends Application {
 
     public static Stage primaryStage;
-    private GameController gameController;
+
     private GameViewer gameViewer;
 
     public static void main(String[] args) {
@@ -56,8 +56,8 @@ public class Main extends Application {
      */
     public void initializeGame(InputStream input) {
         GameModel gameModel = new GameModel(input, true);
-        gameController = new GameController(gameModel);
-        gameViewer = new GameViewer(gameModel,gameController);
+        GameController gameController = new GameController(gameModel);
+        gameViewer = new GameViewer(gameController);
 
     }
 }
