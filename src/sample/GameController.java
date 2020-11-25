@@ -10,6 +10,8 @@ public class GameController {
         this.gameModel = gameModel;
     }
 
+    public void requestResetLevel() { gameModel.resetLevel();}
+
     public void handleKeyInput(KeyCode code){
         gameModel.handleKey(code);
     }
