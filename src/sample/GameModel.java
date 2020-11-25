@@ -1,12 +1,7 @@
 package sample;
 
 import javafx.scene.input.KeyCode;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
-
-import javax.sound.sampled.LineUnavailableException;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -25,6 +20,16 @@ public class GameModel {
     private int movesCount = 0;
     private int totalMoveCount = 0;
     private long startTime = 0;
+    private long timeInterval = 0;
+
+    public long getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(long timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
     private MusicPlayer gameMusicPlayer;
 
 
@@ -342,6 +347,11 @@ public class GameModel {
         fileChooser.setTitle("Open Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
         saveFile = fileChooser.showOpenDialog(Main.primaryStage);
+        movesCount = 0;
+        totalMoveCount = 0;
     }
 
+    public void setStartTime(long currentTimeMillis) {
+        this.startTime = currentTimeMillis;
+    }
 }
