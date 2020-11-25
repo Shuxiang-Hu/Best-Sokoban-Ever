@@ -167,7 +167,18 @@ public final class Level implements Iterable<GameObject> {
 
     @Override
     public String toString() {
-        return objectsGrid.toString();
+        GameGrid gameGrid = new GameGrid(objectsGrid.getROWS(), objectsGrid.getCOLUMNS());
+        for (int row = 0; row < gameGrid.getROWS(); row++) {
+            for (int col = 0; col < gameGrid.getCOLUMNS(); col++) {
+                char tempChar = objectsGrid.getGameObjectAt(row,col).getCharSymbol();
+                if(diamondsGrid.getGameObjectAt(row,col) == GameObject.DIAMOND){
+                    tempChar = 'D';
+                }
+                gameGrid.putGameObjectAt(GameObject.fromChar(tempChar),row,col);
+            }
+        }
+
+        return gameGrid.toString();
     }
 
     @Override

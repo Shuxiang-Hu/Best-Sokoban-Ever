@@ -119,7 +119,6 @@ public class GameViewer {
         //initialize menus
         MenuBar mainMenuBar = new MenuBar();
         MenuItem menuItemSaveGame = new MenuItem("Save Game");
-        menuItemSaveGame.setDisable(true);
         menuItemSaveGame.setOnAction(actionEvent -> gameController.requestSaveGame());
         MenuItem menuItemLoadGame = new MenuItem("Load Game");
         menuItemLoadGame.setOnAction(actionEvent -> {
