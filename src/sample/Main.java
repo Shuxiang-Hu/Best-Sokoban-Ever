@@ -3,6 +3,9 @@ package sample;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 
@@ -45,7 +48,12 @@ public class Main extends Application {
      */
     void loadDefaultSaveFile(Stage stage) {
         primaryStage = stage;
-        InputStream in = getClass().getClassLoader().getResourceAsStream("sample/SampleGame.skb");
+        InputStream in = null;
+        try {
+            in = new FileInputStream("resource/GameLayouts/SampleGame.skb");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         initializeGame(in);
     }
 

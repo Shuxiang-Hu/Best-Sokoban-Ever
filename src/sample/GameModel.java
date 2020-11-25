@@ -4,7 +4,12 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,6 +26,11 @@ public class GameModel {
     private int totalMoveCount = 0;
     private long startTime = 0;
     private long timeInterval = 0;
+    private GameSaver gameSaver;
+
+    public GameSaver getGameSaver() {
+        return gameSaver;
+    }
 
     public long getTimeInterval() {
         return timeInterval;
@@ -53,7 +63,7 @@ public class GameModel {
             logger = new GameLogger();
             levels = loadGameFile(input);
             currentLevel = getNextLevel();
-
+            gameSaver = new GameSaver();
 
             if (production) {
                 gameMusicPlayer = new MusicPlayer();
@@ -149,7 +159,6 @@ public class GameModel {
         switch (keeperTarget) {
 
             case WALL:
-                System.out.println("Try to move to a floor.");
                 break;
 
             case CRATE:
@@ -162,7 +171,6 @@ public class GameModel {
                 currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                System.out.println("Move a crate.");
                 keeperMoved = true;
                 break;
 
@@ -170,7 +178,6 @@ public class GameModel {
                 Level.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                 currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                System.out.println("Move to a floor.");
                 keeperMoved = true;
                 break;
 
@@ -282,8 +289,8 @@ public class GameModel {
         }
 
         int currentLevelIndex = currentLevel.getIndex();
-        if (currentLevelIndex < levels.size()) {
-            return levels.get(currentLevelIndex + 1);
+        if (currentLevelIndex -1 < levels.size()) {
+            return levels.get(currentLevelIndex );
         }
 
         gameComplete = true;
@@ -316,11 +323,7 @@ public class GameModel {
         }
     }
 
-    /**
-     * saves the game
-     */
-    public void saveGame() {
-    }
+
 
     public File getSaveFile() {
         return saveFile;
@@ -340,5 +343,9 @@ public class GameModel {
 
     public void setStartTime(long currentTimeMillis) {
         this.startTime = currentTimeMillis;
+    }
+
+    public void saveGame() {
+        gameSaver.writeLevels(levels, currentLevel.getIndex(), mapSetName);
     }
 }
