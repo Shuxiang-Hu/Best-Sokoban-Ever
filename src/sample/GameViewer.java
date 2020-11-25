@@ -145,8 +145,8 @@ public class GameViewer {
         menuFile.getItems().addAll(menuItemSaveGame, menuItemLoadGame, new SeparatorMenuItem(), menuItemExit);
 
         MenuItem menuItemUndo = new MenuItem("Undo");
-        menuItemUndo.setDisable(true);
-        menuItemUndo.setOnAction(actionEvent -> gameController.requestUndo());
+
+        menuItemUndo.setOnAction(actionEvent -> {gameController.requestUndo();reloadGrid();});
         RadioMenuItem radioMenuItemMusic = new RadioMenuItem("Toggle Music");
         radioMenuItemMusic.setOnAction(actionEvent -> gameController.callToggleMusic());
         RadioMenuItem radioMenuItemDebug = new RadioMenuItem("Toggle Debug");

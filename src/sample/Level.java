@@ -11,11 +11,31 @@ public final class Level implements Iterable<GameObject> {
 
     private final String name;
     private final GameGrid objectsGrid;
+    private final GameGrid previousObjectGrid;
     private final GameGrid diamondsGrid;
     private final int index;
     private int numberOfDiamonds = 0;
     private Point keeperPosition = new Point(0, 0);
-/**
+    private Point previousKeeperPosition = new Point(0, 0);
+    private boolean undo;
+
+    public Point getPreviousKeeperPosition() {
+        return previousKeeperPosition;
+    }
+
+    public void setKeeperPosition(Point p) {
+        this.keeperPosition.setLocation(p);
+    }
+
+    public void setPreviousKeeperPosition(Point p) {
+        this.previousKeeperPosition.setLocation(p);
+    }
+
+    public GameGrid getObjectsGrid() {
+        return objectsGrid;
+    }
+
+    /**
  * Constructs a game Level with its name, index and layout
  * @param levelName - the name of current game level
  * @param levelIndex - the index of current game level
@@ -28,11 +48,12 @@ public final class Level implements Iterable<GameObject> {
 
         name = levelName;
         index = levelIndex;
-
+        undo = false;
         int rows = raw_level.size();
         int columns = raw_level.get(0).trim().length();
 
         objectsGrid = new GameGrid(rows, columns);
+        previousObjectGrid = new GameGrid(rows,columns);
         diamondsGrid = new GameGrid(rows, columns);
 
         for (int row = 0; row < raw_level.size(); row++) {
@@ -78,8 +99,8 @@ public final class Level implements Iterable<GameObject> {
      */
     boolean isComplete() {
         int cratedDiamondsCount = 0;
-        for (int row = 0; row < objectsGrid.ROWS; row++) {
-            for (int col = 0; col < objectsGrid.COLUMNS; col++) {
+        for (int row = 0; row < objectsGrid.getROWS(); row++) {
+            for (int col = 0; col < objectsGrid.getCOLUMNS(); col++) {
                 if (objectsGrid.getGameObjectAt(col, row) == GameObject.CRATE && diamondsGrid.getGameObjectAt(col, row) == GameObject.DIAMOND) {
                     cratedDiamondsCount++;
                 }
@@ -88,9 +109,6 @@ public final class Level implements Iterable<GameObject> {
 
         return cratedDiamondsCount >= numberOfDiamonds;
     }
-
-
-
 
     /**
      * Finds a GameObject object from a source point by a give delta
@@ -114,6 +132,27 @@ public final class Level implements Iterable<GameObject> {
     void moveGameObjectBy(GameObject object, Point source, Point delta) {
         moveGameObjectTo(object, source, translatePoint(source, delta));
     }
+
+    public GameGrid getPreviousObjectGrid() {
+        return previousObjectGrid;
+    }
+
+    public static void resetGameGrid (GameGrid oldGrid, GameGrid newGrid){
+        for (int row = 0; row < oldGrid.getROWS(); row++) {
+            for (int col = 0; col < oldGrid.getCOLUMNS(); col++) {
+                char tempChar = newGrid.getGameObjectAt(row,col).getCharSymbol();
+                oldGrid.putGameObjectAt(GameObject.fromChar(tempChar),row,col);
+            }
+        }
+    }
+
+
+
+    public void setNumberOfDiamonds(int numberOfDiamonds) {
+        this.numberOfDiamonds = numberOfDiamonds;
+    }
+
+
 
     /**
      * Moves a GameObject from one position to another in object grid
@@ -143,12 +182,12 @@ public final class Level implements Iterable<GameObject> {
 
         @Override
         public boolean hasNext() {
-            return !(row == objectsGrid.ROWS - 1 && column == objectsGrid.COLUMNS);
+            return !(row == objectsGrid.getROWS() - 1 && column == objectsGrid.getCOLUMNS());
         }
 
         @Override
         public GameObject next() {
-            if (column >= objectsGrid.COLUMNS) {
+            if (column >= objectsGrid.getCOLUMNS()) {
                 column = 0;
                 row++;
             }
@@ -175,5 +214,13 @@ public final class Level implements Iterable<GameObject> {
         public Point getCurrentPosition() {
             return new Point(column, row);
         }
+    }
+
+    public boolean isUndoActive() {
+        return undo;
+    }
+
+    public void setUndo(boolean newUndo) {
+        this.undo = newUndo;
     }
 }

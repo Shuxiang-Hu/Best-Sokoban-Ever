@@ -47,7 +47,6 @@ public class Main extends Application {
         primaryStage = stage;
         InputStream in = getClass().getClassLoader().getResourceAsStream("sample/SampleGame.skb");
         initializeGame(in);
-
     }
 
     /**
