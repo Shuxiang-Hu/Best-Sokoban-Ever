@@ -1,9 +1,7 @@
 package sample;
 
 import javafx.scene.input.KeyCode;
-import javafx.stage.FileChooser;
 
-import java.io.FileNotFoundException;
 
 public class GameController {
     private GameModel gameModel;
@@ -32,9 +30,7 @@ public class GameController {
     /**
      * calls toggleMusic();
      */
-    public void callToggleMusic() {
-        gameModel.toggleMusic();
-    }
+    public void callToggleMusic() { gameModel.getGameMusicPlayer().toggleMusic(); }
 
     public void requestUndo() {
         gameModel.undo();

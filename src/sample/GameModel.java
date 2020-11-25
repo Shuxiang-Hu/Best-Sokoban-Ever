@@ -25,21 +25,18 @@ public class GameModel {
     private int movesCount = 0;
     private int totalMoveCount = 0;
     private long startTime = 0;
-    private MediaPlayer player;
+    private MusicPlayer gameMusicPlayer;
 
-    public void setMovesCount(int movesCount) {
-        this.movesCount = movesCount;
-    }
 
     public int getTotalMoveCount() {
         return totalMoveCount;
     }
 
-    public void setTotalMoveCount(int totalMoveCount) {
-        this.totalMoveCount = totalMoveCount;
-    }
-
     private File saveFile;
+
+    public MusicPlayer getGameMusicPlayer() {
+        return gameMusicPlayer;
+    }
 
     /**
      * create a StartMeUp Object
@@ -52,15 +49,14 @@ public class GameModel {
             levels = loadGameFile(input);
             currentLevel = getNextLevel();
 
+
             if (production) {
-                createPlayer();
+                gameMusicPlayer = new MusicPlayer();
             }
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
             logger.warning("Cannot load the default save file: " + e.getStackTrace());
-        } catch (LineUnavailableException e) {
-            logger.warning("Cannot load the music file: " + e.getStackTrace());
         }
     }
     /**
@@ -256,46 +252,32 @@ public class GameModel {
         return gameComplete;
     }
 
-    /**
-     * create a media player to play the theme
-     * @throws LineUnavailableException if line can not be used
-     */
-    public void createPlayer() throws LineUnavailableException {
-        File filePath = new File("src/sample/puzzle_theme.wav");
-        Media music = new Media(filePath.toURI().toString());
-        player = new MediaPlayer(music);
-        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
-    }
-
-    /**
-     * makes the player play music
-     */
-    public void playMusic() {
-        player.play();
-    }
-
-    /**
-     * stop the player from playing music
-     */
-    public void stopMusic() {
-        player.stop();
-    }
-
-    /**
-     * checks if the play is playing
-     * @return true if music is on, otherwise false
-     */
-    public boolean isPlayingMusic() {
-        return player.getStatus() == MediaPlayer.Status.PLAYING;
-
-    }
+//    @Deprecated
+//    public void createPlayer() throws LineUnavailableException {
+//        File filePath = new File("src/sample/puzzle_theme.wav");
+//        Media music = new Media(filePath.toURI().toString());
+//        player = new MediaPlayer(music);
+//        player.setOnEndOfMedia(() -> player.seek(Duration.ZERO));
+//    }
+//
+//    @Deprecated
+//    public void playMusic() {
+//        player.play();
+//    }
+//
+//    @Deprecated
+//    public void stopMusic() {
+//        player.stop();
+//    }
+//
+//    @Deprecated
+//    public boolean isPlayingMusic() {
+//        return player.getStatus() == MediaPlayer.Status.PLAYING;
+//
+//    }
 
     public long getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
     }
 
     /**
@@ -333,17 +315,9 @@ public class GameModel {
         debug = !debug;
     }
 
-    /**
-     * toggles music
-     */
-    public void toggleMusic() {
-        if(isPlayingMusic()){
-            stopMusic();
-        }
-        else {
-            playMusic();
-        }
-    }
+
+//    @Deprecated
+//    public void toggleMusic() {}
 
     /**
      * undoes a move
