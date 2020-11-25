@@ -30,36 +30,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class GameViewer {
-    private GameModel gameModel;
     private GameController gameController;
     private GridPane gameGrid;
     private final Label timeCounter = new Label();
     private final Label moveCounter = new Label();
     private final Label totalMoveCounter = new Label();
-    private Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),actionEvent -> {
-        long timeInterval = System.currentTimeMillis() - gameModel.getStartTime();
+    private final Timeline GAMETIMELINE = new Timeline(new KeyFrame(Duration.millis(100), actionEvent -> {
+        long timeInterval = System.currentTimeMillis() - gameController.getGameModel().getStartTime();
         timeCounter.setText("Time Count: "+timeInterval/1000);
 
     } ));
-    GameViewer(GameModel gameModel,GameController gameController){
-        this.gameModel = gameModel;
+    GameViewer(GameController gameController){
         this.gameController = gameController;
     }
 
-    public GameController getGameController() {
-        return gameController;
-    }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
-    }
-
-    public GameModel getGameModel() {
-        return gameModel;
-    }
-
-    public void setGameModel(GameModel gameModel) {
-        this.gameModel = gameModel;
     }
 
     public VBox configureStartScreen(){
@@ -104,6 +91,7 @@ public class GameViewer {
         Button startButton = new Button("START");
         startButton.setOnAction(actionEvent -> {
             Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            gameController.getGameModel().setStartTime(System.currentTimeMillis());
             reloadGrid();
         });
 
@@ -191,8 +179,8 @@ public class GameViewer {
         topLayout.getChildren().addAll(mainMenuBar,counterLayout);
 
         //start the time counter
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        GAMETIMELINE.setCycleCount(Animation.INDEFINITE);
+        GAMETIMELINE.play();
         //set layout of the game screen
         gameGrid = new GridPane();
         GridPane root = new GridPane();
@@ -205,7 +193,6 @@ public class GameViewer {
         GameModel gameModel = new GameModel(fileInputStream, true);
         gameController.setGameModel(gameModel);
         setGameController(gameController);
-        setGameModel(gameController.getGameModel());
     }
 
     /**
@@ -264,6 +251,8 @@ public class GameViewer {
             addObjectToGrid(levelGridIterator.next(), levelGridIterator.getCurrentPosition());
         }gameGrid.autosize();
         Main.primaryStage.sizeToScene();
+        moveCounter.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
+        totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
     }
 
     /**
@@ -291,8 +280,6 @@ public class GameViewer {
     public void setEventFilter() {
         Main.primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameController.handleKeyInput(event.getCode());
-            moveCounter.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
-            totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
             reloadGrid();
         });
     }
