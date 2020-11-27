@@ -4,12 +4,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import java.awt.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,6 +19,8 @@ public class GameModel {
     private boolean gameComplete = false;
     private int movesCount = 0;
     private int totalMoveCount = 0;
+    private int previousMovesCount=0;
+    private long previousTimeInterval=0;
     private long startTime = 0;
     private long timeInterval = 0;
     private GameSaver gameSaver;
@@ -102,23 +99,23 @@ public class GameModel {
      * read in user input and move accordingly
      * @param code movement direction
      */
-    public void handleKey(KeyCode code) {
-
+    public boolean handleKey(KeyCode code) {
+        boolean isGameCompletedByThisKey = false;
         switch (code) {
             case UP:
-                move(new Point(-1, 0));
+                isGameCompletedByThisKey = move(new Point(-1, 0));
                 break;
 
             case RIGHT:
-                move(new Point(0, 1));
+                isGameCompletedByThisKey = move(new Point(0, 1));
                 break;
 
             case DOWN:
-                move(new Point(1, 0));
+                isGameCompletedByThisKey = move(new Point(1, 0));
                 break;
 
             case LEFT:
-                move(new Point(0, -1));
+                isGameCompletedByThisKey = move(new Point(0, -1));
                 break;
 
             default:
@@ -128,6 +125,7 @@ public class GameModel {
         if (isDebugActive()) {
             System.out.println(code);
         }
+        return isGameCompletedByThisKey;
     }
 
     /**
@@ -135,9 +133,10 @@ public class GameModel {
      * @param delta movement delta
      */
 
-    public void move(Point delta) {
+    public boolean move(Point delta) {
+        boolean ifGameCompletedInThisMove = false;
         if (isGameComplete()) {
-            return;
+            return ifGameCompletedInThisMove = true;
         }
 
         Point keeperPosition = currentLevel.getKeeperPosition();
@@ -195,13 +194,9 @@ public class GameModel {
             //record previous game status and enable undo
             currentLevel.setUndo(true);
 
-            if (currentLevel.isComplete()) {
-                if (isDebugActive()) {
-                    System.out.println("Level complete!");
-                }
-                currentLevel = getNextLevel();
-            }
         }
+
+        return ifGameCompletedInThisMove;
     }
 
     /**
@@ -282,7 +277,10 @@ public class GameModel {
      * @return next Level, null if all levels are completed
      */
     public Level getNextLevel() {
+        previousMovesCount = movesCount;
         movesCount = 0;
+        previousTimeInterval = timeInterval;
+        timeInterval = 0;
         startTime = System.currentTimeMillis();
         if (currentLevel == null) {
             return levels.get(0);
@@ -355,5 +353,33 @@ public class GameModel {
         totalMoveCount -= movesCount;
         movesCount = 0;
         startTime = System.currentTimeMillis();
+    }
+
+    public String getCurrentLevelHighScoresString() {
+        return currentLevel.getHighScoresString();
+    }
+
+    public boolean checkTop10(){
+        return GameRecord.isTopN(currentLevel.getLevelRecords(),timeInterval/1000,movesCount,10);
+    }
+
+    public boolean checkGameStatus(){
+        if (currentLevel.isComplete()) {
+            if (isDebugActive()) {
+                System.out.println("Level complete!");
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void gotoNextLevel() {
+        currentLevel = getNextLevel();
+    }
+
+    public void saveGameRecord(String username) {
+        System.out.println("Trying to save");
+        System.out.println(currentLevel.getIndex()-2+username+"  "+previousTimeInterval/1000+"  "+previousMovesCount);
+        levels.get(currentLevel.getIndex()-2).saveRecord(username,previousTimeInterval/1000,previousMovesCount);
     }
 }

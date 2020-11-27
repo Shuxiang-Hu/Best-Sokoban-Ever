@@ -1,0 +1,44 @@
+Level 1 GameRecord:
+user name=null
+time=0
+number of moves=56
+Level 1 GameRecord:
+user name=null
+time=0
+number of moves=56
+Level 1 GameRecord:
+user name=null
+time=0
+number of moves=62
+Level 1 GameRecord:
+user name=123
+time=10
+number of moves=56
+Level 1 GameRecord:
+user name=123
+time=10
+number of moves=56
+Level 1 GameRecord:
+user name=Good night
+time=10
+number of moves=56
+Level 1 GameRecord:
+user name=999
+time=12
+number of moves=56
+Level 1 GameRecord:
+user name=This is me
+time=12
+number of moves=58
+Level 1 GameRecord:
+user name=user3
+time=123
+number of moves=121
+Level 1 GameRecord:
+user name=user2
+time=123
+number of moves=122
+Level 1 GameRecord:
+user name=hushuxiang
+time=123
+number of moves=123

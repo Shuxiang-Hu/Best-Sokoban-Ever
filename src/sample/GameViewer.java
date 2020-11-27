@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.KeyEvent;
@@ -36,8 +37,8 @@ public class GameViewer {
     private final Label moveCounter = new Label();
     private final Label totalMoveCounter = new Label();
     private final Timeline GAMETIMELINE = new Timeline(new KeyFrame(Duration.millis(100), actionEvent -> {
-        long timeInterval = System.currentTimeMillis() - gameController.getGameModel().getStartTime();
-        timeCounter.setText("Time Count: "+timeInterval/1000);
+        gameController.getGameModel().setTimeInterval(System.currentTimeMillis() - gameController.getGameModel().getStartTime());
+        timeCounter.setText("Time Count: "+gameController.getGameModel().getTimeInterval()/1000);
 
     } ));
     GameViewer(GameController gameController){
@@ -155,9 +156,11 @@ public class GameViewer {
         });
         MenuItem menuItemResetLevel = new MenuItem("Reset Level");
         Menu menuLevel = new Menu("Level");
-        menuLevel.setOnAction(actionEvent -> {gameController.requestResetLevel();reloadGrid();});
+        menuItemResetLevel.setOnAction(actionEvent -> {gameController.requestResetLevel();reloadGrid();});
+        MenuItem menuItemShowHighScores = new MenuItem("Show High Scores");
+        menuItemShowHighScores.setOnAction(actionEvent -> newDialog("Top 10", gameController.requestGetHighScoresString(),null));
         menuLevel.getItems().addAll(menuItemUndo, radioMenuItemMusic, radioMenuItemDebug,
-                new SeparatorMenuItem(), menuItemResetLevel);
+                new SeparatorMenuItem(), menuItemResetLevel,menuItemShowHighScores);
 
         MenuItem menuItemGame = new MenuItem("About This Game");
         Menu menuAbout = new Menu("About");
@@ -208,7 +211,7 @@ public class GameViewer {
         dialog.setTitle(dialogTitle);
 
         Text text1 = new Text(dialogMessage);
-        text1.setTextAlignment(TextAlignment.CENTER);
+        text1.setTextAlignment(TextAlignment.LEFT);
         text1.setFont(javafx.scene.text.Font.font(14));
 
         if (dialogMessageEffect != null) {
@@ -240,6 +243,7 @@ public class GameViewer {
 
         if (gameController.getGameModel().isGameComplete()) {
             showVictoryMessage();
+
             return;
         }
 
@@ -279,7 +283,68 @@ public class GameViewer {
     public void setEventFilter() {
         Main.primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameController.handleKeyInput(event.getCode());
+            if(gameController.requestCheckGameStatus()) {
+                int levelIndex = gameController.getGameModel().getCurrentLevel().getIndex();
+                int numberOfMoves = gameController.getGameModel().getMovesCount();
+                long timeInterval = gameController.getGameModel().getTimeInterval();
+                int totalNumberOfMoves = gameController.getGameModel().getTotalMoveCount();
+                String statistics = "You completed Level " + levelIndex + " with " + numberOfMoves + " moves and " + timeInterval/1000 + "seconds.";
+                statistics += "\nTotal number of moves: " + totalNumberOfMoves;
+                afterGamePopup(gameController.requestCheckIsTop10(),statistics);
+                gameController.requestNextLevel();
+                System.out.println(gameController.getGameModel().getMovesCount());
+
+            }
             reloadGrid();
         });
     }
+
+    public void afterGamePopup(boolean isTop10,String statisticsString) {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(Main.primaryStage);
+        dialog.setResizable(false);
+        dialog.setTitle("Level completed");
+
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.setAlignment(Pos.CENTER);
+        dialogVbox.setBackground(Background.EMPTY);
+
+
+        Text gameStatistics = new Text(statisticsString);
+        gameStatistics.setTextAlignment(TextAlignment.LEFT);
+        gameStatistics.setFont(javafx.scene.text.Font.font(14));
+        dialogVbox.getChildren().addAll(gameStatistics);
+
+        if(isTop10){ //ask for user name if player scored top 10
+            Text prompt = new Text("Enter your user name to be entitled to the Top 10");
+            prompt.setTextAlignment(TextAlignment.LEFT);
+            prompt.setFont(javafx.scene.text.Font.font(14));
+            TextField inputBox = new TextField();
+            inputBox.setPrefSize(200, 50); //
+            inputBox.setEditable(true);
+
+            Button submitBtn = new Button("OK");
+            submitBtn.setOnAction(e-> {
+                System.out.println(inputBox.getText());
+                gameController.requestSaveRecord(inputBox.getText());
+                dialog.close();
+            });
+
+            dialogVbox.getChildren().addAll(prompt,inputBox,submitBtn);
+        }
+        else {
+            Text notHighScoreMsg = new Text("You did not score Top 10 for this level");
+            gameStatistics.setTextAlignment(TextAlignment.LEFT);
+            gameStatistics.setFont(javafx.scene.text.Font.font(14));
+            dialogVbox.getChildren().add(notHighScoreMsg);
+        }
+
+
+        Scene dialogScene = new Scene(dialogVbox, 350, 150);
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
+
 }

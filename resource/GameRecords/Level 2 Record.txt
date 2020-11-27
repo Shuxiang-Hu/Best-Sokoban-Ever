@@ -1,0 +1,36 @@
+Level 2 GameRecord:
+user name=321
+time=0
+number of moves=0
+Level 2 GameRecord:
+user name=jkl
+time=0
+number of moves=0
+Level 2 GameRecord:
+user name=please
+time=0
+number of moves=0
+Level 2 GameRecord:
+user name=HIIIIIIIIII
+time=0
+number of moves=0
+Level 2 GameRecord:
+user name=Yes
+time=15
+number of moves=60
+Level 2 GameRecord:
+user name=oh no1
+time=16
+number of moves=70
+Level 2 GameRecord:
+user name=Iam
+time=33
+number of moves=123
+Level 2 GameRecord:
+user name=asd
+time=4948
+number of moves=0
+Level 2 GameRecord:
+user name=great
+time=15188
+number of moves=80
