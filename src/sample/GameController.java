@@ -12,8 +12,8 @@ public class GameController {
 
     public void requestResetLevel() { gameModel.resetLevel();}
 
-    public void handleKeyInput(KeyCode code){
-        gameModel.handleKey(code);
+    public boolean handleKeyInput(KeyCode code){
+        return gameModel.handleKey(code);
     }
 
     public GameModel getGameModel() {
@@ -50,4 +50,24 @@ public class GameController {
     }
 
 
+    public String requestGetHighScoresString() {
+        return gameModel.getCurrentLevelHighScoresString();
+    }
+
+    public boolean requestCheckIsTop10(){
+        return gameModel.checkTop10();
+    }
+
+    public boolean requestCheckGameStatus() {
+        return gameModel.checkGameStatus();
+    }
+
+    public void requestNextLevel() {
+        gameModel.gotoNextLevel();
+    }
+
+    public void requestSaveRecord(String username) {
+        System.out.println("requesting save " + username +"'s game record");
+        gameModel.saveGameRecord(username);
+    }
 }

@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.List;
+
 public class GameRecord {
     private String useName;
     private long time;
@@ -47,12 +49,31 @@ public class GameRecord {
         this.useName = useName;
     }
 
+    public boolean isBetterThan(GameRecord anotherRecord){
+        long anotherTime = anotherRecord.getTime();
+        int anotherMovesCount = anotherRecord.getNumberOfMoves();
+        return (this.time<anotherTime)||((this.time==anotherTime)&&(numberOfMoves<anotherMovesCount));
+    }
+
     @Override
     public String toString() {
-        return "GameRecord:\n" +
-                "useName=" + useName + "\n"+
+        return "Level "+levelIndex+" GameRecord:\n" +
+                "user name=" + useName + "\n"+
                 "time=" + time + "\n"+
-                "numberOfMoves=" + numberOfMoves + "\n"+
-                "levelIndex=" + levelIndex +"\n";
+                "number of moves=" + numberOfMoves + "\n";
     }
+
+    public static boolean isTopN(List<GameRecord> records, long newTime,int newNumberOfMoves, int n){
+        boolean isTopN ;
+        if (records.size() < n) {
+            isTopN = true;
+        }
+        else{
+            long oldRecordTime = records.get(n-1).getTime();
+            int oldMovesCount = records.get(n-1).getNumberOfMoves();
+            isTopN = newTime < oldRecordTime || (newTime == oldRecordTime && newNumberOfMoves < oldMovesCount);
+        }
+        return isTopN;
+    }
+
 }

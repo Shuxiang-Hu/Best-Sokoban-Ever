@@ -15,13 +15,12 @@ public final class Level implements Iterable<GameObject> {
     private final GameGrid previousObjectGrid;
     private final GameGrid diamondsGrid;
     private final int index;
-
-
-
+    private List<GameRecord> levelRecords;
     private int numberOfDiamonds = 0;
     private Point initialKeeperPosition;
     private Point keeperPosition = new Point(0, 0);
     private Point previousKeeperPosition = new Point(0, 0);
+    private GameRecorder levelRecorder ;
     private boolean undo;
 
     public Point getInitialKeeperPosition() {
@@ -48,6 +47,14 @@ public final class Level implements Iterable<GameObject> {
         return objectsGrid;
     }
 
+    public List<GameRecord> getLevelRecords() {
+        return levelRecords;
+    }
+
+    public void setLevelRecords(List<GameRecord> levelRecords) {
+        this.levelRecords = levelRecords;
+    }
+
     /**
  * Constructs a game Level with its name, index and layout
  * @param levelName - the name of current game level
@@ -69,6 +76,9 @@ public final class Level implements Iterable<GameObject> {
         objectsGrid = new GameGrid(rows, columns);
         previousObjectGrid = new GameGrid(rows,columns);
         diamondsGrid = new GameGrid(rows, columns);
+        levelRecorder = new GameRecorder(levelIndex);
+        levelRecords = levelRecorder.loadRecords();
+        GameRecorder.sortRecords(levelRecords);
 
         for (int row = 0; row < raw_level.size(); row++) {
 
@@ -200,6 +210,36 @@ public final class Level implements Iterable<GameObject> {
     @Override
     public Iterator<GameObject> iterator() {
         return new LevelIterator();
+    }
+
+    public String getHighScoresString() {
+        int numberOfRecords = levelRecords.size();
+        int topN = 10;
+        String returnVal = "";
+        if(numberOfRecords==0){
+            return "No records for this level";
+        }
+        else
+        {
+            int numberOfRecordsToShow = Math.min(topN,numberOfRecords);
+            for(int i=0;i<numberOfRecordsToShow;i++)
+            {
+                String recordString = "";
+                recordString += levelRecords.get(i).toString();
+                recordString = recordString.replace("\n","     ").replace("Level "+index+" GameRecord:","").replace('=',':').trim();
+                recordString += "\n";
+                returnVal +=recordString;
+            }
+
+            return returnVal;
+        }
+    }
+
+    public void saveRecord(String username, long timeInterval, int movesCount) {
+        levelRecords.add(new GameRecord(username,timeInterval,movesCount,index));
+        GameRecorder.sortRecords(levelRecords);
+        System.out.println(levelRecords.get(levelRecords.size()-1).toString());
+        levelRecorder.saveRecord(levelRecords);
     }
 
     public class LevelIterator implements Iterator<GameObject> {
