@@ -2,21 +2,33 @@ package sample;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-class GraphicObject extends Rectangle {
-    private static Paint backgroundColor = Color.BLACK;
-    private static Paint diamondColor = Color.DEEPSKYBLUE;
+import java.io.File;
 
-    public static Paint getDiamondColor() {
-        return diamondColor;
+class GraphicObject extends Rectangle {
+    private static Image floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+    private static Image backGround = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+    private static final Image KEEPER = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/keeper.png").toURI().toString());
+    private static final Image DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
+    private static final Image CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
+    private static final Image CRATE = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
+    private final Image APPEARANCE;
+
+
+    public static void setBackground(String backgroundImagePath) {
+        GraphicObject.backGround = new Image(new File(backgroundImagePath).toURI().toString());
     }
 
-    public static void setDiamondColor(Paint diamondColor) {
-        GraphicObject.diamondColor = diamondColor;
+    public static void setFloor(String floorImagePath) {
+        GraphicObject.floor = new Image(new File(floorImagePath).toURI().toString());
+    }
+
+    public Image getAppearance() {
+        return APPEARANCE;
     }
 
     /**
@@ -24,20 +36,20 @@ class GraphicObject extends Rectangle {
      * @param obj specifies the type of the GraphicObject object
      */
     GraphicObject(GameObject obj) {
-        Paint color;
-        //specify the color of the GraphicObject object
+        File file;
+        //specify the appearance of the GraphicObject object
         //add fading animation for DIAMOND
         switch (obj) {
             case WALL:
-                color = backgroundColor;
+                APPEARANCE = backGround;
                 break;
 
             case CRATE:
-                color = Color.ORANGE;
+                APPEARANCE = CRATE;
                 break;
 
             case DIAMOND:
-                color = diamondColor;
+                APPEARANCE = DIAMOND;
 
                 // TODO: fix memory leak.
                 //add fading effect to current GraphicObject object
@@ -53,15 +65,15 @@ class GraphicObject extends Rectangle {
                 break;
 
             case KEEPER:
-                color = Color.RED;
+                APPEARANCE = KEEPER;
                 break;
 
             case FLOOR:
-                color = Color.WHITE;
+                APPEARANCE = floor;
                 break;
 
             case CRATE_ON_DIAMOND:
-                color = Color.DARKCYAN;
+                APPEARANCE = CRATE_ON_DIAMOND;
                 break;
 
             default:
@@ -70,7 +82,6 @@ class GraphicObject extends Rectangle {
                 throw new AssertionError(message);
         }
 
-        this.setFill(color);
         this.setHeight(30);
         this.setWidth(30);
 
@@ -84,11 +95,5 @@ class GraphicObject extends Rectangle {
             this.setStrokeWidth(0.25);
         }
     }
-    public static Paint getBackgroundColor() {
-        return backgroundColor;
-    }
 
-    public static void setBackgroundColor(Paint newBackgroundColor) {
-        GraphicObject.backgroundColor = newBackgroundColor;
-    }
 }

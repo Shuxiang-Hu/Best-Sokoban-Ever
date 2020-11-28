@@ -15,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -53,41 +54,40 @@ public class GameViewer {
     public VBox configureStartScreen(){
         //set up buttons for various colors
         Label prompt1 = new Label("Background color");
-        Button blackButton = new Button("Black");
-        blackButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.BLACK));
+        Button blackWallButton = new Button("Black");
+        blackWallButton.setOnAction(event ->
+                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/BlackWall.png"));
 
-        Button greenButton = new Button("Green");
-        greenButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.GREEN));
+        Button grayWallButton = new Button("Gray");
+        grayWallButton.setOnAction(event ->
+                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/GrayWall.png"));
 
-        Button purpleButton = new Button("Purple");
-        purpleButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.PURPLE));
+        Button whiteWallButton = new Button("White");
+        whiteWallButton.setOnAction(event ->
+                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/WhiteWall.png"));
 
-        Button grayButton = new Button("Gray");
-        grayButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.GRAY));
+        Button brownWallButton = new Button("Brown");
+        brownWallButton.setOnAction(event ->
+                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/BrownWall.png"));
 
-        Button darkblueButton = new Button("Dark Blue");
-        darkblueButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.DARKBLUE));
 
-        Button darkGrayButton = new Button("Darkgray");
-        darkGrayButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.DARKGRAY));
+        //initialize buttons for floor color selection
+        Label prompt2 = new Label("Floor color");
+        Button whiteFloorButton = new Button("White");
+        whiteFloorButton.setOnAction(event ->
+                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/WhiteFloor.png"));
 
-        Button brownButton = new Button("Brown");
-        brownButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.BROWN));
+        Button brownFloorButton = new Button("Brown");
+        brownFloorButton.setOnAction(event ->
+                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/BrownFloor.png"));
 
-        Button silverButton = new Button("Silver");
-        silverButton.setOnAction(event -> GraphicObject.setBackgroundColor(Color.SILVER));
+        Button greenFloorButton = new Button("Green");
+        greenFloorButton.setOnAction(event ->
+                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/GreenFloor.png"));
 
-        //initialize buttons for diamond color selection
-        Label prompt2 = new Label("Diamond color");
-        Button goldButton = new Button("Gold");
-        goldButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.GOLD));
-
-        Button deepSkyBlueButton = new Button("Deep Sky Blue");
-        deepSkyBlueButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.DEEPSKYBLUE));
-
-        Button violetButton = new Button("Violet");
-        violetButton.setOnAction(event -> GraphicObject.setDiamondColor(Color.VIOLET));
-
+        Button grayFloorButton = new Button("Gray");
+        grayFloorButton.setOnAction(event ->
+                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/GrayFloor.png"));
         //initialize start button
         Button startButton = new Button("START");
         startButton.setOnAction(actionEvent -> {
@@ -100,15 +100,15 @@ public class GameViewer {
         VBox backgroundColorButtonLayout = new VBox();
         backgroundColorButtonLayout.setAlignment(Pos.TOP_LEFT);
         VBox.setMargin(backgroundColorButtonLayout, new Insets(0,200,0,0));
-        VBox diamondColorButtonLayout = new VBox();
-        diamondColorButtonLayout.setAlignment(Pos.TOP_RIGHT);
-        VBox.setMargin(diamondColorButtonLayout, new Insets(0,0,0,200));
+        VBox floorButtonLayout = new VBox();
+        floorButtonLayout.setAlignment(Pos.TOP_RIGHT);
+        VBox.setMargin(floorButtonLayout, new Insets(0,0,0,200));
         HBox buttonLayout = new HBox();
         VBox startScreenLayout = new VBox();
         backgroundColorButtonLayout.getChildren().
-                addAll(prompt1,purpleButton,blackButton,brownButton,greenButton,darkGrayButton,grayButton,silverButton,darkblueButton);
-        diamondColorButtonLayout.getChildren().addAll(prompt2,goldButton,deepSkyBlueButton,violetButton);
-        buttonLayout.getChildren().addAll(backgroundColorButtonLayout,diamondColorButtonLayout);
+                addAll(prompt1,blackWallButton,grayWallButton,brownWallButton,whiteWallButton);
+        floorButtonLayout.getChildren().addAll(prompt2, whiteFloorButton,grayFloorButton,brownFloorButton,greenFloorButton);
+        buttonLayout.getChildren().addAll(backgroundColorButtonLayout,floorButtonLayout);
         buttonLayout.setAlignment(Pos.CENTER);
         startScreenLayout.getChildren().addAll(buttonLayout,startButton);
         startScreenLayout.setAlignment(Pos.CENTER);
@@ -272,7 +272,10 @@ public class GameViewer {
 
     public void addObjectToGrid(GameObject gameObject, Point location) {
         GraphicObject graphicObject = new GraphicObject(gameObject);
-        gameGrid.add(graphicObject, location.y, location.x);
+        ImageView imageView = new ImageView(graphicObject.getAppearance());
+        imageView.setFitHeight(30.0);
+        imageView.setFitWidth(30.0);
+        gameGrid.add(imageView, location.y, location.x);
     }
 
 
@@ -321,7 +324,7 @@ public class GameViewer {
             prompt.setTextAlignment(TextAlignment.LEFT);
             prompt.setFont(javafx.scene.text.Font.font(14));
             TextField inputBox = new TextField();
-            inputBox.setPrefSize(200, 50); //
+            inputBox.setPrefSize(50, 30); //
             inputBox.setEditable(true);
 
             Button submitBtn = new Button("OK");
@@ -341,7 +344,7 @@ public class GameViewer {
         }
 
 
-        Scene dialogScene = new Scene(dialogVbox, 350, 150);
+        Scene dialogScene = new Scene(dialogVbox, 350, 210);
         dialog.setScene(dialogScene);
         dialog.show();
     }
