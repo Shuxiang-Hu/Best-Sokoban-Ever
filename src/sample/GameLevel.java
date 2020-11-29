@@ -7,7 +7,7 @@ import java.util.List;
 import static sample.GameGrid.translatePoint;
 
 
-public final class Level implements Iterable<GameObject> {
+public final class GameLevel implements Iterable<GameObject> {
 
     private final String name;
     private final GameGrid objectsGrid;
@@ -61,7 +61,7 @@ public final class Level implements Iterable<GameObject> {
  * @param levelIndex - the index of current game level
  * @param raw_level - the layout of the grid of this game level
  * */
-    public Level(String levelName, int levelIndex, List<String> raw_level) {
+    public GameLevel(String levelName, int levelIndex, List<String> raw_level) {
         if (GameModel.isDebugActive()) {
             System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
         }

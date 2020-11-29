@@ -13,9 +13,9 @@ public class GameModel {
     public static final String GAME_NAME = "BestSokobanEverV6";
     public static GameLogger logger;
     private static boolean debug = false;
-    private Level currentLevel;
+    private GameLevel currentLevel;
     private String mapSetName;
-    private List<Level> levels;
+    private List<GameLevel> levels;
     private boolean gameComplete = false;
     private int movesCount = 0;
     private int totalMoveCount = 0;
@@ -166,7 +166,7 @@ public class GameModel {
                 if (crateTarget != GameObject.FLOOR) {
                     break;
                 }
-                Level.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                 currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
@@ -174,7 +174,7 @@ public class GameModel {
                 break;
 
             case FLOOR:
-                Level.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                 currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
                 keeperMoved = true;
@@ -204,8 +204,8 @@ public class GameModel {
      * @param input the map layout for different levels
      * @return a list of game Levels
      */
-    public List<Level> loadGameFile(InputStream input) {
-        List<Level> levels = new ArrayList<>(5);
+    public List<GameLevel> loadGameFile(InputStream input) {
+        List<GameLevel> levels = new ArrayList<>(5);
         int levelIndex = 0;
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
@@ -219,7 +219,7 @@ public class GameModel {
                 // Break the loop if EOF is reached
                 if (line == null) {
                     if (rawLevel.size() != 0) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
+                        GameLevel parsedLevel = new GameLevel(levelName, ++levelIndex, rawLevel);
                         levels.add(parsedLevel);
                     }
                     break;
@@ -232,7 +232,7 @@ public class GameModel {
 
                 if (line.contains("LevelName")) {
                     if (parsedFirstLevel) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
+                        GameLevel parsedLevel = new GameLevel(levelName, ++levelIndex, rawLevel);
                         levels.add(parsedLevel);
                         rawLevel.clear();
                     } else {
@@ -276,7 +276,7 @@ public class GameModel {
      * gets next game level
      * @return next Level, null if all levels are completed
      */
-    public Level getNextLevel() {
+    public GameLevel getNextLevel() {
         previousMovesCount = movesCount;
         movesCount = 0;
         previousTimeInterval = timeInterval;
@@ -299,7 +299,7 @@ public class GameModel {
      * gets current game level
      * @return current game level
      */
-    public Level getCurrentLevel() {
+    public GameLevel getCurrentLevel() {
         return currentLevel;
     }
 
@@ -315,7 +315,7 @@ public class GameModel {
      */
     public void undo() {
         if(currentLevel.isUndoActive()){
-            Level.resetGameGrid(currentLevel.getObjectsGrid(), currentLevel.getPreviousObjectGrid());//undo a step
+            GameLevel.resetGameGrid(currentLevel.getObjectsGrid(), currentLevel.getPreviousObjectGrid());//undo a step
             currentLevel.setKeeperPosition(currentLevel.getPreviousKeeperPosition());
             currentLevel.setUndo(false);//disable undo
         }
@@ -348,7 +348,7 @@ public class GameModel {
     }
 
     public void resetLevel() {
-        Level.resetGameGrid(currentLevel.getObjectsGrid(),currentLevel.getInitialObjectGrid());
+        GameLevel.resetGameGrid(currentLevel.getObjectsGrid(),currentLevel.getInitialObjectGrid());
         currentLevel.setKeeperPosition(currentLevel.getInitialKeeperPosition());
         totalMoveCount -= movesCount;
         movesCount = 0;
