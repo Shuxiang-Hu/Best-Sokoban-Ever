@@ -13,7 +13,7 @@ public class GameSaver {
     /**
      * saves the game
      */
-    public void writeLevels(List<Level> levels,int startIndex,String mapSetName)  {
+    public void writeLevels(List<GameLevel> levels, int startIndex, String mapSetName)  {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fileName = "Sokoban " + dateFormat.format(new Date()) + ".skb";
         String fileDir = System.getProperty("user.dir") + "/resource/GameLayouts";
@@ -23,7 +23,7 @@ public class GameSaver {
             saveDir.mkdir();
         }
 
-        Level levelToSave ;
+        GameLevel levelToSave ;
 
         try {
             Files.write(Paths.get(fileDir+"/"+fileName),("MapSetName: "+mapSetName+"\n").getBytes());

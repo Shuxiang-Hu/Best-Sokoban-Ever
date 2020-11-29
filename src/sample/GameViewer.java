@@ -247,8 +247,8 @@ public class GameViewer {
             return;
         }
 
-        Level currentLevel = gameController.getGameModel().getCurrentLevel();
-        Level.LevelIterator levelGridIterator = (Level.LevelIterator) currentLevel.iterator();
+        GameLevel currentLevel = gameController.getGameModel().getCurrentLevel();
+        GameLevel.LevelIterator levelGridIterator = (GameLevel.LevelIterator) currentLevel.iterator();
         gameGrid.getChildren().clear();
         while (levelGridIterator.hasNext()) {
             addObjectToGrid(levelGridIterator.next(), levelGridIterator.getCurrentPosition());
