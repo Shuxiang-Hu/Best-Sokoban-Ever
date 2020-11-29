@@ -12,3 +12,5 @@ logs/BestSokobanEverV6.log.lck
 .DS_Store
 
 logs/
+
+resource/GameRecords/
