@@ -11,9 +11,11 @@ import java.util.logging.SimpleFormatter;
 
 public class GameLogger extends Logger {
 
-    private static Logger logger = Logger.getLogger("GameLogger"); //class variable not beginning with "m_"
+    private static Logger m_logger = Logger.getLogger("GameLogger");
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
+
+
 
     /**
      * This constructor creates a directory and a .log file,
@@ -28,10 +30,14 @@ public class GameLogger extends Logger {
         File directory = new File(System.getProperty("user.dir") + "/" + "logs");
         directory.mkdirs();
 
-        FileHandler fh = new FileHandler(directory + "/" + GameModel.GAME_NAME + ".log");
-        logger.addHandler(fh);
+        FileHandler fh = new FileHandler(directory + "/" + GameModel.M_GAMENAME + ".log");
+        m_logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
+    }
+
+    public static Logger getM_logger() {
+        return m_logger;
     }
 
     /**
@@ -48,7 +54,7 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void info(String message) {
-        logger.info(createFormattedMessage(message));
+        m_logger.info(createFormattedMessage(message));
     }
 
     /**
@@ -56,7 +62,7 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void warning(String message) {
-        logger.warning(createFormattedMessage(message));
+        m_logger.warning(createFormattedMessage(message));
     }
 
     /**
@@ -64,6 +70,6 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void severe(String message) {
-        logger.severe(createFormattedMessage(message));
+        m_logger.severe(createFormattedMessage(message));
     }
 }
