@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
 
 public class GameModel {
 
-    public static final String GAME_NAME = "BestSokobanEverV6";
-    public static GameLogger logger;
-    private static boolean debug = false;
+    public static final String M_GAMENAME = "BestSokobanEverV6";
+    public static GameLogger m_gameLogger;
+    private static boolean m_debug = false;
     private GameLevel currentLevel;
     private String mapSetName;
     private List<GameLevel> levels;
@@ -57,7 +57,7 @@ public class GameModel {
      */
     public GameModel(InputStream input, boolean production) {
         try {
-            logger = new GameLogger();
+            m_gameLogger = new GameLogger();
             levels = loadGameFile(input);
             currentLevel = getNextLevel();
             gameSaver = new GameSaver();
@@ -68,7 +68,7 @@ public class GameModel {
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
-            logger.warning("Cannot load the default save file: " + e.getStackTrace());
+            m_gameLogger.warning("Cannot load the default save file: " + e.getStackTrace());
         }
     }
     /**
@@ -76,7 +76,7 @@ public class GameModel {
      * @return true if debug is active, otherwise false
      */
     public static boolean isDebugActive() {
-        return debug;
+        return m_debug;
     }
 
     /**
@@ -181,7 +181,7 @@ public class GameModel {
                 break;
 
             default:
-                logger.severe("The object to be moved was not a recognised GameObject."+keeperTarget.toString());
+                m_gameLogger.severe("The object to be moved was not a recognised GameObject."+keeperTarget.toString());
                 throw new AssertionError("This should not have happened. Report this problem to the developer.");
         }
 
@@ -252,9 +252,9 @@ public class GameModel {
             }
 
         } catch (IOException e) {
-            logger.severe("Error trying to load the game file: " + e);
+            m_gameLogger.severe("Error trying to load the game file: " + e);
         } catch (NullPointerException e) {
-            logger.severe("Cannot open the requested file: " + e);
+            m_gameLogger.severe("Cannot open the requested file: " + e);
         }
 
         return levels;
@@ -307,7 +307,7 @@ public class GameModel {
      *  toggle debug status
      */
     public void toggleDebug() {
-        debug = !debug;
+        m_debug = !m_debug;
     }
 
     /**
@@ -334,7 +334,7 @@ public class GameModel {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
-        saveFile = fileChooser.showOpenDialog(Main.primaryStage);
+        saveFile = fileChooser.showOpenDialog(Main.m_primaryStage);
         movesCount = 0;
         totalMoveCount = 0;
     }

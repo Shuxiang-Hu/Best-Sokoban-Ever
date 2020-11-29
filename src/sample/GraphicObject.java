@@ -10,21 +10,21 @@ import javafx.util.Duration;
 import java.io.File;
 
 class GraphicObject extends Rectangle {
-    private static Image floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
-    private static Image backGround = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
-    private static final Image KEEPER = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/keeper.png").toURI().toString());
-    private static final Image DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
-    private static final Image CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
-    private static final Image CRATE = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
+    private static Image m_floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+    private static Image m_background = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+    private static final Image M_KEEPER = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/keeper.png").toURI().toString());
+    private static final Image M_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
+    private static final Image M_CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
+    private static final Image M_CRATE = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
     private final Image APPEARANCE;
 
 
-    public static void setBackground(String backgroundImagePath) {
-        GraphicObject.backGround = new Image(new File(backgroundImagePath).toURI().toString());
+    public static void setM_background(String backgroundImagePath) {
+        GraphicObject.m_background = new Image(new File(backgroundImagePath).toURI().toString());
     }
 
-    public static void setFloor(String floorImagePath) {
-        GraphicObject.floor = new Image(new File(floorImagePath).toURI().toString());
+    public static void setM_floor(String floorImagePath) {
+        GraphicObject.m_floor = new Image(new File(floorImagePath).toURI().toString());
     }
 
     public Image getAppearance() {
@@ -41,15 +41,15 @@ class GraphicObject extends Rectangle {
         //add fading animation for DIAMOND
         switch (obj) {
             case WALL:
-                APPEARANCE = backGround;
+                APPEARANCE = m_background;
                 break;
 
             case CRATE:
-                APPEARANCE = CRATE;
+                APPEARANCE = M_CRATE;
                 break;
 
             case DIAMOND:
-                APPEARANCE = DIAMOND;
+                APPEARANCE = M_DIAMOND;
 
                 // TODO: fix memory leak.
                 //add fading effect to current GraphicObject object
@@ -65,20 +65,20 @@ class GraphicObject extends Rectangle {
                 break;
 
             case KEEPER:
-                APPEARANCE = KEEPER;
+                APPEARANCE = M_KEEPER;
                 break;
 
             case FLOOR:
-                APPEARANCE = floor;
+                APPEARANCE = m_floor;
                 break;
 
             case CRATE_ON_DIAMOND:
-                APPEARANCE = CRATE_ON_DIAMOND;
+                APPEARANCE = M_CRATE_ON_DIAMOND;
                 break;
 
             default:
                 String message = "Error in Level constructor. Object not recognized.";
-                GameModel.logger.severe(message);
+                GameModel.m_gameLogger.severe(message);
                 throw new AssertionError(message);
         }
 

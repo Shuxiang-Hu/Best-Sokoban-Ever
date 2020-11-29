@@ -34,12 +34,12 @@ import java.io.FileNotFoundException;
 public class GameViewer {
     private GameController gameController;
     private GridPane gameGrid;
-    private final Label timeCounter = new Label();
-    private final Label moveCounter = new Label();
-    private final Label totalMoveCounter = new Label();
+    private final Label TIMECOUNTER = new Label();
+    private final Label MOVECOUNTER = new Label();
+    private final Label TOTALMOVECOUNTER = new Label();
     private final Timeline GAMETIMELINE = new Timeline(new KeyFrame(Duration.millis(100), actionEvent -> {
         gameController.getGameModel().setTimeInterval(System.currentTimeMillis() - gameController.getGameModel().getStartTime());
-        timeCounter.setText("Time Count: "+gameController.getGameModel().getTimeInterval()/1000);
+        TIMECOUNTER.setText("Time Count: "+gameController.getGameModel().getTimeInterval()/1000);
 
     } ));
     GameViewer(GameController gameController){
@@ -56,42 +56,42 @@ public class GameViewer {
         Label prompt1 = new Label("Background color");
         Button blackWallButton = new Button("Black");
         blackWallButton.setOnAction(event ->
-                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/BlackWall.png"));
+                GraphicObject.setM_background(System.getProperty("user.dir")+"/resource/GameImages/BlackWall.png"));
 
         Button grayWallButton = new Button("Gray");
         grayWallButton.setOnAction(event ->
-                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/GrayWall.png"));
+                GraphicObject.setM_background(System.getProperty("user.dir")+"/resource/GameImages/GrayWall.png"));
 
         Button whiteWallButton = new Button("White");
         whiteWallButton.setOnAction(event ->
-                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/WhiteWall.png"));
+                GraphicObject.setM_background(System.getProperty("user.dir")+"/resource/GameImages/WhiteWall.png"));
 
         Button brownWallButton = new Button("Brown");
         brownWallButton.setOnAction(event ->
-                GraphicObject.setBackground(System.getProperty("user.dir")+"/resource/GameImages/BrownWall.png"));
+                GraphicObject.setM_background(System.getProperty("user.dir")+"/resource/GameImages/BrownWall.png"));
 
 
         //initialize buttons for floor color selection
         Label prompt2 = new Label("Floor color");
         Button whiteFloorButton = new Button("White");
         whiteFloorButton.setOnAction(event ->
-                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/WhiteFloor.png"));
+                GraphicObject.setM_floor(System.getProperty("user.dir")+"/resource/GameImages/WhiteFloor.png"));
 
         Button brownFloorButton = new Button("Brown");
         brownFloorButton.setOnAction(event ->
-                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/BrownFloor.png"));
+                GraphicObject.setM_floor(System.getProperty("user.dir")+"/resource/GameImages/BrownFloor.png"));
 
         Button greenFloorButton = new Button("Green");
         greenFloorButton.setOnAction(event ->
-                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/GreenFloor.png"));
+                GraphicObject.setM_floor(System.getProperty("user.dir")+"/resource/GameImages/GreenFloor.png"));
 
         Button grayFloorButton = new Button("Gray");
         grayFloorButton.setOnAction(event ->
-                GraphicObject.setFloor(System.getProperty("user.dir")+"/resource/GameImages/GrayFloor.png"));
+                GraphicObject.setM_floor(System.getProperty("user.dir")+"/resource/GameImages/GrayFloor.png"));
         //initialize start button
         Button startButton = new Button("START");
         startButton.setOnAction(actionEvent -> {
-            Main.primaryStage.setScene(new Scene(configureGameScreen()));
+            Main.getM_primaryStage().setScene(new Scene(configureGameScreen()));
             gameController.getGameModel().setStartTime(System.currentTimeMillis());
             reloadGrid();
         });
@@ -126,7 +126,7 @@ public class GameViewer {
             gameController.requestLoadGame();
             if (gameController.getGameModel().getSaveFile() != null) {
                 if (GameModel.isDebugActive()) {
-                    GameModel.logger.info("Loading save file: " + gameController.getGameModel().getSaveFile().getName());
+                    GameModel.m_gameLogger.info("Loading save file: " + gameController.getGameModel().getSaveFile().getName());
                 }
                 try{
                     reloadGame(new FileInputStream(gameController.getGameModel().getSaveFile()));
@@ -169,13 +169,13 @@ public class GameViewer {
         mainMenuBar.getMenus().addAll(menuFile, menuLevel, menuAbout);
 
         //initialize counters
-        moveCounter.setText(" Move Count: " + gameController.getGameModel().getMovesCount());
+        MOVECOUNTER.setText(" Move Count: " + gameController.getGameModel().getMovesCount());
         Label counterSeparator1 = new Label("      ");
-        totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
+        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
         Label counterSeparator2 = new Label("      ");
-        timeCounter.setText("Time Count: 0");
+        TIMECOUNTER.setText("Time Count: 0");
         HBox counterLayout = new HBox();
-        counterLayout.getChildren().addAll(moveCounter,counterSeparator1,totalMoveCounter,counterSeparator2,timeCounter);
+        counterLayout.getChildren().addAll(MOVECOUNTER,counterSeparator1, TOTALMOVECOUNTER,counterSeparator2, TIMECOUNTER);
         counterLayout.setAlignment(Pos.CENTER);
         HBox topLayout = new HBox();
         topLayout.getChildren().addAll(mainMenuBar,counterLayout);
@@ -206,7 +206,7 @@ public class GameViewer {
     public void newDialog(String dialogTitle, String dialogMessage, Effect dialogMessageEffect) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.primaryStage);
+        dialog.initOwner(Main.getM_primaryStage());
         dialog.setResizable(false);
         dialog.setTitle(dialogTitle);
 
@@ -253,9 +253,9 @@ public class GameViewer {
         while (levelGridIterator.hasNext()) {
             addObjectToGrid(levelGridIterator.next(), levelGridIterator.getCurrentPosition());
         }gameGrid.autosize();
-        Main.primaryStage.sizeToScene();
-        moveCounter.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
-        totalMoveCounter.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
+        Main.getM_primaryStage().sizeToScene();
+        MOVECOUNTER.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
+        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
     }
 
     /**
@@ -284,7 +284,7 @@ public class GameViewer {
      * enable the game to deal with user inputs
      */
     public void setEventFilter() {
-        Main.primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        Main.getM_primaryStage().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameController.handleKeyInput(event.getCode());
             if(gameController.requestCheckGameStatus()) {
                 int levelIndex = gameController.getGameModel().getCurrentLevel().getIndex();
@@ -305,7 +305,7 @@ public class GameViewer {
     public void afterGamePopup(boolean isTop10,String statisticsString) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(Main.primaryStage);
+        dialog.initOwner(Main.getM_primaryStage());
         dialog.setResizable(false);
         dialog.setTitle("Level completed");
 

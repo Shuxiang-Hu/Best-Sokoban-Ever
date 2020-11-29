@@ -12,9 +12,13 @@ import java.io.InputStream;
 
 public class Main extends Application {
 
-    public static Stage primaryStage;
+    public static Stage m_primaryStage;
 
     private GameViewer gameViewer;
+
+    public static Stage getM_primaryStage() {
+        return m_primaryStage;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -32,7 +36,7 @@ public class Main extends Application {
         loadDefaultSaveFile(primaryStage);
 
         //open the game window
-        primaryStage.setTitle(GameModel.GAME_NAME);
+        primaryStage.setTitle(GameModel.M_GAMENAME);
         primaryStage.setWidth(400);
         primaryStage.setHeight(400);
         primaryStage.setScene(new Scene(gameViewer.configureStartScreen()));
@@ -47,7 +51,7 @@ public class Main extends Application {
      * @param stage the game window
      */
     void loadDefaultSaveFile(Stage stage) {
-        primaryStage = stage;
+        m_primaryStage = stage;
         InputStream in = null;
         try {
             in = new FileInputStream("resource/GameLayouts/SampleGame.skb");
