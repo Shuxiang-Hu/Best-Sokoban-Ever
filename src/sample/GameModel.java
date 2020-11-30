@@ -157,20 +157,37 @@ public class GameModel {
         //decide what to do according to target position
         switch (keeperTarget) {
 
+            case PORTAL:
             case WALL:
                 break;
 
             case CRATE:
 
                 GameObject crateTarget = currentLevel.getTargetObject(targetObjectPoint, delta);
-                if (crateTarget != GameObject.FLOOR) {
+                if(crateTarget == GameObject.PORTAL){
+                    GameObject objectAtPortalExit = currentLevel.getObjectAt(currentLevel.getProtalExitPosition());
+                    if( objectAtPortalExit == GameObject.FLOOR || objectAtPortalExit == GameObject.PORTAL_EXIT){
+                        GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                        currentLevel.setPreviousKeeperPosition(keeperPosition);
+                        currentLevel.teleportCrateTo(keeperTarget,targetObjectPoint);
+                        currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
+                        keeperMoved = true;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                else if (crateTarget != GameObject.FLOOR) {
                     break;
                 }
-                GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                currentLevel.setPreviousKeeperPosition(keeperPosition);
-                currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
-                currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                keeperMoved = true;
+                else{
+                    GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
+                    currentLevel.setPreviousKeeperPosition(keeperPosition);
+                    currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
+                    currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
+                    keeperMoved = true;
+                }
+
                 break;
 
             case FLOOR:

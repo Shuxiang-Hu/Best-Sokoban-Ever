@@ -16,6 +16,7 @@ class GraphicObject extends Rectangle {
     private static final Image M_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
     private static final Image M_CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
     private static final Image M_CRATE = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
+    private static final Image M_PORTAL = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Portal.png").toURI().toString());
     private final Image APPEARANCE;
 
 
@@ -69,6 +70,8 @@ class GraphicObject extends Rectangle {
                 break;
 
             case FLOOR:
+
+            case PORTAL_EXIT:
                 APPEARANCE = m_floor;
                 break;
 
@@ -76,6 +79,9 @@ class GraphicObject extends Rectangle {
                 APPEARANCE = M_CRATE_ON_DIAMOND;
                 break;
 
+            case PORTAL:
+                APPEARANCE = M_PORTAL;
+                break;
             default:
                 String message = "Error in Level constructor. Object not recognized.";
                 GameModel.m_gameLogger.severe(message);
