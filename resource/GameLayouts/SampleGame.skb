@@ -2,7 +2,7 @@ MapSetName: Example Game!
 LevelName: Simple Start
 WWWWWWWWWWWWWWWWWWWW
 W    W             W 
-W C  W D           W
+W C  W D     E     W
 w    w      WWWWWWWW 
 w    WWWW  WWWWWWWWW 
 w            WWWWWWW 
@@ -12,7 +12,7 @@ w    WWWWWWWWWWWWWWW
 W    WWWWWWWWWWWWWWW 
 w    WWWWWWWWWWWWWWW 
 w           WWWWWWWW 
-w       W WWWWWWWWWW 
+w  P    W WWWWWWWWWW
 wWWWWWW W WWWWWWWWWW 
 wWWWWWW W WWWWWWWWWW 
 wWWWWWW W WWWWWWWWWW
@@ -27,10 +27,10 @@ W    W             W
 W C  W C           W 
 w C  w      WW WWWWW 
 wD   WWWWWW W C   DW 
-w      D           W 
+w      D        E  W
 w           W      W 
 w           WWWWWWWW 
-w           WWWWWWWW 
+w     P     WWWWWWWW
 w           WWWWWWWW 
 w           WWWWWWWW 
 w      S    WWWWWWWW 
@@ -49,13 +49,13 @@ W    WWW  WWWWWWWWWW
 W                  W
 W    WWWW WWWWWWWW W
 W   CC    WWWWWWWW W
-W   CDD            W
+W   CDD     E      W
 WWWWWDWWWWWWWWWWWW W
 W                  W
 W WWW W            W
 W W   W            W
 W    WW            W
-WW   WW            W
+WW   WW      P     W
 WW   WW            W
 WW   WW            W
 WW   WW            W
@@ -70,13 +70,13 @@ WWWWWWWWWWWWWWWWWWWW
 W  WWWD            W
 W  WWWWW WWWWWWWW WW
 W     DW W       C W
-WW WWWWW W       C W
+WW WWWWW W  E    C W
 WW    DW W         W
 WW  W  W W WWWWWW WW
 WWW W WW           W
 WWW W WW W WWWWWWWWW
 W     WW WWWD      W
-W  W  WW WWW       W
+W  W  WW WWW   P   W
 WW WWWWW WWW       W
 WW WWWWW WWWW WWWWWW
 WW       S         W
@@ -95,7 +95,7 @@ Wwwww wcwwwww ww  ww
 Wwwww  c wwww www wW
 W     w  wwww   w wW
 W wwwww wwwww w w wW
-W wwwww       w wcwW
+W wwwww   E   w wcwW
 W wwwww wwwww w  c W
 Wd            w    W
 Wwwwwwwww www wwwwwW
@@ -106,5 +106,5 @@ W  wwwwww www    wwW
 Ww wwwwww  ww wwwwdW
 W  w      cdw      W
 W          c       W
-Wwww  wwwww    wwwwW
+Wwww  wwwww   PwwwwW
 WWWWWWWWWWWWWWWWWWWW
