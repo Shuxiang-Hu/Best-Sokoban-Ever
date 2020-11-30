@@ -25,10 +25,6 @@ public class GameModel {
     private long timeInterval = 0;
     private GameSaver gameSaver;
 
-    public GameSaver getGameSaver() {
-        return gameSaver;
-    }
-
     public long getTimeInterval() {
         return timeInterval;
     }
@@ -103,18 +99,22 @@ public class GameModel {
         boolean isGameCompletedByThisKey = false;
         switch (code) {
             case UP:
+                GraphicObject.setKeeperPosition("up");
                 isGameCompletedByThisKey = move(new Point(-1, 0));
                 break;
 
             case RIGHT:
+                GraphicObject.setKeeperPosition("right");
                 isGameCompletedByThisKey = move(new Point(0, 1));
                 break;
 
             case DOWN:
+                GraphicObject.setKeeperPosition("down");
                 isGameCompletedByThisKey = move(new Point(1, 0));
                 break;
 
             case LEFT:
+                GraphicObject.setKeeperPosition("left");
                 isGameCompletedByThisKey = move(new Point(0, -1));
                 break;
 
@@ -392,6 +392,7 @@ public class GameModel {
 
     public void gotoNextLevel() {
         currentLevel = getNextLevel();
+        GraphicObject.setKeeperPosition("down");
     }
 
     public void saveGameRecord(String username) {
