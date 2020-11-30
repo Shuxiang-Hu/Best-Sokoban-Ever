@@ -10,4 +10,4 @@ Shuxiang Hu (shysh1), Tested on Macs, Gradle Build Script, Java 15.0.1, JavaFX 1
 > + Moved accessory methods to the top of methods to achieve better organization and readibility
 > + Applied JUnit Testing to modified original code and new features, to make sure new features works and do not break existing functionalities 
 
-> Extension
+> Extensio
