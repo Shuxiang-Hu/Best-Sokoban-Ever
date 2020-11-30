@@ -20,6 +20,7 @@ public final class GameLevel implements Iterable<GameObject> {
     private Point initialKeeperPosition;
     private Point keeperPosition = new Point(0, 0);
     private Point previousKeeperPosition = new Point(0, 0);
+    private Point protalExitPosition = new Point(0, 0);
     private GameRecorder levelRecorder ;
     private boolean undo;
 
@@ -53,6 +54,10 @@ public final class GameLevel implements Iterable<GameObject> {
 
     public void setLevelRecords(List<GameRecord> levelRecords) {
         this.levelRecords = levelRecords;
+    }
+
+    public Point getProtalExitPosition() {
+        return protalExitPosition;
     }
 
     /**
@@ -97,6 +102,9 @@ public final class GameLevel implements Iterable<GameObject> {
                 } else if (curTile == GameObject.KEEPER) {
                     keeperPosition = new Point(row, col);
                     initialKeeperPosition = new Point(row,col);
+                }
+                else if (curTile == GameObject.PORTAL_EXIT){
+                    protalExitPosition = new Point(row,col);
                 }
 
                 objectsGrid.putGameObjectAt(curTile, row, col);
@@ -190,7 +198,15 @@ public final class GameLevel implements Iterable<GameObject> {
         objectsGrid.putGameObjectAt(getObjectAt(destination), source);
         objectsGrid.putGameObjectAt(object, destination);
     }
-
+    /**
+     * Teleports a crate to the position of the exit of the portal
+     * @param object the object to move
+     * @param source the start point
+     */
+    public void teleportCrateTo(GameObject object, Point source) {
+        objectsGrid.putGameObjectAt(GameObject.FLOOR, source);
+        objectsGrid.putGameObjectAt(object, protalExitPosition);
+    }
     @Override
     public String toString() {
         GameGrid gameGrid = new GameGrid(objectsGrid.getROWS(), objectsGrid.getCOLUMNS());

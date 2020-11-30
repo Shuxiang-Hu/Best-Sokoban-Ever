@@ -7,13 +7,15 @@ public enum GameObject {
     DIAMOND('D'),
     KEEPER('S'),
     CRATE_ON_DIAMOND('O'),
+    PORTAL('P'),
+    PORTAL_EXIT('E'),
     DEBUG_OBJECT('=');
 
     private final char SYMBOL;
 
     GameObject(final char SYMBOL) {
         char charToAssign = 'W';
-        char[] validChars = {'W',' ','C','D','S','O','='};
+        char[] validChars = {'W',' ','C','D','S','O','P','E','='};
         for(char c : validChars ){
             if(SYMBOL == c){
                 charToAssign = c;
