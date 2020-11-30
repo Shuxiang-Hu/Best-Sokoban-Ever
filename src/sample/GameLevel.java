@@ -91,24 +91,30 @@ public final class GameLevel implements Iterable<GameObject> {
             // http://stackoverflow.com/questions/8894258/fastest-way-to-iterate-over-all-the-chars-in-a-string
             for (int col = 0; col < raw_level.get(row).length(); col++) {
                 // The game object is null when the we're adding a floor or a diamond
-                GameObject curTile = GameObject.fromChar(raw_level.get(row).charAt(col));
+                GameObject curTile = GameObjectFactory.fromChar(raw_level.get(row).charAt(col));
 
                 //if curTile is a Diamond, then add it to diamondsGrid and add floor to the same position in objectsGrid
                 //if it is a keeper, then set keeperPosition
-                if (curTile == GameObject.DIAMOND) {
+                if (curTile.getCharSymbol() == 'D') {
                     numberOfDiamonds++;
                     diamondsGrid.putGameObjectAt(curTile, row, col);
-                    curTile = GameObject.FLOOR;
-                } else if (curTile == GameObject.KEEPER) {
+                    curTile = new GameFloor();
+                } else if (curTile.getCharSymbol() == 'S') {
                     keeperPosition = new Point(row, col);
                     initialKeeperPosition = new Point(row,col);
+                    diamondsGrid.putGameObjectAt(new GameDebugObject(), row, col);
                 }
-                else if (curTile == GameObject.PORTAL_EXIT){
+                else if (curTile.getCharSymbol() == 'E'){
                     protalExitPosition = new Point(row,col);
+                    diamondsGrid.putGameObjectAt(new GameDebugObject(), row, col);
+                }
+                else {
+                    diamondsGrid.putGameObjectAt(new GameDebugObject(), row, col);
                 }
 
                 objectsGrid.putGameObjectAt(curTile, row, col);
                 initialObjectGrid.putGameObjectAt(curTile,row,col);
+
                 curTile = null;
             }
         }
@@ -135,7 +141,7 @@ public final class GameLevel implements Iterable<GameObject> {
         int cratedDiamondsCount = 0;
         for (int row = 0; row < objectsGrid.getROWS(); row++) {
             for (int col = 0; col < objectsGrid.getCOLUMNS(); col++) {
-                if (objectsGrid.getGameObjectAt(col, row) == GameObject.CRATE && diamondsGrid.getGameObjectAt(col, row) == GameObject.DIAMOND) {
+                if (objectsGrid.getGameObjectAt(col, row).getCharSymbol() == 'C' && diamondsGrid.getGameObjectAt(col, row).getCharSymbol() == 'D') {
                     cratedDiamondsCount++;
                 }
             }
@@ -175,7 +181,7 @@ public final class GameLevel implements Iterable<GameObject> {
         for (int row = 0; row < oldGrid.getROWS(); row++) {
             for (int col = 0; col < oldGrid.getCOLUMNS(); col++) {
                 char tempChar = newGrid.getGameObjectAt(row,col).getCharSymbol();
-                oldGrid.putGameObjectAt(GameObject.fromChar(tempChar),row,col);
+                oldGrid.putGameObjectAt(GameObjectFactory.fromChar(tempChar),row,col);
             }
         }
     }
@@ -204,7 +210,7 @@ public final class GameLevel implements Iterable<GameObject> {
      * @param source the start point
      */
     public void teleportCrateTo(GameObject object, Point source) {
-        objectsGrid.putGameObjectAt(GameObject.FLOOR, source);
+        objectsGrid.putGameObjectAt(new GameFloor(), source);
         objectsGrid.putGameObjectAt(object, protalExitPosition);
     }
     @Override
@@ -213,10 +219,10 @@ public final class GameLevel implements Iterable<GameObject> {
         for (int row = 0; row < gameGrid.getROWS(); row++) {
             for (int col = 0; col < gameGrid.getCOLUMNS(); col++) {
                 char tempChar = objectsGrid.getGameObjectAt(row,col).getCharSymbol();
-                if(diamondsGrid.getGameObjectAt(row,col) == GameObject.DIAMOND){
+                if(diamondsGrid.getGameObjectAt(row,col).getCharSymbol() == 'D'){
                     tempChar = 'D';
                 }
-                gameGrid.putGameObjectAt(GameObject.fromChar(tempChar),row,col);
+                gameGrid.putGameObjectAt(GameObjectFactory.fromChar(tempChar),row,col);
             }
         }
 
@@ -281,13 +287,11 @@ public final class GameLevel implements Iterable<GameObject> {
 
             column++;
 
-            if (diamond == GameObject.DIAMOND) {
-                if (object == GameObject.CRATE) {
-                    retObj = GameObject.CRATE_ON_DIAMOND;
-                } else if (object == GameObject.FLOOR) {
+            if (diamond.getCharSymbol() == 'D') {
+                if (object.getCharSymbol() == 'C') {
+                    retObj = new GameCrateOnDiamond();
+                } else if (object.getCharSymbol() == ' ') {
                     retObj = diamond;
-                } else {
-                    retObj = object;
                 }
             }
 

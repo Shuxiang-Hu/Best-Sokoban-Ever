@@ -152,7 +152,7 @@ public class GameGrid implements Iterable {
         for (GameObject[] gameObject : gameObjects) {
             for (GameObject aGameObject : gameObject) {
                 if (aGameObject == null) {
-                    aGameObject = GameObject.DEBUG_OBJECT;
+                    aGameObject = new GameDebugObject();
                 }
                 sb.append(aGameObject.getCharSymbol());
             }

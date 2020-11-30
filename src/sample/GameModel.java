@@ -155,18 +155,18 @@ public class GameModel {
         boolean keeperMoved = false;
 
         //decide what to do according to target position
-        switch (keeperTarget) {
+        switch (keeperTarget.getCharSymbol()) {
 
-            case PORTAL:
-            case WALL:
+            case 'P':
+            case 'W':
                 break;
 
-            case CRATE:
+            case 'C':
 
                 GameObject crateTarget = currentLevel.getTargetObject(targetObjectPoint, delta);
-                if(crateTarget == GameObject.PORTAL){
-                    GameObject objectAtPortalExit = currentLevel.getObjectAt(currentLevel.getProtalExitPosition());
-                    if( objectAtPortalExit == GameObject.FLOOR || objectAtPortalExit == GameObject.PORTAL_EXIT){
+                if(crateTarget.getCharSymbol() == 'P'){
+                    char objectSymbolAtPortalExit = currentLevel.getObjectAt(currentLevel.getProtalExitPosition()).getCharSymbol();
+                    if( objectSymbolAtPortalExit == ' ' || objectSymbolAtPortalExit == 'E'){
                         GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                         currentLevel.setPreviousKeeperPosition(keeperPosition);
                         currentLevel.teleportCrateTo(keeperTarget,targetObjectPoint);
@@ -177,7 +177,7 @@ public class GameModel {
                         break;
                     }
                 }
-                else if (crateTarget != GameObject.FLOOR) {
+                else if (crateTarget.getCharSymbol() != ' ') {
                     break;
                 }
                 else{
@@ -190,7 +190,7 @@ public class GameModel {
 
                 break;
 
-            case FLOOR:
+            case ' ':
                 GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                 currentLevel.setPreviousKeeperPosition(keeperPosition);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
