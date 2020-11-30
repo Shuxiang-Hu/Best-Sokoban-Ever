@@ -12,7 +12,7 @@ import java.io.File;
 class GraphicObject extends Rectangle {
     private static Image m_floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
     private static Image m_background = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
-    private static final Image M_KEEPER = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/keeper.png").toURI().toString());
+    private static  Image m_keeper = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/downKeeper.png").toURI().toString());
     private static final Image M_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
     private static final Image M_CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
     private static final Image M_CRATE = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
@@ -66,7 +66,7 @@ class GraphicObject extends Rectangle {
                 break;
 
             case KEEPER:
-                APPEARANCE = M_KEEPER;
+                APPEARANCE = m_keeper;
                 break;
 
             case FLOOR:
@@ -100,6 +100,11 @@ class GraphicObject extends Rectangle {
             this.setStroke(Color.RED);
             this.setStrokeWidth(0.25);
         }
+    }
+
+    public static void setKeeperPosition(String direction){
+        m_keeper =
+                new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/"+direction+"Keeper.png").toURI().toString());
     }
 
 }
