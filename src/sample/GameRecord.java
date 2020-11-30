@@ -15,20 +15,8 @@ public class GameRecord {
         this.levelIndex = levelIndex;
     }
 
-    public int getLevelIndex() {
-        return levelIndex;
-    }
-
-    public void setLevelIndex(int levelIndex) {
-        this.levelIndex = levelIndex;
-    }
-
     public int getNumberOfMoves() {
         return numberOfMoves;
-    }
-
-    public void setNumberOfMoves(int numberOfMoves) {
-        this.numberOfMoves = numberOfMoves;
     }
 
     public long getTime() {
@@ -39,14 +27,6 @@ public class GameRecord {
 
     public void setTime(long time) {
         this.time = time;
-    }
-
-    public String getUseName() {
-        return useName;
-    }
-
-    public void setUseName(String useName) {
-        this.useName = useName;
     }
 
     public boolean isBetterThan(GameRecord anotherRecord){

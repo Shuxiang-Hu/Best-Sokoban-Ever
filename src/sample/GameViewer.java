@@ -343,11 +343,8 @@ public class GameViewer {
             dialogVbox.getChildren().add(notHighScoreMsg);
         }
 
-
         Scene dialogScene = new Scene(dialogVbox, 350, 210);
         dialog.setScene(dialogScene);
         dialog.show();
     }
-
-
 }
