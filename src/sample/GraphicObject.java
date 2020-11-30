@@ -10,7 +10,7 @@ import javafx.util.Duration;
 import java.io.File;
 
 class GraphicObject extends Rectangle {
-    private static Image m_floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+    private static Image m_floor = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/WhiteFloor.png").toURI().toString());
     private static Image m_background = new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
     private static  Image m_keeper = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/downKeeper.png").toURI().toString());
     private static final Image M_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
