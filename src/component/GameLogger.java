@@ -1,4 +1,6 @@
-package sample;
+package component;
+
+import MVC.GameModel;
 
 import java.io.File;
 import java.io.IOException;

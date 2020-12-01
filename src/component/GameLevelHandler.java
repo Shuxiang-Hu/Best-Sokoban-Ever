@@ -1,4 +1,10 @@
-package sample;
+package component;
+
+import MVC.GameModel;
+import data.GameGrid;
+import data.GameLevel;
+import object.GameObject;
+import object.GraphicObject;
 
 import java.awt.*;
 import java.util.List;

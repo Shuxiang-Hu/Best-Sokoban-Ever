@@ -1,12 +1,13 @@
-package sample;
+package object;
 
 
+import component.GameLogger;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 
-class GraphicObject extends Rectangle {
+public class GraphicObject extends Rectangle {
     private static Image m_floor =
             new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/WhiteFloor.png").toURI().toString());
     private static Image m_background =
@@ -39,7 +40,7 @@ class GraphicObject extends Rectangle {
      * Constructs a GraphicObject object with color, size and style
      * @param obj specifies the type of the GraphicObject object
      */
-    GraphicObject(GameObject obj) {
+    public GraphicObject(GameObject obj) {
         //specify the appearance of the GraphicObject object
         //add fading animation for DIAMOND
         switch (obj.getCharSymbol()) {

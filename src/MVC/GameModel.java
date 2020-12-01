@@ -1,7 +1,17 @@
-package sample;
+package MVC;
 
+import component.GameLevelHandler;
+import component.GameLogger;
+import component.GameSaver;
+import component.MusicPlayer;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
+import data.GameLevel;
+import data.GameRecord;
+import main.Main;
+import object.GraphicObject;
+
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;

@@ -1,4 +1,6 @@
-package sample;
+package factory;
+
+import object.*;
 
 public class GameObjectFactory {
     /**

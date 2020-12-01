@@ -1,5 +1,6 @@
-package sample;
+package MVC;
 
+import component.GameLogger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,6 +29,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import data.GameLevel;
+import main.Main;
+import object.GameObject;
+import data.GameRecord;
+import object.GraphicObject;
+
 
 import java.awt.*;
 

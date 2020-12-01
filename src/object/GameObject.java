@@ -1,4 +1,4 @@
-package sample;
+package object;
 
 public abstract class GameObject {
 //    WALL('W'),
@@ -11,7 +11,7 @@ public abstract class GameObject {
 //    PORTAL_EXIT('E'),
 //    DEBUG_OBJECT('=');
 
-    char SYMBOL = ' ';
+    public char SYMBOL = ' ';
 
     /**
      * This method is used to get the symbol of a GameObject object

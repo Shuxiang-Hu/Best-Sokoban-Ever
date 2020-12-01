@@ -1,6 +1,7 @@
-package sample;
+package component;
 
-import java.awt.desktop.SystemSleepEvent;
+import data.GameRecord;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class GameRecorder {
     private int levelIndex;
     private String recordPath;
 
-    GameRecorder(int levelIndex){
+    public GameRecorder(int levelIndex){
         this.levelIndex = levelIndex;
         this.recordPath = System.getProperty("user.dir")+ "/resource/GameRecords/Level "+levelIndex+" Record.txt";
     }

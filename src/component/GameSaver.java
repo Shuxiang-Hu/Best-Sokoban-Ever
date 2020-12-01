@@ -1,4 +1,6 @@
-package sample;
+package component;
+
+import data.GameLevel;
 
 import java.io.File;
 import java.io.IOException;

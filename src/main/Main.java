@@ -1,5 +1,7 @@
-package sample;
+package main;
 
+import MVC.GameModel;
+import MVC.GameViewer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
