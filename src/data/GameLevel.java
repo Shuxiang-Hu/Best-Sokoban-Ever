@@ -1,10 +1,15 @@
-package sample;
+package data;
+
+import MVC.GameModel;
+import component.GameRecorder;
+import factory.GameObjectFactory;
+import object.*;
 
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
-import static sample.GameGrid.translatePoint;
+import static data.GameGrid.translatePoint;
 
 
 public final class GameLevel implements Iterable<GameObject> {
@@ -20,7 +25,7 @@ public final class GameLevel implements Iterable<GameObject> {
     private Point initialKeeperPosition;
     private Point keeperPosition = new Point(0, 0);
     private Point previousKeeperPosition = new Point(0, 0);
-    private Point protalExitPosition = new Point(0, 0);
+    private Point portalExitPosition = new Point(0, 0);
     private GameRecorder levelRecorder ;
     private boolean undo;
 
@@ -52,8 +57,8 @@ public final class GameLevel implements Iterable<GameObject> {
         return levelRecords;
     }
 
-    public Point getProtalExitPosition() {
-        return protalExitPosition;
+    public Point getPortalExitPosition() {
+        return portalExitPosition;
     }
 
     /**
@@ -101,7 +106,7 @@ public final class GameLevel implements Iterable<GameObject> {
                     diamondsGrid.putGameObjectAt(new GameDebugObject(), row, col);
                 }
                 else if (curTile.getCharSymbol() == 'E'){
-                    protalExitPosition = new Point(row,col);
+                    portalExitPosition = new Point(row,col);
                     diamondsGrid.putGameObjectAt(new GameDebugObject(), row, col);
                 }
                 else {
@@ -120,11 +125,11 @@ public final class GameLevel implements Iterable<GameObject> {
         return name;
     }
 
-    int getIndex() {
+    public int getIndex() {
         return index;
     }
 
-    Point getKeeperPosition() {
+    public Point getKeeperPosition() {
         return keeperPosition;
     }
 
@@ -133,7 +138,7 @@ public final class GameLevel implements Iterable<GameObject> {
      * @return true if current game level has be completed by the player
      * (i.e all the crates are filled with a diamond)
      */
-    boolean isComplete() {
+    public boolean isComplete() {
         int cratedDiamondsCount = 0;
         for (int row = 0; row < objectsGrid.getROWS(); row++) {
             for (int col = 0; col < objectsGrid.getCOLUMNS(); col++) {
@@ -152,7 +157,7 @@ public final class GameLevel implements Iterable<GameObject> {
      * @param delta the amount of movement
      * @return a GameObject object from a source point by a give delta
      */
-    GameObject getTargetObject(Point source, Point delta) {
+    public GameObject getTargetObject(Point source, Point delta) {
         return objectsGrid.getTargetFromSource(source, delta);
     }
 
@@ -161,11 +166,11 @@ public final class GameLevel implements Iterable<GameObject> {
      * @param p the position of the GameObject object
      * @return a GameObject object at a given point
      */
-    GameObject getObjectAt(Point p) {
+    public GameObject getObjectAt(Point p) {
         return objectsGrid.getGameObjectAt(p);
     }
 
-    void moveGameObjectBy(GameObject object, Point source, Point delta) {
+    public void moveGameObjectBy(GameObject object, Point source, Point delta) {
         moveGameObjectTo(object, source, translatePoint(source, delta));
     }
 
@@ -207,7 +212,7 @@ public final class GameLevel implements Iterable<GameObject> {
      */
     public void teleportCrateTo(GameObject object, Point source) {
         objectsGrid.putGameObjectAt(new GameFloor(), source);
-        objectsGrid.putGameObjectAt(object, protalExitPosition);
+        objectsGrid.putGameObjectAt(object, portalExitPosition);
     }
     @Override
     public String toString() {

@@ -31,14 +31,11 @@ user name=This is me
 time=12
 number of moves=58
 Level 1 GameRecord:
-user name=user3
-time=123
-number of moves=121
+user name=444
+time=13
+number of moves=68
 Level 1 GameRecord:
-user name=user2
-time=123
-number of moves=122
-Level 1 GameRecord:
-user name=hushuxiang
-time=123
-number of moves=123
+user name=9999999
+time=14
+number of moves=68
+

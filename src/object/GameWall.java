@@ -1,6 +1,6 @@
-package sample;
+package object;
 
-public class GameWall extends GameObject{
+public class GameWall extends GameObject {
     public GameWall() {
         super();
         this.SYMBOL = 'W';

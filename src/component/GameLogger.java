@@ -1,4 +1,6 @@
-package sample;
+package component;
+
+import MVC.GameModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +13,17 @@ import java.util.logging.SimpleFormatter;
 
 public class GameLogger extends Logger {
 
-    private static Logger m_logger = Logger.getLogger("GameLogger");
+    private Logger logger;
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
-
+    private static GameLogger gameLogger;
+    static {
+        try {
+            gameLogger = new GameLogger();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -23,21 +32,28 @@ public class GameLogger extends Logger {
      * sets the format.
      * @throws IOException on access issues
      */
-    public GameLogger() throws IOException {
+    private GameLogger() throws IOException {
         super("GameLogger", null);
-
+        logger = Logger.getLogger("GameLogger");
         //create a directory
         File directory = new File(System.getProperty("user.dir") + "/" + "logs");
         directory.mkdirs();
 
-        FileHandler fh = new FileHandler(directory + "/" + GameModel.M_GAMENAME + ".log");
-        m_logger.addHandler(fh);
+        FileHandler fh = new FileHandler(directory + "/" + GameModel.getM_GAMENAME() + ".log");
+        logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
     }
 
-    public static Logger getM_logger() {
-        return m_logger;
+    public static GameLogger getUniqueInstance(){
+        if(gameLogger == null){
+            try {
+                gameLogger = new GameLogger();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return gameLogger;
     }
 
     /**
@@ -54,7 +70,7 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void info(String message) {
-        m_logger.info(createFormattedMessage(message));
+        logger.info(createFormattedMessage(message));
     }
 
     /**
@@ -62,7 +78,7 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void warning(String message) {
-        m_logger.warning(createFormattedMessage(message));
+        logger.warning(createFormattedMessage(message));
     }
 
     /**
@@ -70,6 +86,6 @@ public class GameLogger extends Logger {
      * @param message  is the message to be logged
      */
     public void severe(String message) {
-        m_logger.severe(createFormattedMessage(message));
+        logger.severe(createFormattedMessage(message));
     }
 }

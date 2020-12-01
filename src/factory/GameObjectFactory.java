@@ -1,4 +1,6 @@
-package sample;
+package factory;
+
+import object.*;
 
 public class GameObjectFactory {
     /**
@@ -10,6 +12,9 @@ public class GameObjectFactory {
      */
     public static GameObject fromChar(char c) {
         GameObject gameObject = new GameWall();
+        if(c>='a'&&c<='z'){
+            c -=32;
+        }
         switch (c){
             case 'W':
                 gameObject = new GameWall();

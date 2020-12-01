@@ -6,5 +6,10 @@ module bestSokobanEverV6 {
     requires javafx.media;
     requires java.desktop;
     requires java.logging;
-    opens sample;
+    opens component;
+    opens data;
+    opens factory;
+    opens main;
+    opens MVC;
+    opens object;
 }

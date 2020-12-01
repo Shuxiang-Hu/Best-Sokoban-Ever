@@ -1,7 +1,12 @@
-package sample;
+package component;
+
+import MVC.GameModel;
+import data.GameGrid;
+import data.GameLevel;
+import object.GameObject;
+import object.GraphicObject;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 
 public class GameLevelHandler {
@@ -19,11 +24,7 @@ public class GameLevelHandler {
     public GameLevelHandler(List<GameLevel> gameLevels) {
         levels = gameLevels;
         currentLevel = getNextLevel();
-        try {
-            levelHandlerLogger = new GameLogger();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        levelHandlerLogger = GameLogger.getUniqueInstance();
     }
     public void setStartTime(long currentTimeMillis) {
         this.startTime = currentTimeMillis;
@@ -151,7 +152,7 @@ public class GameLevelHandler {
 
                 GameObject crateTarget = currentLevel.getTargetObject(targetObjectPoint, delta);
                 if(crateTarget.getCharSymbol() == 'P'){
-                    char objectSymbolAtPortalExit = currentLevel.getObjectAt(currentLevel.getProtalExitPosition()).getCharSymbol();
+                    char objectSymbolAtPortalExit = currentLevel.getObjectAt(currentLevel.getPortalExitPosition()).getCharSymbol();
                     if( objectSymbolAtPortalExit == ' ' || objectSymbolAtPortalExit == 'E'){
                         GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
                         currentLevel.setPreviousKeeperPosition(keeperPosition);

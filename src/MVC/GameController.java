@@ -1,17 +1,27 @@
-package sample;
+package MVC;
 
 import javafx.scene.input.KeyCode;
+import data.GameLevel;
+import data.GameRecord;
 
+import java.io.FileInputStream;
 import java.util.List;
 
 
 public class GameController {
     private GameModel gameModel;
+    private static GameController gameController = new GameController();
 
-    public GameController(GameModel gameModel) {
-        this.gameModel = gameModel;
+    public GameController(){
+        this.gameModel = GameModel.getInstance();
     }
 
+    public static GameController getUniqueInstance()  {
+        if(gameController == null){
+            gameController = new GameController();
+        }
+        return gameController;
+    }
     public void requestResetLevel() { gameModel.resetLevel();}
 
     public void handleKeyInput(KeyCode code){
@@ -34,7 +44,7 @@ public class GameController {
     /**
      * calls toggleMusic();
      */
-    public void callToggleMusic() { gameModel.getGameMusicPlayer().toggleMusic(); }
+    public void callToggleMusic() { gameModel.callToggleMusic(); }
 
     public void requestUndo() {
         gameModel.undoCurrentLevel();
@@ -98,5 +108,9 @@ public class GameController {
 
     public long requestGetTimeInterval() {
         return gameModel.getGameLevelHandler().getTimeInterval();
+    }
+
+    public void requestReloadGame(FileInputStream in) {
+        gameModel.reloadGameFile(in);
     }
 }

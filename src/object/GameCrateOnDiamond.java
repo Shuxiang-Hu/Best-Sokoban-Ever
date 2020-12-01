@@ -1,6 +1,6 @@
-package sample;
+package object;
 
-public class GameCrateOnDiamond extends GameObject{
+public class GameCrateOnDiamond extends GameObject {
     public GameCrateOnDiamond() {
         this.SYMBOL = 'O';
     }

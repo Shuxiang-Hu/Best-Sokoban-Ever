@@ -1,4 +1,8 @@
-package sample;
+package data;
+
+import MVC.GameModel;
+import object.GameDebugObject;
+import object.GameObject;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -44,7 +48,7 @@ public class GameGrid implements Iterable {
         return new Dimension(COLUMNS, ROWS);
     }
 
-    GameObject getTargetFromSource(Point source, Point delta) {
+    public GameObject getTargetFromSource(Point source, Point delta) {
         return getGameObjectAt(translatePoint(source, delta));
     }
 
@@ -55,7 +59,7 @@ public class GameGrid implements Iterable {
      * @param delta specifies the translation by x-axis and y-axis
      * @return returns a new translated Point object
      */
-    static Point translatePoint(Point sourceLocation, Point delta) {
+    public static Point translatePoint(Point sourceLocation, Point delta) {
         Point translatedPoint = new Point(sourceLocation);
         translatedPoint.translate((int) delta.getX(), (int) delta.getY());
         return translatedPoint;

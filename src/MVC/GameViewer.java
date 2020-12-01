@@ -1,5 +1,6 @@
-package sample;
+package MVC;
 
+import component.GameLogger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,6 +29,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import data.GameLevel;
+import main.Main;
+import object.GameObject;
+import data.GameRecord;
+import object.GraphicObject;
+
 
 import java.awt.*;
 
@@ -37,6 +44,7 @@ import java.io.FileNotFoundException;
 
 public class GameViewer {
     private GameController gameController;
+    private static GameViewer gameViewer = new GameViewer();
     private GridPane gameGrid;
     private final Label TIMECOUNTER = new Label();
     private final Label MOVECOUNTER = new Label();
@@ -45,10 +53,16 @@ public class GameViewer {
         gameController.getGameModel().updateTimeInterval();
         String timeText = "Time Count: "+gameController.getGameModel().getGameLevelHandler().getTimeInterval()/1000;
         TIMECOUNTER.setText(timeText);
-
     } ));
-    GameViewer(GameController gameController){
-        this.gameController = gameController;
+    private GameViewer(){
+        this.gameController = GameController.getUniqueInstance();
+    }
+
+    public static GameViewer getUniqueInstance(){
+        if(gameViewer == null){
+            gameViewer = new GameViewer();
+        }
+        return gameViewer;
     }
 
 
@@ -131,7 +145,7 @@ public class GameViewer {
             gameController.requestLoadGame();
             if (gameController.getGameModel().getSaveFile() != null) {
                 if (GameModel.isDebugActive()) {
-                    GameModel.m_gameLogger.info("Loading save file: " + gameController.getGameModel().getSaveFile().getName());
+                    GameLogger.getUniqueInstance().info("Loading save file: " + gameController.getGameModel().getSaveFile().getName());
                 }
                 try{
                     reloadGame(new FileInputStream(gameController.getGameModel().getSaveFile()));
@@ -197,9 +211,7 @@ public class GameViewer {
     }
 
     private void reloadGame(FileInputStream fileInputStream) {
-        GameModel gameModel = new GameModel(fileInputStream, true);
-        gameController.setGameModel(gameModel);
-        setGameController(gameController);
+        gameController.requestReloadGame(fileInputStream);
     }
 
     /**

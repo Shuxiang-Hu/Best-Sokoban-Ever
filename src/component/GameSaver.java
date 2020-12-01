@@ -1,4 +1,6 @@
-package sample;
+package component;
+
+import data.GameLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,16 @@ import java.util.Date;
 import java.util.List;
 
 public class GameSaver {
+    private static GameSaver gameSaver = new GameSaver();
+
+    private GameSaver() {}
+
+    public static GameSaver getInstance(){
+        if(gameSaver == null){
+            gameSaver = new GameSaver();
+        }
+        return gameSaver;
+    }
     /**
      * saves the game
      */
