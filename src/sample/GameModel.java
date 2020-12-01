@@ -9,40 +9,37 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GameModel {
-
-    public static final String M_GAMENAME = "BestSokobanEverV6";
-    public static GameLogger m_gameLogger;
+    private static GameModel gameModel = new GameModel();
+    private static final String M_GAMENAME = "BestSokobanEverV6";
+    private GameLogger gameLogger;
     private static boolean m_debug = false;
     private String mapSetName;
     private GameSaver gameSaver;
     private GameLevelHandler gameLevelHandler;
     private MusicPlayer gameMusicPlayer;
-
-
-
-
     private File saveFile;
 
     /**
-     * create a StartMeUp Object
-     * @param input the game file
-     * @param production whether to create media player
+     * create a GameModel Object
      */
-    public GameModel(InputStream input, boolean production) {
+    private GameModel() {
         try {
+            InputStream input = new FileInputStream("resource/GameLayouts/SampleGame.skb");
             gameLevelHandler = new GameLevelHandler(loadGameFile(input));
-            m_gameLogger = new GameLogger();
+            gameLogger = GameLogger.getUniqueInstance();
+            gameSaver = GameSaver.getInstance();
+            gameMusicPlayer = MusicPlayer.getUniqueInstance();
 
-            gameSaver = new GameSaver();
-
-            if (production) {
-                gameMusicPlayer = MusicPlayer.getUniqueInstance();
-            }
-        } catch (IOException x) {
-            System.out.println("Cannot create logger.");
-        } catch (NoSuchElementException e) {
-            m_gameLogger.warning("Cannot load the default save file: " + e.getStackTrace());
+        } catch (NoSuchElementException | FileNotFoundException e) {
+            gameLogger.warning("Cannot load the default save file: " + e.getStackTrace());
         }
+    }
+
+    public static GameModel getInstance(){
+        if(gameModel == null){
+            gameModel = new GameModel();
+        }
+        return gameModel;
     }
     /**
      * checks if the debug configuration is active
@@ -52,7 +49,9 @@ public class GameModel {
         return m_debug;
     }
 
-
+    public static String getM_GAMENAME() {
+        return M_GAMENAME;
+    }
 
     /**
      * gets the mapSetName
@@ -115,10 +114,6 @@ public class GameModel {
     public void toggleDebug() {
         m_debug = !m_debug;
     }
-
-
-
-
 
     public File getSaveFile() {
         return saveFile;
@@ -210,11 +205,10 @@ public class GameModel {
             }
 
         } catch (IOException e) {
-            m_gameLogger.severe("Error trying to load the game file: " + e);
+            gameLogger.severe("Error trying to load the game file: " + e);
         } catch (NullPointerException e) {
-            m_gameLogger.severe("Cannot open the requested file: " + e);
+            gameLogger.severe("Cannot open the requested file: " + e);
         }
-
         return levels;
     }
 
@@ -238,11 +232,12 @@ public class GameModel {
         gameLevelHandler.setTimeInterval(System.currentTimeMillis() - gameLevelHandler.getStartTime());
     }
 
-    public void setStartTime() {
-        gameLevelHandler.setStartTime(System.currentTimeMillis());
-    }
 
     public void callToggleMusic() {
         gameMusicPlayer.toggleMusic();
+    }
+
+    public void reloadGameFile(InputStream in){
+        gameLevelHandler = new GameLevelHandler(loadGameFile(in));
     }
 }

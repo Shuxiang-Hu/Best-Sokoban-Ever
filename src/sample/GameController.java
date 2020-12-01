@@ -2,16 +2,25 @@ package sample;
 
 import javafx.scene.input.KeyCode;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 
 public class GameController {
     private GameModel gameModel;
+    private static GameController gameController = new GameController();
 
-    public GameController(GameModel gameModel) {
-        this.gameModel = gameModel;
+    public GameController(){
+        this.gameModel = GameModel.getInstance();
     }
 
+    public static GameController getUniqueInstance()  {
+        if(gameController == null){
+            gameController = new GameController();
+        }
+        return gameController;
+    }
     public void requestResetLevel() { gameModel.resetLevel();}
 
     public void handleKeyInput(KeyCode code){
@@ -98,5 +107,9 @@ public class GameController {
 
     public long requestGetTimeInterval() {
         return gameModel.getGameLevelHandler().getTimeInterval();
+    }
+
+    public void requestReloadGame(FileInputStream in) {
+        gameModel.reloadGameFile(in);
     }
 }

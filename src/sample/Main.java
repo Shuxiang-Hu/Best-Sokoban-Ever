@@ -28,15 +28,14 @@ public class Main extends Application {
     /**
      * starts the game window
      * @param primaryStage the game window
-     * @throws Exception
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         loadDefaultSaveFile(primaryStage);
 
         //open the game window
-        primaryStage.setTitle(GameModel.M_GAMENAME);
+        primaryStage.setTitle(GameModel.getM_GAMENAME());
         primaryStage.setWidth(400);
         primaryStage.setHeight(400);
         primaryStage.setScene(new Scene(gameViewer.configureStartScreen()));
@@ -66,9 +65,6 @@ public class Main extends Application {
      * @param input game file
      */
     public void initializeGame(InputStream input) {
-        GameModel gameModel = new GameModel(input, true);
-        GameController gameController = new GameController(gameModel);
-        gameViewer = new GameViewer(gameController);
-
+        gameViewer = GameViewer.getUniqueInstance();
     }
 }

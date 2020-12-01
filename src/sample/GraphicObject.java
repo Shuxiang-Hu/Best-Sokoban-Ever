@@ -75,7 +75,7 @@ class GraphicObject extends Rectangle {
 
             default:
                 String message = "Error in Level constructor. Object not recognized.";
-                GameModel.m_gameLogger.severe(message);
+                GameLogger.getUniqueInstance().severe(message);
                 throw new AssertionError(message);
         }
 
