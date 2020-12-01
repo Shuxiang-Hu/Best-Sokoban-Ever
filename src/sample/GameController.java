@@ -34,7 +34,7 @@ public class GameController {
     /**
      * calls toggleMusic();
      */
-    public void callToggleMusic() { gameModel.getGameMusicPlayer().toggleMusic(); }
+    public void callToggleMusic() { gameModel.callToggleMusic(); }
 
     public void requestUndo() {
         gameModel.undoCurrentLevel();

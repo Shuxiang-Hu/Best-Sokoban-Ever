@@ -23,10 +23,6 @@ public class GameModel {
 
     private File saveFile;
 
-    public MusicPlayer getGameMusicPlayer() {
-        return gameMusicPlayer;
-    }
-
     /**
      * create a StartMeUp Object
      * @param input the game file
@@ -40,7 +36,7 @@ public class GameModel {
             gameSaver = new GameSaver();
 
             if (production) {
-                gameMusicPlayer = new MusicPlayer();
+                gameMusicPlayer = MusicPlayer.getUniqueInstance();
             }
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
@@ -244,5 +240,9 @@ public class GameModel {
 
     public void setStartTime() {
         gameLevelHandler.setStartTime(System.currentTimeMillis());
+    }
+
+    public void callToggleMusic() {
+        gameMusicPlayer.toggleMusic();
     }
 }
