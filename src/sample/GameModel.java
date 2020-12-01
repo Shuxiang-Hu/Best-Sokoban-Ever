@@ -13,32 +13,13 @@ public class GameModel {
     public static final String M_GAMENAME = "BestSokobanEverV6";
     public static GameLogger m_gameLogger;
     private static boolean m_debug = false;
-    private GameLevel currentLevel;
     private String mapSetName;
-    private List<GameLevel> levels;
-    private boolean gameComplete = false;
-    private int movesCount = 0;
-    private int totalMoveCount = 0;
-    private int previousMovesCount=0;
-    private long previousTimeInterval=0;
-    private long startTime = 0;
-    private long timeInterval = 0;
     private GameSaver gameSaver;
-
-    public long getTimeInterval() {
-        return timeInterval;
-    }
-
-    public void setTimeInterval(long timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
+    private GameLevelHandler gameLevelHandler;
     private MusicPlayer gameMusicPlayer;
 
 
-    public int getTotalMoveCount() {
-        return totalMoveCount;
-    }
+
 
     private File saveFile;
 
@@ -53,9 +34,9 @@ public class GameModel {
      */
     public GameModel(InputStream input, boolean production) {
         try {
+            gameLevelHandler = new GameLevelHandler(loadGameFile(input));
             m_gameLogger = new GameLogger();
-            levels = loadGameFile(input);
-            currentLevel = getNextLevel();
+
             gameSaver = new GameSaver();
 
             if (production) {
@@ -75,13 +56,7 @@ public class GameModel {
         return m_debug;
     }
 
-    /**
-     * gets the movesCount
-     * @return the number of moves so far
-     */
-    public int getMovesCount() {
-        return movesCount;
-    }
+
 
     /**
      * gets the mapSetName
@@ -91,31 +66,36 @@ public class GameModel {
         return mapSetName;
     }
 
+    public GameLevelHandler getGameLevelHandler() {
+        return gameLevelHandler;
+    }
+
     /**
      * read in user input and move accordingly
      * @param code movement direction
      */
-    public boolean handleKey(KeyCode code) {
-        boolean isGameCompletedByThisKey = false;
+    public void handleKey(KeyCode code) {
+
+        Point delta = new Point(0,0);
         switch (code) {
             case UP:
                 GraphicObject.setKeeperPosition("up");
-                isGameCompletedByThisKey = move(new Point(-1, 0));
+                delta = new Point(-1, 0);
                 break;
 
             case RIGHT:
                 GraphicObject.setKeeperPosition("right");
-                isGameCompletedByThisKey = move(new Point(0, 1));
+                delta = new Point(0, 1);
                 break;
 
             case DOWN:
                 GraphicObject.setKeeperPosition("down");
-                isGameCompletedByThisKey = move(new Point(1, 0));
+                delta = new Point(1, 0);
                 break;
 
             case LEFT:
                 GraphicObject.setKeeperPosition("left");
-                isGameCompletedByThisKey = move(new Point(0, -1));
+                delta = new Point(0,-1);
                 break;
 
             default:
@@ -125,96 +105,61 @@ public class GameModel {
         if (isDebugActive()) {
             System.out.println(code);
         }
-        return isGameCompletedByThisKey;
+        gameLevelHandler.move(delta);
+
+    }
+
+
+
+
+
+    /**
+     *  toggle debug status
+     */
+    public void toggleDebug() {
+        m_debug = !m_debug;
+    }
+
+
+
+
+
+    public File getSaveFile() {
+        return saveFile;
     }
 
     /**
-     * moves the keeper by a given delta if possible and updates movesCount
-     * @param delta movement delta
+     * loads the user-chosen game file
      */
-
-    public boolean move(Point delta) {
-        boolean ifGameCompletedInThisMove = false;
-        if (isGameComplete()) {
-            return ifGameCompletedInThisMove = true;
-        }
-
-        Point keeperPosition = currentLevel.getKeeperPosition();
-        GameObject keeper = currentLevel.getObjectAt(keeperPosition);
-        Point targetObjectPoint = GameGrid.translatePoint(keeperPosition, delta);
-        GameObject keeperTarget = currentLevel.getObjectAt(targetObjectPoint);
-
-        if (GameModel.isDebugActive()) {
-            System.out.println("Current level state:");
-            System.out.println(currentLevel.toString());
-            System.out.println("Keeper pos: " + keeperPosition);
-            System.out.println("Movement source obj: " + keeper);
-            System.out.printf("Target object: %s at [%s]", keeperTarget, targetObjectPoint);
-        }
-
-        boolean keeperMoved = false;
-
-        //decide what to do according to target position
-        switch (keeperTarget.getCharSymbol()) {
-
-            case 'P':
-            case 'W':
-                break;
-
-            case 'C':
-
-                GameObject crateTarget = currentLevel.getTargetObject(targetObjectPoint, delta);
-                if(crateTarget.getCharSymbol() == 'P'){
-                    char objectSymbolAtPortalExit = currentLevel.getObjectAt(currentLevel.getProtalExitPosition()).getCharSymbol();
-                    if( objectSymbolAtPortalExit == ' ' || objectSymbolAtPortalExit == 'E'){
-                        GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                        currentLevel.setPreviousKeeperPosition(keeperPosition);
-                        currentLevel.teleportCrateTo(keeperTarget,targetObjectPoint);
-                        currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                        keeperMoved = true;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else if (crateTarget.getCharSymbol() != ' ') {
-                    break;
-                }
-                else{
-                    GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                    currentLevel.setPreviousKeeperPosition(keeperPosition);
-                    currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
-                    currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                    keeperMoved = true;
-                }
-
-                break;
-
-            case ' ':
-                GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                currentLevel.setPreviousKeeperPosition(keeperPosition);
-                currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
-                keeperMoved = true;
-                break;
-
-            default:
-                m_gameLogger.severe("The object to be moved was not a recognised GameObject."+keeperTarget.toString());
-                throw new AssertionError("This should not have happened. Report this problem to the developer.");
-        }
-
-        //if keeper made a move, then update movesCount
-        //checks if game is complete and go to next level if so
-        if (keeperMoved) {
-            keeperPosition.translate((int) delta.getX(), (int) delta.getY());
-            movesCount++;
-            totalMoveCount ++;
-            //record previous game status and enable undo
-            currentLevel.setUndo(true);
-
-        }
-
-        return ifGameCompletedInThisMove;
+    public void loadGameFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
+        saveFile = fileChooser.showOpenDialog(Main.m_primaryStage);
+        gameLevelHandler.setMovesCount(0);
+        gameLevelHandler.setTotalMoveCount(0);
     }
+
+    public void saveGame() {
+        gameSaver.writeLevels(gameLevelHandler.getLevels(), gameLevelHandler.getCurrentLevel().getIndex(), mapSetName);
+    }
+
+    public boolean checkTop10(){
+        long timeInterval = gameLevelHandler.getTimeInterval()/1000;
+        int movesCount = gameLevelHandler.getMovesCount();
+        return GameRecord.isTopN(gameLevelHandler.getCurrentLevel().getLevelRecords(),timeInterval,movesCount,10);
+    }
+
+    public boolean checkGameStatus(){
+        if (gameLevelHandler.getCurrentLevel().isComplete()) {
+            if (isDebugActive()) {
+                System.out.println("Level complete!");
+            }
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * loads the maps for different level from a input
@@ -277,127 +222,27 @@ public class GameModel {
         return levels;
     }
 
-    /**
-     * checks if current game has been completed
-     * @return true if the current game has been completed
-     */
-    public boolean isGameComplete() {
-        return gameComplete;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * gets next game level
-     * @return next Level, null if all levels are completed
-     */
-    public GameLevel getNextLevel() {
-        previousMovesCount = movesCount;
-        movesCount = 0;
-        previousTimeInterval = timeInterval;
-        timeInterval = 0;
-        startTime = System.currentTimeMillis();
-        if (currentLevel == null) {
-            return levels.get(0);
-        }
-
-        int currentLevelIndex = currentLevel.getIndex();
-        if (currentLevelIndex -1 < levels.size()) {
-            return levels.get(currentLevelIndex );
-        }
-
-        gameComplete = true;
-        return null;
-    }
-
-    /**
-     * gets current game level
-     * @return current game level
-     */
-    public GameLevel getCurrentLevel() {
-        return currentLevel;
-    }
-
-    /**
-     *  toggle debug status
-     */
-    public void toggleDebug() {
-        m_debug = !m_debug;
-    }
-
-    /**
-     * undoes a move
-     */
-    public void undo() {
-        if(currentLevel.isUndoActive()){
-            GameLevel.resetGameGrid(currentLevel.getObjectsGrid(), currentLevel.getPreviousObjectGrid());//undo a step
-            currentLevel.setKeeperPosition(currentLevel.getPreviousKeeperPosition());
-            currentLevel.setUndo(false);//disable undo
-        }
-    }
-
-
-
-    public File getSaveFile() {
-        return saveFile;
-    }
-
-    /**
-     * loads the user-chosen game file
-     */
-    public void loadGameFile(){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Save File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
-        saveFile = fileChooser.showOpenDialog(Main.m_primaryStage);
-        movesCount = 0;
-        totalMoveCount = 0;
-    }
-
-    public void setStartTime(long currentTimeMillis) {
-        this.startTime = currentTimeMillis;
-    }
-
-    public void saveGame() {
-        gameSaver.writeLevels(levels, currentLevel.getIndex(), mapSetName);
+    public void undoCurrentLevel() {
+        gameLevelHandler.undo();
     }
 
     public void resetLevel() {
-        GameLevel.resetGameGrid(currentLevel.getObjectsGrid(),currentLevel.getInitialObjectGrid());
-        currentLevel.setKeeperPosition(currentLevel.getInitialKeeperPosition());
-        totalMoveCount -= movesCount;
-        movesCount = 0;
-        startTime = System.currentTimeMillis();
-    }
-
-    public String getCurrentLevelHighScoresString() {
-        return currentLevel.getHighScoresString();
-    }
-
-    public boolean checkTop10(){
-        return GameRecord.isTopN(currentLevel.getLevelRecords(),timeInterval/1000,movesCount,10);
-    }
-
-    public boolean checkGameStatus(){
-        if (currentLevel.isComplete()) {
-            if (isDebugActive()) {
-                System.out.println("Level complete!");
-            }
-            return true;
-        }
-        return false;
+        gameLevelHandler.resetLevel();
     }
 
     public void gotoNextLevel() {
-        currentLevel = getNextLevel();
-        GraphicObject.setKeeperPosition("down");
+        gameLevelHandler.gotoNextLevel();
     }
 
     public void saveGameRecord(String username) {
-        System.out.println("Trying to save");
-        System.out.println(currentLevel.getIndex()-2+username+"  "+previousTimeInterval/1000+"  "+previousMovesCount);
-        levels.get(currentLevel.getIndex()-2).saveRecord(username,previousTimeInterval/1000,previousMovesCount);
+        gameLevelHandler.saveGameRecord(username);
+    }
+
+    public void updateTimeInterval(){
+        gameLevelHandler.setTimeInterval(System.currentTimeMillis() - gameLevelHandler.getStartTime());
+    }
+
+    public void setStartTime() {
+        gameLevelHandler.setStartTime(System.currentTimeMillis());
     }
 }

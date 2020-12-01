@@ -42,7 +42,6 @@ public class GameRecorder {
                 }
 
                 if (line.contains("GameRecord")) {
-
                     continue;
                 }
                 if (line.contains("user name=")) {

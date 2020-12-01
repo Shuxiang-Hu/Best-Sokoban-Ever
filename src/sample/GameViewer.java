@@ -3,8 +3,11 @@ package sample;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
@@ -38,8 +42,9 @@ public class GameViewer {
     private final Label MOVECOUNTER = new Label();
     private final Label TOTALMOVECOUNTER = new Label();
     private final Timeline GAMETIMELINE = new Timeline(new KeyFrame(Duration.millis(100), actionEvent -> {
-        gameController.getGameModel().setTimeInterval(System.currentTimeMillis() - gameController.getGameModel().getStartTime());
-        TIMECOUNTER.setText("Time Count: "+gameController.getGameModel().getTimeInterval()/1000);
+        gameController.getGameModel().updateTimeInterval();
+        String timeText = "Time Count: "+gameController.getGameModel().getGameLevelHandler().getTimeInterval()/1000;
+        TIMECOUNTER.setText(timeText);
 
     } ));
     GameViewer(GameController gameController){
@@ -92,7 +97,7 @@ public class GameViewer {
         Button startButton = new Button("START");
         startButton.setOnAction(actionEvent -> {
             Main.getM_primaryStage().setScene(new Scene(configureGameScreen()));
-            gameController.getGameModel().setStartTime(System.currentTimeMillis());
+            gameController.requestSetStartTime();
             reloadGrid();
         });
 
@@ -158,7 +163,7 @@ public class GameViewer {
         Menu menuLevel = new Menu("Level");
         menuItemResetLevel.setOnAction(actionEvent -> {gameController.requestResetLevel();reloadGrid();});
         MenuItem menuItemShowHighScores = new MenuItem("Show High Scores");
-        menuItemShowHighScores.setOnAction(actionEvent -> newDialog("Top 10", gameController.requestGetHighScoresString(),null));
+        menuItemShowHighScores.setOnAction(actionEvent -> showHighScore());
         menuLevel.getItems().addAll(menuItemUndo, radioMenuItemMusic, radioMenuItemDebug,
                 new SeparatorMenuItem(), menuItemResetLevel,menuItemShowHighScores);
 
@@ -169,9 +174,9 @@ public class GameViewer {
         mainMenuBar.getMenus().addAll(menuFile, menuLevel, menuAbout);
 
         //initialize counters
-        MOVECOUNTER.setText(" Move Count: " + gameController.getGameModel().getMovesCount());
+        MOVECOUNTER.setText(" Move Count: " + gameController.requestGetMovesCount());
         Label counterSeparator1 = new Label("      ");
-        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
+        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.requestGetTotalMovesCount());
         Label counterSeparator2 = new Label("      ");
         TIMECOUNTER.setText("Time Count: 0");
         HBox counterLayout = new HBox();
@@ -223,7 +228,7 @@ public class GameViewer {
         dialogVbox.setBackground(Background.EMPTY);
         dialogVbox.getChildren().add(text1);
 
-        Scene dialogScene = new Scene(dialogVbox, 350, 150);
+        Scene dialogScene = new Scene(dialogVbox);
         dialog.setScene(dialogScene);
         dialog.show();
     }
@@ -241,21 +246,21 @@ public class GameViewer {
      */
     public void reloadGrid() {
 
-        if (gameController.getGameModel().isGameComplete()) {
+        if (gameController.requestCheckGameComplete()) {
             showVictoryMessage();
 
             return;
         }
 
-        GameLevel currentLevel = gameController.getGameModel().getCurrentLevel();
+        GameLevel currentLevel = gameController.requestGetCurrentLevel();
         GameLevel.LevelIterator levelGridIterator = (GameLevel.LevelIterator) currentLevel.iterator();
         gameGrid.getChildren().clear();
         while (levelGridIterator.hasNext()) {
             addObjectToGrid(levelGridIterator.next(), levelGridIterator.getCurrentPosition());
         }gameGrid.autosize();
         Main.getM_primaryStage().sizeToScene();
-        MOVECOUNTER.setText(" Move Count: "+gameController.getGameModel().getMovesCount());
-        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.getGameModel().getTotalMoveCount());
+        MOVECOUNTER.setText(" Move Count: "+gameController.requestGetMovesCount());
+        TOTALMOVECOUNTER.setText("Total Move Count: "+gameController.requestGetTotalMovesCount());
     }
 
     /**
@@ -263,7 +268,7 @@ public class GameViewer {
      */
     public void showVictoryMessage() {
         String dialogTitle = "Game Over!";
-        String dialogMessage = "You completed " + gameController.getGameModel().getMapSetName() + " in " + gameController.getGameModel().getMovesCount() + " moves!";
+        String dialogMessage = "You completed " + gameController.getGameModel().getMapSetName() + " in " + gameController.requestGetMovesCount() + " moves!";
         MotionBlur mb = new MotionBlur(2, 3);
         newDialog(dialogTitle, dialogMessage, mb);
     }
@@ -287,15 +292,15 @@ public class GameViewer {
         Main.getM_primaryStage().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             gameController.handleKeyInput(event.getCode());
             if(gameController.requestCheckGameStatus()) {
-                int levelIndex = gameController.getGameModel().getCurrentLevel().getIndex();
-                int numberOfMoves = gameController.getGameModel().getMovesCount();
-                long timeInterval = gameController.getGameModel().getTimeInterval();
-                int totalNumberOfMoves = gameController.getGameModel().getTotalMoveCount();
+                int levelIndex = gameController.requestCurrentLevelIndex();
+                int numberOfMoves = gameController.requestGetMovesCount();
+                long timeInterval = gameController.requestGetTimeInterval();
+                int totalNumberOfMoves = gameController.requestGetTotalMovesCount();
                 String statistics = "You completed Level " + levelIndex + " with " + numberOfMoves + " moves and " + timeInterval/1000 + "seconds.";
                 statistics += "\nTotal number of moves: " + totalNumberOfMoves;
                 afterGamePopup(gameController.requestCheckIsTop10(),statistics);
                 gameController.requestNextLevel();
-                System.out.println(gameController.getGameModel().getMovesCount());
+                System.out.println(gameController.requestGetMovesCount());
 
             }
             reloadGrid();
@@ -346,5 +351,38 @@ public class GameViewer {
         Scene dialogScene = new Scene(dialogVbox, 350, 210);
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+
+    public void showHighScore(){
+        Stage highScoreWindow = new Stage();
+        Scene scene = new Scene(new Group());
+        int levelIndex = gameController.requestCurrentLevelIndex();
+        highScoreWindow.setTitle("Top 10 Players");
+        Label tableTitle = new Label("Top 10 Players for level" + levelIndex);
+
+        TableView scoreTable = new TableView();
+        scoreTable.setEditable(false);
+
+        TableColumn userNameColumn = new TableColumn("User Name");
+        userNameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        TableColumn timeColumn = new TableColumn("Time(s)");
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TableColumn moveColumn = new TableColumn("Moves");
+        moveColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfMoves"));
+
+        ObservableList<GameRecord> data = FXCollections.observableArrayList(gameController.requestGetHighScoresString());
+
+        scoreTable.setItems(data);
+        scoreTable.getColumns().addAll(userNameColumn,timeColumn,moveColumn);
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().addAll(tableTitle, scoreTable);
+
+        ((Group) scene.getRoot()).getChildren().addAll(vbox);
+
+        highScoreWindow.setScene(scene);
+        highScoreWindow.show();
     }
 }

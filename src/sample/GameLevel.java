@@ -52,10 +52,6 @@ public final class GameLevel implements Iterable<GameObject> {
         return levelRecords;
     }
 
-    public void setLevelRecords(List<GameRecord> levelRecords) {
-        this.levelRecords = levelRecords;
-    }
-
     public Point getProtalExitPosition() {
         return protalExitPosition;
     }
@@ -234,28 +230,13 @@ public final class GameLevel implements Iterable<GameObject> {
         return new LevelIterator();
     }
 
-    public String getHighScoresString() {
-        int numberOfRecords = levelRecords.size();
-        int topN = 10;
-        String returnVal = "";
-        if(numberOfRecords==0){
-            return "No records for this level";
-        }
-        else
-        {
-            int numberOfRecordsToShow = Math.min(topN,numberOfRecords);
-            for(int i=0;i<numberOfRecordsToShow;i++)
-            {
-                String recordString = "";
-                recordString += levelRecords.get(i).toString();
-                recordString = recordString.replace("\n","     ").replace("Level "+index+" GameRecord:","").replace('=',':').trim();
-                recordString += "\n";
-                returnVal +=recordString;
-            }
-
-            return returnVal;
-        }
+    public List<GameRecord> getTop10Record() {
+        List<GameRecord> top10 = levelRecords.subList(0,Math.min(10,levelRecords.size()));
+        GameRecorder.sortRecords(top10);
+        return top10;
     }
+
+
 
     public void saveRecord(String username, long timeInterval, int movesCount) {
         levelRecords.add(new GameRecord(username,timeInterval,movesCount,index));

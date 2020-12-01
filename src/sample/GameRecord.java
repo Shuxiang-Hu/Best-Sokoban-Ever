@@ -3,13 +3,15 @@ package sample;
 import java.util.List;
 
 public class GameRecord {
-    private String useName;
+
+
+    private final String userName;
     private long time;
-    private int numberOfMoves;
-    private int levelIndex;
+    private final int numberOfMoves;
+    private final int levelIndex;
 
     public GameRecord(String username,long time,int numberOfMoves,int levelIndex) {
-        this.useName = username;
+        this.userName = username;
         this.time = time;
         this.numberOfMoves = numberOfMoves;
         this.levelIndex = levelIndex;
@@ -23,7 +25,9 @@ public class GameRecord {
         return time;
     }
 
-
+    public String getUserName() {
+        return userName;
+    }
 
     public void setTime(long time) {
         this.time = time;
@@ -38,7 +42,7 @@ public class GameRecord {
     @Override
     public String toString() {
         return "Level "+levelIndex+" GameRecord:\n" +
-                "user name=" + useName + "\n"+
+                "user name=" + userName + "\n"+
                 "time=" + time + "\n"+
                 "number of moves=" + numberOfMoves + "\n";
     }
