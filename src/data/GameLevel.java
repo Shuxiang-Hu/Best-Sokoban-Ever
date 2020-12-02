@@ -29,38 +29,6 @@ public final class GameLevel implements Iterable<GameObject> {
     private GameRecorder levelRecorder ;
     private boolean undo;
 
-    public Point getInitialKeeperPosition() {
-        return initialKeeperPosition;
-    }
-
-    public GameGrid getInitialObjectGrid() {
-        return initialObjectGrid;
-    }
-
-    public Point getPreviousKeeperPosition() {
-        return previousKeeperPosition;
-    }
-
-    public void setKeeperPosition(Point p) {
-        this.keeperPosition.setLocation(p);
-    }
-
-    public void setPreviousKeeperPosition(Point p) {
-        this.previousKeeperPosition.setLocation(p);
-    }
-
-    public GameGrid getObjectsGrid() {
-        return objectsGrid;
-    }
-
-    public List<GameRecord> getLevelRecords() {
-        return levelRecords;
-    }
-
-    public Point getPortalExitPosition() {
-        return portalExitPosition;
-    }
-
     /**
  * Constructs a game Level with its name, index and layout
  * @param levelName - the name of current game level
@@ -68,9 +36,7 @@ public final class GameLevel implements Iterable<GameObject> {
  * @param raw_level - the layout of the grid of this game level
  * */
     public GameLevel(String levelName, int levelIndex, List<String> raw_level) {
-        if (GameModel.isDebugActive()) {
-            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
-        }
+
 
         name = levelName;
         index = levelIndex;
@@ -121,6 +87,28 @@ public final class GameLevel implements Iterable<GameObject> {
         }
     }
 
+    public Point getInitialKeeperPosition() {
+        return initialKeeperPosition;
+    }
+
+    public GameGrid getInitialObjectGrid() {
+        return initialObjectGrid;
+    }
+
+    public Point getPreviousKeeperPosition() {
+        return previousKeeperPosition;
+    }
+
+    public GameGrid getObjectsGrid() {
+        return objectsGrid;
+    }
+
+    public List<GameRecord> getLevelRecords() { return levelRecords; }
+
+    public Point getPortalExitPosition() {
+        return portalExitPosition;
+    }
+
     public String getName() {
         return name;
     }
@@ -131,6 +119,18 @@ public final class GameLevel implements Iterable<GameObject> {
 
     public Point getKeeperPosition() {
         return keeperPosition;
+    }
+
+    public GameGrid getPreviousObjectGrid() {
+        return previousObjectGrid;
+    }
+
+    public void setKeeperPosition(Point p) {
+        this.keeperPosition.setLocation(p);
+    }
+
+    public void setPreviousKeeperPosition(Point p) {
+        this.previousKeeperPosition.setLocation(p);
     }
 
     /**
@@ -174,9 +174,7 @@ public final class GameLevel implements Iterable<GameObject> {
         moveGameObjectTo(object, source, translatePoint(source, delta));
     }
 
-    public GameGrid getPreviousObjectGrid() {
-        return previousObjectGrid;
-    }
+
 
     public static void resetGameGrid (GameGrid oldGrid, GameGrid newGrid){
         for (int row = 0; row < oldGrid.getROWS(); row++) {
@@ -188,7 +186,7 @@ public final class GameLevel implements Iterable<GameObject> {
     }
 
 
-
+    @Deprecated
     public void setNumberOfDiamonds(int numberOfDiamonds) {
         this.numberOfDiamonds = numberOfDiamonds;
     }
@@ -214,6 +212,7 @@ public final class GameLevel implements Iterable<GameObject> {
         objectsGrid.putGameObjectAt(new GameFloor(), source);
         objectsGrid.putGameObjectAt(object, portalExitPosition);
     }
+
     @Override
     public String toString() {
         GameGrid gameGrid = new GameGrid(objectsGrid.getROWS(), objectsGrid.getCOLUMNS());
@@ -230,23 +229,20 @@ public final class GameLevel implements Iterable<GameObject> {
         return gameGrid.toString();
     }
 
-    @Override
-    public Iterator<GameObject> iterator() {
-        return new LevelIterator();
-    }
-
     public List<GameRecord> getTop10Record() {
         List<GameRecord> top10 = levelRecords.subList(0,Math.min(10,levelRecords.size()));
         GameRecorder.sortRecords(top10);
         return top10;
     }
 
-
+    @Override
+    public Iterator<GameObject> iterator() {
+        return new LevelIterator();
+    }
 
     public void saveRecord(String username, long timeInterval, int movesCount) {
         levelRecords.add(new GameRecord(username,timeInterval,movesCount,index));
         GameRecorder.sortRecords(levelRecords);
-        System.out.println(levelRecords.get(levelRecords.size()-1).toString());
         levelRecorder.saveRecord(levelRecords);
     }
 
@@ -256,9 +252,7 @@ public final class GameLevel implements Iterable<GameObject> {
         int row = 0;
 
         @Override
-        public boolean hasNext() {
-            return !(row == objectsGrid.getROWS() - 1 && column == objectsGrid.getCOLUMNS());
-        }
+        public boolean hasNext() { return !(row == objectsGrid.getROWS() - 1 && column == objectsGrid.getCOLUMNS()); }
 
         @Override
         public GameObject next() {

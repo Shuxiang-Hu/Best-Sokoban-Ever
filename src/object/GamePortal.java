@@ -4,6 +4,6 @@ import object.GameObject;
 
 public class GamePortal extends GameObject {
     public GamePortal() {
-        this.SYMBOL = 'P';
+        setCharSymbol('P');;
     }
 }

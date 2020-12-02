@@ -18,7 +18,13 @@ public class GameGrid implements Iterable {
         ROWS = rows;
         gameObjects = new GameObject[COLUMNS][ROWS];
     }
+    public int getROWS() {
+        return ROWS;
+    }
 
+    public int getCOLUMNS() {
+        return COLUMNS;
+    }
     /**
      * This method is used to check if a point is
      * out of the bound of current GameGrid
@@ -26,7 +32,7 @@ public class GameGrid implements Iterable {
      * @param y the y coordinate
      * @return returns true if the x or y coordinate is out of the bound, false otherwise
      */
-    private boolean isPointOutOfBounds(int x, int y) {
+    public boolean isPointOutOfBounds(int x, int y) {
         return (x < 0 || y < 0 || x >= COLUMNS || y >= ROWS);
     }
 
@@ -35,6 +41,7 @@ public class GameGrid implements Iterable {
      * out of the bound of current GameGrid
      * @param p is the point to be checked
      * @return returns true if the point is out of the bound, false otherwise
+     * @deprecated
      */
     private boolean isPointOutOfBounds(Point p) {
         return isPointOutOfBounds(p.x, p.y);//fields accessed not through getters
@@ -43,6 +50,7 @@ public class GameGrid implements Iterable {
      * This method is used to get the dimension of
      * current GameGrid
      * @return returns a dimension Object representing the length and width of current GameGrid
+     * @deprecated
      */
     public Dimension getDimension() {
         return new Dimension(COLUMNS, ROWS);
@@ -75,22 +83,12 @@ public class GameGrid implements Iterable {
      */
     public GameObject getGameObjectAt(int col, int row) throws ArrayIndexOutOfBoundsException {
         if (isPointOutOfBounds(col, row)) {
-            if (GameModel.isDebugActive()) {
-                System.out.printf("Trying to get null GameObject from COL: %d  ROW: %d", col, row);
-            }
             throw new ArrayIndexOutOfBoundsException("The point [" + col + ":" + row + "] is outside the map.");
         }
-
         return gameObjects[col][row];
     }
 
-    public int getROWS() {
-        return ROWS;
-    }
 
-    public int getCOLUMNS() {
-        return COLUMNS;
-    }
 
     /**
      * This method is get the GameObject at a given position
@@ -122,7 +120,7 @@ public class GameGrid implements Iterable {
         }
 
         gameObjects[x][y] = gameObject;
-        return gameObjects[x][y] == gameObject;
+        return true;
     }
 
     /**
@@ -130,6 +128,7 @@ public class GameGrid implements Iterable {
      * Object, given certain delta x and delta y
      * @param position specifies the position of the object to be removed
      * @return returns the removed GameObject object
+     * @deprecated
      */
     public boolean removeGameObjectAt(Point position) {
         return putGameObjectAt(null, position);
@@ -167,6 +166,7 @@ public class GameGrid implements Iterable {
         return sb.toString();
     }
 
+
     @Override
     public Iterator<GameObject> iterator() {
         return new GridIterator();
@@ -178,7 +178,7 @@ public class GameGrid implements Iterable {
 
         @Override
         public boolean hasNext() {
-            return !(row == ROWS && column == COLUMNS);
+            return !(row >= ROWS && column == COLUMNS);
         }
 
         @Override

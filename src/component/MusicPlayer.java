@@ -9,6 +9,7 @@ import java.io.File;
 public class MusicPlayer {
     private final MediaPlayer PLAYER;
     private static MusicPlayer musicPlayer = new MusicPlayer();
+
     private MusicPlayer() {
         File filePath = new File(System.getProperty("user.dir")+"/resource/GameMusic/puzzle_theme.wav");
         Media music = new Media(filePath.toURI().toString());

@@ -25,10 +25,6 @@ public class GameRecord {
         return time;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public void setTime(long time) {
         this.time = time;
     }
@@ -49,8 +45,11 @@ public class GameRecord {
 
     public static boolean isTopN(List<GameRecord> records, long newTime,int newNumberOfMoves, int n){
         boolean isTopN ;
-        if (records.size() < n) {
+        if (records.size() < n ) {
             isTopN = true;
+        }
+        else if(n<=0){
+            isTopN = false;
         }
         else{
             long oldRecordTime = records.get(n-1).getTime();

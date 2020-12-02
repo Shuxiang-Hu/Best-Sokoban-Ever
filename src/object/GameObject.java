@@ -11,7 +11,7 @@ public abstract class GameObject {
 //    PORTAL_EXIT('E'),
 //    DEBUG_OBJECT('=');
 
-    public char SYMBOL = ' ';
+    private char SYMBOL = ' ';
 
     /**
      * This method is used to get the symbol of a GameObject object
@@ -27,6 +27,10 @@ public abstract class GameObject {
      */
     public char getCharSymbol() {
         return SYMBOL;
+    }
+
+    public void setCharSymbol(char symbol){
+        this.SYMBOL = symbol;
     }
 
 }
