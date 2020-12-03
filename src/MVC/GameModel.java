@@ -77,46 +77,12 @@ public class GameModel {
 
     /**
      * read in user input and move accordingly
-     * @param code movement direction
+     * @param delta movement direction and distance
      */
-    public void handleKey(KeyCode code) {
-
-        Point delta = new Point(0,0);
-        switch (code) {
-            case UP:
-                GraphicObject.setKeeperPosition("up");
-                delta = new Point(-1, 0);
-                break;
-
-            case RIGHT:
-                GraphicObject.setKeeperPosition("right");
-                delta = new Point(0, 1);
-                break;
-
-            case DOWN:
-                GraphicObject.setKeeperPosition("down");
-                delta = new Point(1, 0);
-                break;
-
-            case LEFT:
-                GraphicObject.setKeeperPosition("left");
-                delta = new Point(0,-1);
-                break;
-
-            default:
-                // TODO: implement something funny.
-        }
-
-        if (isDebugActive()) {
-            System.out.println(code);
-        }
+    public void handleKey(Point delta) {
         gameLevelHandler.move(delta);
 
     }
-
-
-
-
 
     /**
      *  toggle debug status

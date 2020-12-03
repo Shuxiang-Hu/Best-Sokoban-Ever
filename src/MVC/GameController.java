@@ -3,7 +3,9 @@ package MVC;
 import javafx.scene.input.KeyCode;
 import data.GameLevel;
 import data.GameRecord;
+import object.GraphicObject;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.util.List;
 
@@ -25,7 +27,41 @@ public class GameController {
     public void requestResetLevel() { gameModel.resetLevel();}
 
     public void handleKeyInput(KeyCode code){
-        gameModel.handleKey(code);
+
+        Point delta;
+        switch (code) {
+            case UP:
+                GraphicObject.setKeeperPosition("up");
+                delta = new Point(-1, 0);
+                gameModel.handleKey(delta);
+                break;
+
+            case RIGHT:
+                GraphicObject.setKeeperPosition("right");
+                delta = new Point(0, 1);
+                gameModel.handleKey(delta);
+                break;
+
+            case DOWN:
+                GraphicObject.setKeeperPosition("down");
+                delta = new Point(1, 0);
+                gameModel.handleKey(delta);
+                break;
+
+            case LEFT:
+                GraphicObject.setKeeperPosition("left");
+                delta = new Point(0,-1);
+                gameModel.handleKey(delta);
+                break;
+
+            default:
+                Toolkit.getDefaultToolkit().beep();
+        }
+
+        if (GameModel.isDebugActive()) {
+            System.out.println(code);
+        }
+
     }
 
     public GameModel getGameModel() {
