@@ -59,9 +59,7 @@ public class GameLevelTest {
         assertEquals(initialKeeperPosition.getX(), level.getKeeperPosition().getX(), 0.0);
         assertEquals(initialKeeperPosition.getY(), level.getKeeperPosition().getY(), 0.0);
 
-        //test getPreviousKeeperPosition()
-        assertEquals(0, level.getPreviousKeeperPosition().getX(), 0.0);
-        assertEquals(0, level.getPreviousKeeperPosition().getY(), 0.0);
+
 
         //test getName()
         assertEquals(levelName,level.getName());
@@ -84,9 +82,6 @@ public class GameLevelTest {
 
         //test setPreviousKeeperPosition
         Point previousKeeperPos = new Point(18,9);
-        level.setPreviousKeeperPosition(previousKeeperPos);
-        assertEquals(previousKeeperPos.getX(), level.getPreviousKeeperPosition().getX(), 0.0);
-        assertEquals(previousKeeperPos.getY(), level.getPreviousKeeperPosition().getY(), 0.0);
     }
 
     @Test
@@ -145,12 +140,5 @@ public class GameLevelTest {
 
     }
 
-    @Test
-    public void testIsUndoActive(){
-        assertFalse(level.isUndoActive());
-        level.setUndo(true);
-        assertTrue(level.isUndoActive());
-        level.setUndo(false);
-        assertFalse(level.isUndoActive());
-    }
+
 }

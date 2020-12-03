@@ -95,10 +95,14 @@ public class GameLevelHandler {
      * undoes a move
      */
     public void undo() {
-        if(currentLevel.isUndoActive()){
-            GameLevel.resetGameGrid(currentLevel.getObjectsGrid(), currentLevel.getPreviousObjectGrid());//undo a step
-            currentLevel.setKeeperPosition(currentLevel.getPreviousKeeperPosition());
-            currentLevel.setUndo(false);//disable undo
+
+        GameGrid previousGrid =  currentLevel.getLastPreviousObjectGrid();
+        Point previousKeeperPosition = currentLevel.getLastPreviousKeeperPosition();
+        if((previousGrid != null) && (previousKeeperPosition != null)){
+            GameLevel.resetGameGrid(currentLevel.getObjectsGrid(), previousGrid);
+            currentLevel.setKeeperPosition(previousKeeperPosition);
+            movesCount++;
+            totalMoveCount ++;
         }
     }
     public boolean isGameComplete() {
@@ -126,7 +130,9 @@ public class GameLevelHandler {
             return ;
         }
 
+        GameGrid previousGrid = new GameGrid(currentLevel.getObjectsGrid().getCOLUMNS(),currentLevel.getObjectsGrid().getROWS());
         Point keeperPosition = currentLevel.getKeeperPosition();
+        Point previousKeeperPosition = new Point((int)keeperPosition.getX(),(int)keeperPosition.getY());
         GameObject keeper = currentLevel.getObjectAt(keeperPosition);
         Point targetObjectPoint = GameGrid.translatePoint(keeperPosition, delta);
         GameObject keeperTarget = currentLevel.getObjectAt(targetObjectPoint);
@@ -154,8 +160,9 @@ public class GameLevelHandler {
                 if(crateTarget.getCharSymbol() == 'P'){
                     char objectSymbolAtPortalExit = currentLevel.getObjectAt(currentLevel.getPortalExitPosition()).getCharSymbol();
                     if( objectSymbolAtPortalExit == ' ' || objectSymbolAtPortalExit == 'E'){
-                        GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                        currentLevel.setPreviousKeeperPosition(keeperPosition);
+                        GameLevel.resetGameGrid(previousGrid,currentLevel.getObjectsGrid());
+                        currentLevel.addPreviousObjectGrid(previousGrid);
+                        currentLevel.addPreviousKeeperPosition(previousKeeperPosition);
                         currentLevel.teleportCrateTo(keeperTarget,targetObjectPoint);
                         currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
                         keeperMoved = true;
@@ -168,8 +175,9 @@ public class GameLevelHandler {
                     break;
                 }
                 else{
-                    GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                    currentLevel.setPreviousKeeperPosition(keeperPosition);
+                    GameLevel.resetGameGrid(previousGrid,currentLevel.getObjectsGrid());
+                    currentLevel.addPreviousObjectGrid(previousGrid);
+                    currentLevel.addPreviousKeeperPosition(previousKeeperPosition);
                     currentLevel.moveGameObjectBy(keeperTarget, targetObjectPoint, delta);
                     currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
                     keeperMoved = true;
@@ -178,8 +186,9 @@ public class GameLevelHandler {
                 break;
 
             case ' ':
-                GameLevel.resetGameGrid(currentLevel.getPreviousObjectGrid(), currentLevel.getObjectsGrid());
-                currentLevel.setPreviousKeeperPosition(keeperPosition);
+                GameLevel.resetGameGrid(previousGrid,currentLevel.getObjectsGrid());
+                currentLevel.addPreviousObjectGrid(previousGrid);
+                currentLevel.addPreviousKeeperPosition(previousKeeperPosition);
                 currentLevel.moveGameObjectBy(keeper, keeperPosition, delta);
                 keeperMoved = true;
                 break;
@@ -196,8 +205,6 @@ public class GameLevelHandler {
             movesCount++;
             totalMoveCount ++;
             //record previous game status and enable undo
-            currentLevel.setUndo(true);
-
         }
 
     }
