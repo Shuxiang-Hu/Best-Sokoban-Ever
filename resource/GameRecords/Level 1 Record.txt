@@ -23,6 +23,10 @@ user name=Good night
 time=10
 number of moves=56
 Level 1 GameRecord:
+user name=
+time=10
+number of moves=56
+Level 1 GameRecord:
 user name=999
 time=12
 number of moves=56
@@ -38,4 +42,3 @@ Level 1 GameRecord:
 user name=9999999
 time=14
 number of moves=68
-
