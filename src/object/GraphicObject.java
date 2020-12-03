@@ -6,38 +6,60 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
 import java.io.File;
-
+/**
+ * Represents a graphic game object, each subclass
+ * of GameObject has its own display image
+ * @author Shuxiang Hu
+ */
 public class GraphicObject extends Rectangle {
+    /**
+     * Image for a floor object, default color is white
+     */
     private static Image m_floor =
             new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/WhiteFloor.png").toURI().toString());
-    private static Image m_background =
-            new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
-    private static  Image m_keeper =
-            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/downKeeper.png").toURI().toString());
-    private static final Image M_DIAMOND =
-            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
-    private static final Image M_CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
-    private static final Image M_CRATE =
-            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
-    private static final Image M_PORTAL =
-            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Portal.png").toURI().toString());
-    private final Image APPEARANCE;
-
-
-    public static void setM_background(String backgroundImagePath) {
-        GraphicObject.m_background = new Image(new File(backgroundImagePath).toURI().toString());
-    }
-
-    public static void setM_floor(String floorImagePath) {
-        GraphicObject.m_floor = new Image(new File(floorImagePath).toURI().toString());
-    }
-
-    public Image getAppearance() {
-        return APPEARANCE;
-    }
 
     /**
-     * Constructs a GraphicObject object with color, size and style
+     * Image for a wall object, default color is black
+     */
+    private static Image m_background =
+            new Image(new File(System.getProperty("user.dir") + "/resource/GameImages/BlackWall.png").toURI().toString());
+
+    /**
+     * Image for a keeper object, default direction is down
+     */
+    private static  Image m_keeper =
+            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/downKeeper.png").toURI().toString());
+
+    /**
+     * Image for a diamond object, a red circle
+     */
+    private static final Image M_DIAMOND =
+            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/diamond.png").toURI().toString());
+
+    /**
+     * Image for a crate on diamond object, a yellow crate
+     */
+    private static final Image M_CRATE_ON_DIAMOND = new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/CrateOnDiamond.png").toURI().toString());
+
+    /**
+     * Image for a crate, a red crate
+     */
+    private static final Image M_CRATE =
+            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Crate.png").toURI().toString());
+
+    /**
+     * Image for a portal
+     */
+    private static final Image M_PORTAL =
+            new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/Portal.png").toURI().toString());
+
+    /**
+     * Image of a GraphicObject instance
+     */
+    private final Image APPEARANCE;
+
+    /**
+     * Constructs a GraphicObject object by specifying is appearance
      * @param obj specifies the type of the GraphicObject object
      */
     public GraphicObject(GameObject obj) {
@@ -81,7 +103,34 @@ public class GraphicObject extends Rectangle {
         }
 
     }
+    /**
+     * Sets the background image to a new one
+     * @param backgroundImagePath path to the new image file
+     */
+    public static void setM_background(String backgroundImagePath) {
+        GraphicObject.m_background = new Image(new File(backgroundImagePath).toURI().toString());
+    }
+    /**
+     * Sets the floor image to a new one
+     * @param floorImagePath path to the new image file
+     */
+    public static void setM_floor(String floorImagePath) {
+        GraphicObject.m_floor = new Image(new File(floorImagePath).toURI().toString());
+    }
 
+    /**
+     * Get the appearance image of a instance
+     * @return  image appearance of a GraphicObject instance
+     */
+    public Image getAppearance() {
+        return APPEARANCE;
+    }
+
+
+    /**
+     * Sets the direction that the keeper faces
+     * @param direction a string specifying the new direction
+     */
     public static void setKeeperPosition(String direction){
         m_keeper =
                 new Image(new File(System.getProperty("user.dir")+"/resource/GameImages/"+direction+"Keeper.png").toURI().toString());

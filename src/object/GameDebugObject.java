@@ -5,6 +5,10 @@ package object;
  * @author Shuxiang Hu
  */
 public class GameDebugObject extends GameObject {
+    /**
+     * Constructs a GameDebugObject object with a
+     * character symbol '='
+     */
     public GameDebugObject() {
         setCharSymbol('=');
     }

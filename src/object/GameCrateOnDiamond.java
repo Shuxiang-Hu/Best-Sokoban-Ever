@@ -5,6 +5,10 @@ package object;
  * @author Shuxiang Hu
  */
 public class GameCrateOnDiamond extends GameObject {
+    /**
+     * Constructs a GameCrateOnDiamond object with a
+     * character symbol 'O'
+     */
     public GameCrateOnDiamond() {
         setCharSymbol('O');
     }

@@ -7,7 +7,7 @@ package object;
  */
 public class GameCrate extends GameObject {
     /**
-     * creates a GameCrate object with a
+     * Constructs a GameCrate object with a
      * character symbol 'C'
      */
     public GameCrate() {
