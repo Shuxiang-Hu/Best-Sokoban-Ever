@@ -1,8 +1,8 @@
 package object;
 
 
-import MVC.GameModel;
-import component.GameLogger;
+import viewer.GameModel;
+import model.GameLogger;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 

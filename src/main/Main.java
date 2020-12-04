@@ -1,7 +1,7 @@
 package main;
 
-import MVC.GameModel;
-import MVC.GameViewer;
+import viewer.GameModel;
+import model.GameViewer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -62,6 +62,7 @@ public class Main extends Application {
     void loadDefaultSaveFile(Stage stage) {
         m_primaryStage = stage;
         InputStream in = null;
+        //load the default game file
         try {
             in = new FileInputStream("resource/GameLayouts/SampleGame.skb");
         } catch (FileNotFoundException e) {

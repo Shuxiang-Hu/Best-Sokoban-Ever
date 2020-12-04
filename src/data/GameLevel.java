@@ -1,7 +1,7 @@
 package data;
 
 
-import component.GameRecorder;
+import model.GameRecorder;
 import factory.GameObjectFactory;
 import object.*;
 
@@ -249,7 +249,7 @@ public final class GameLevel implements Iterable<GameObject> {
 
     /**
      * Sets the number of diamonds in this level
-     * @param numberOfDiamonds
+     * @param numberOfDiamonds number of diamonds in this level
      * @deprecated
      */
     public void setNumberOfDiamonds(int numberOfDiamonds) {

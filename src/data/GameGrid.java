@@ -31,8 +31,8 @@ public class GameGrid implements Iterable {
 
     /**
      * Constructs a GameGrid Object by specifying numbers of columns and rows
-     * @param columns
-     * @param rows
+     * @param columns column of the game object
+     * @param rows row of the game object
      */
     public GameGrid(int columns, int rows) {
         COLUMNS = columns;
@@ -42,12 +42,16 @@ public class GameGrid implements Iterable {
 
     /**
      * Gets the number of rows of current GameGrid
-     * @return
+     * @return the number of rows of current GameGrid
      */
     public int getROWS() {
         return ROWS;
     }
 
+    /**
+     * Gets the number of columns of current GameGrid
+     * @return the number of columns of current GameGrid
+     */
     public int getCOLUMNS() {
         return COLUMNS;
     }

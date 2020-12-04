@@ -1,8 +1,7 @@
-import component.GameRecorder;
+import model.GameRecorder;
 import data.GameLevel;
 import data.GameRecord;
 import factory.GameObjectFactory;
-import object.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 
