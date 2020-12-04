@@ -1,6 +1,7 @@
 package object;
 
 
+import MVC.GameModel;
 import component.GameLogger;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -65,35 +66,57 @@ public class GraphicObject extends Rectangle {
     public GraphicObject(GameObject obj) {
         //specify the appearance of the GraphicObject object
         //add fading animation for DIAMOND
-        switch (obj.getCharSymbol()) {
+        char symbol = obj.getCharSymbol();
+        switch (symbol) {
             case 'W':
                 APPEARANCE = m_background;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Wall");
+                }
                 break;
 
             case 'C':
                 APPEARANCE = M_CRATE;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Crate");
+                }
                 break;
 
             case 'D':
                 APPEARANCE = M_DIAMOND;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Diamond");
+                }
                 break;
 
             case 'S':
                 APPEARANCE = m_keeper;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Keeper");
+                }
                 break;
 
             case ' ':
 
             case 'E':
                 APPEARANCE = m_floor;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Floor");
+                }
                 break;
 
             case 'O':
                 APPEARANCE = M_CRATE_ON_DIAMOND;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Crate on diamond");
+                }
                 break;
 
             case 'P':
                 APPEARANCE = M_PORTAL;
+                if(GameModel.isDebugActive()){
+                    System.out.println("Portal");
+                }
                 break;
 
             default:
@@ -119,7 +142,7 @@ public class GraphicObject extends Rectangle {
     }
 
     /**
-     * Get the appearance image of a instance
+     * Gets the appearance image of a instance
      * @return  image appearance of a GraphicObject instance
      */
     public Image getAppearance() {

@@ -6,10 +6,26 @@ import javafx.util.Duration;
 
 import java.io.File;
 
+/**
+ * This singleton class represents the music player in the game
+ * @author COMP2013
+ * @author Shuxiang Hu
+ */
 public class MusicPlayer {
+    /**
+     * the player of game music
+     */
     private final MediaPlayer PLAYER;
+
+    /**
+     * The unique instance of MusicPlayer class
+     */
     private static MusicPlayer musicPlayer = new MusicPlayer();
 
+    /**
+     * Constructs a MusicPlayer instance that plays the following music:
+     * "/resource/GameMusic/puzzle_theme.wav"
+     */
     private MusicPlayer() {
         File filePath = new File(System.getProperty("user.dir")+"/resource/GameMusic/puzzle_theme.wav");
         Media music = new Media(filePath.toURI().toString());
@@ -18,7 +34,7 @@ public class MusicPlayer {
     }
 
     /**
-     * checks if the play is playing
+     * Checks if the play is playing
      * @return true if music is on, otherwise false
      */
     private boolean isPlayingMusic() {
@@ -52,6 +68,10 @@ public class MusicPlayer {
         }
     }
 
+    /**
+     * Gets the unique instance of MusicPlayer class
+     * @return the unique instance of MusicPlayer class
+     */
     public static MusicPlayer getUniqueInstance(){
         if(musicPlayer == null){
             musicPlayer = new MusicPlayer();

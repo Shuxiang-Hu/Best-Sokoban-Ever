@@ -11,11 +11,29 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * This singleton class represents a logger of the game to write logs in the "/logs/" directory
+ * @author COMP2013
+ */
 public class GameLogger extends Logger {
 
+    /**
+     * The Logger that writes and saves game logs
+     */
     private Logger logger;
+
+    /**
+     * The standard date format used in game logs
+     */
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    /**
+     * The calendar to get time
+     */
     private Calendar calendar = Calendar.getInstance();
+
+    /**
+     * The unique instance of GameLogger class
+     */
     private static GameLogger gameLogger;
     static {
         try {
@@ -27,7 +45,7 @@ public class GameLogger extends Logger {
 
 
     /**
-     * This constructor creates a directory and a .log file,
+     * Constructs a directory and a .log file,
      * adds the handler to that file to the logger, and
      * sets the format.
      * @throws IOException on access issues
@@ -45,6 +63,10 @@ public class GameLogger extends Logger {
         fh.setFormatter(formatter);
     }
 
+    /**
+     * Gets the unique instance of GameLogger class
+     * @return the unique instance of GameLogger class
+     */
     public static GameLogger getUniqueInstance(){
         if(gameLogger == null){
             try {
@@ -57,7 +79,7 @@ public class GameLogger extends Logger {
     }
 
     /**
-     * This method converts a String into given format
+     * Converts a String into given format
      * @param message  is the String to be formatted
      * @return a String in the format "dd/MM/yyyy HH:mm:ss -- message"
      */
@@ -66,7 +88,7 @@ public class GameLogger extends Logger {
     }
 
     /**
-     * This method logs INFO in the format "dd/MM/yyyy HH:mm:ss -- INFO"
+     * Logs INFO in the format "dd/MM/yyyy HH:mm:ss -- INFO"
      * @param message  is the message to be logged
      */
     public void info(String message) {
@@ -74,7 +96,7 @@ public class GameLogger extends Logger {
     }
 
     /**
-     * This method logs warning message in the format "dd/MM/yyyy HH:mm:ss -- WARNING"
+     * Logs warning message in the format "dd/MM/yyyy HH:mm:ss -- WARNING"
      * @param message  is the message to be logged
      */
     public void warning(String message) {
@@ -82,7 +104,7 @@ public class GameLogger extends Logger {
     }
 
     /**
-     * This method logs severe message in the format "dd/MM/yyyy HH:mm:ss -- SEVERE"
+     * Logs severe message in the format "dd/MM/yyyy HH:mm:ss -- SEVERE"
      * @param message  is the message to be logged
      */
     public void severe(String message) {

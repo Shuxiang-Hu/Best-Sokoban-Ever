@@ -11,17 +11,25 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 
-
+/**
+ * Main class of sokoban project
+ */
 public class Main extends Application {
 
+    /**
+     * Game window
+     */
     public static Stage m_primaryStage;
 
+    /**
+     * Viewer to control the layouts in the GUI
+     */
     private GameViewer gameViewer;
 
-    public static Stage getM_primaryStage() {
-        return m_primaryStage;
-    }
-
+    /**
+     * Start of the game
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
         System.out.println("Done!");
@@ -60,6 +68,14 @@ public class Main extends Application {
             e.printStackTrace();
         }
         initializeGame(in);
+    }
+
+    /**
+     * Gets the main game window
+     * @return The main game window
+     */
+    public static Stage getM_primaryStage() {
+        return m_primaryStage;
     }
 
     /**

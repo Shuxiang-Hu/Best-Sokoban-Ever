@@ -1,6 +1,6 @@
 package data;
 
-import MVC.GameModel;
+
 import component.GameRecorder;
 import factory.GameObjectFactory;
 import object.*;
@@ -14,7 +14,7 @@ import static data.GameGrid.translatePoint;
 
 
 /**
- * Represents a level in Sokoban, implementing Iterable<GameObject>
+ * Represents a level in Sokoban, implementing
  * @author COMP2012
  * @author Shuxiang Hu
  */

@@ -219,7 +219,7 @@ public class GameGrid implements Iterable {
         int row = 0;
 
         /**
-         * the columnof the GameObject current iterator points to
+         * the column of the GameObject current iterator points to
          */
         int column = 0;
 
