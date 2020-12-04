@@ -2,16 +2,20 @@ package factory;
 
 import object.*;
 
+/**
+ * The only thing this factory class does is to offer a static method to construct
+ * a GameObject subclass instance given a symbol char
+ */
 public class GameObjectFactory {
     /**
-     * This method is used to add two integers. This is
-     * a the simplest form of a class method, just to
-     * show the usage of various javadoc Tags.
+     * Gets a GameObject subclass instance according to the input char
      * @param c is the symbol of the GameObject to be returned
      * @return GameObject returns a game object according to the input character, return WALL in case of invalid symbol
      */
     public static GameObject fromChar(char c) {
+        //default is wall
         GameObject gameObject = new GameWall();
+        //capitalize lower case chars
         if(c>='a'&&c<='z'){
             c -=32;
         }
@@ -22,35 +26,35 @@ public class GameObjectFactory {
 
             case ' ':
                 gameObject = new GameFloor();
-            break;
+                break;
 
             case 'S':
                 gameObject = new GameKeeper();
-            break;
+                break;
 
             case 'C':
                 gameObject =  new GameCrate();
-            break;
+                break;
 
             case 'O':
                 gameObject =  new GameCrateOnDiamond();
-            break;
+                break;
 
             case 'D':
                 gameObject =  new GameDiamond();
-            break;
+                break;
 
             case 'P':
                 gameObject =  new GamePortal();
-            break;
+                break;
 
             case 'E':
                 gameObject =  new GamePortalExit();
-            break;
+                break;
 
             case '=':
                 gameObject =  new GameDebugObject();
-            break;
+                break;
 
             default:
                 break;
