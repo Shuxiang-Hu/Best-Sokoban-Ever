@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 import data.GameLevel;
 import data.GameRecord;
 import object.GraphicObject;
-import viewer.GameModel;
+import model.GameModel;
 
 import java.awt.*;
 import java.io.FileInputStream;

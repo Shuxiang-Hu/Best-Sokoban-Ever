@@ -1,7 +1,7 @@
 package object;
 
 
-import viewer.GameModel;
+import model.GameModel;
 import model.GameLogger;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;

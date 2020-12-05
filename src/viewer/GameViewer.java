@@ -1,4 +1,4 @@
-package model;
+package viewer;
 
 import controller.GameController;
 import javafx.animation.Animation;
@@ -31,10 +31,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import data.GameLevel;
 import main.Main;
+import model.GameLogger;
+import model.GameModel;
 import object.GameObject;
 import data.GameRecord;
 import object.GraphicObject;
-import viewer.GameModel;
 
 
 import java.awt.*;

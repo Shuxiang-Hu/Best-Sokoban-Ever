@@ -1,7 +1,5 @@
 package model;
 
-import model.GameLogger;
-import viewer.GameModel;
 import data.GameGrid;
 import data.GameLevel;
 import object.GameObject;

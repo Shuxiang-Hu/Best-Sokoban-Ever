@@ -1,9 +1,5 @@
-package viewer;
+package model;
 
-import model.GameLevelHandler;
-import model.GameLogger;
-import model.GameSaver;
-import model.MusicPlayer;
 import javafx.stage.FileChooser;
 import data.GameLevel;
 import data.GameRecord;

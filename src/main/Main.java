@@ -1,7 +1,7 @@
 package main;
 
-import viewer.GameModel;
-import model.GameViewer;
+import model.GameModel;
+import viewer.GameViewer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

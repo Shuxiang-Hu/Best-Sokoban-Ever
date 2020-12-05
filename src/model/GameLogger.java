@@ -1,7 +1,5 @@
 package model;
 
-import viewer.GameModel;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
