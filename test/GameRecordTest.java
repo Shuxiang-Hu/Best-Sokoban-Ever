@@ -7,14 +7,46 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for GameRecord class
+ */
 public class GameRecordTest {
+    /**
+     * GameRecords object for test
+     */
     GameRecord record1,record2,record3;
+
+    /**
+     * User name for test
+     */
     String username1 = "user1";
+    /**
+     * User name for test
+     */
     String username2 = "user2";
+    /**
+     * User name for test
+     */
     String username3 = "user3";
+
+    /**
+     * Time integers for test
+     */
     int time1,time2,time3;
+
+    /**
+     * Move counts for test
+     */
     int movesCount1,movesCount2,movesCount3;
+
+    /**
+     * Index of test level
+     */
     int levelIndex;
+
+    /**
+     * Set up test data
+     */
     @Before
     public void setUp(){
         time1 = 12;
@@ -29,12 +61,18 @@ public class GameRecordTest {
         record3 = new GameRecord(username3,time3,movesCount3,levelIndex);
     }
 
+    /**
+     * Test getter for GameRecord class
+     */
     @Test
     public void testGetters(){
         assertEquals(time1,record1.getTime());
         assertEquals(movesCount1,record1.getNumberOfMoves());
     }
 
+    /**
+     * Test setter for GameRecord class
+     */
     @Test
     public void testSetter(){
         int newTime = 31;
@@ -42,6 +80,9 @@ public class GameRecordTest {
         assertEquals(newTime,record1.getTime());
     }
 
+    /**
+     * Tests if isBetterThan() gives correct result when comparing two game records
+     */
     @Test
     public void testIsBetterThan(){
         assertTrue(record1.isBetterThan(record2));
@@ -54,6 +95,10 @@ public class GameRecordTest {
         assertFalse(record3.isBetterThan(record2));
         assertFalse(record3.isBetterThan(record3));
     }
+
+    /**
+     * Tests if toString() converts a GameRecord instance to the excepted string
+     */
     @Test
     public void testToString(){
         String expectedStr = "Level "+levelIndex+" GameRecord:\n" +
@@ -63,6 +108,9 @@ public class GameRecordTest {
         assertEquals(expectedStr,record1.toString());
     }
 
+    /**
+     * Test if isTopN() gives correct result when check if a record is within top n of a list of records
+     */
     @Test
     public void testIsTopN(){
         List<GameRecord> recordList = new ArrayList<GameRecord>();

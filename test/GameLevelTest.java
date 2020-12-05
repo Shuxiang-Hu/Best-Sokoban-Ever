@@ -11,12 +11,43 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for GameLevel class
+ */
 public class GameLevelTest {
+    /**
+     * A game level for test
+     */
     GameLevel level;
+
+    /**
+     * Name of the tested level
+     */
     String levelName;
+
+    /**
+     * Index of the tested levle
+     */
     int levelIndex;
+
+    /**
+     * String of the game object layouts
+     */
     List<String> raw_level;
-    Point initialKeeperPosition, portalExitPosition;
+
+    /**
+     * Initial keeper position of test level
+     */
+    Point initialKeeperPosition;
+
+    /**
+     * Portal exit position of test level
+     */
+    Point portalExitPosition;
+
+    /**
+     * Sets up test data
+     */
     @Before
     public void setUp(){
         levelName = "Simple Start";
@@ -48,6 +79,9 @@ public class GameLevelTest {
     }
 
 
+    /**
+     * Test Getters of GameLevel class
+     */
     @Test
     public void testGetters(){
         //test getKeeperPosition()
@@ -57,7 +91,6 @@ public class GameLevelTest {
         //test getKeeperPosition()
         assertEquals(initialKeeperPosition.getX(), level.getKeeperPosition().getX(), 0.0);
         assertEquals(initialKeeperPosition.getY(), level.getKeeperPosition().getY(), 0.0);
-
 
 
         //test getName()
@@ -71,6 +104,9 @@ public class GameLevelTest {
         assertEquals(levelIndex,level.getIndex());
     }
 
+    /**
+     * Test setter of GameLevel class
+     */
     @Test
     public void testSetters(){
         //test setKeeperPosition
@@ -83,6 +119,9 @@ public class GameLevelTest {
         Point previousKeeperPos = new Point(18,9);
     }
 
+    /**
+     * Test if isComplete() returns true when all crates are on diamond and false otherwise
+     */
     @Test
     public void testIsComplete(){
         assertFalse(level.isComplete());
@@ -90,18 +129,27 @@ public class GameLevelTest {
         assertTrue(level.isComplete());
     }
 
+    /**
+     * Test for getTargetObject by checking the object symbol
+     */
     @Test
     public void testGetTargetObject(){
         Point delta = new Point(0,-1);
         assertEquals(' ', level.getTargetObject(initialKeeperPosition,delta).getCharSymbol());
     }
 
+    /**
+     * Test for getObjectAt by checking the object symbol
+     */
     @Test
     public void testGetObjectAt(){
         assertEquals('S',level.getObjectAt(level.getKeeperPosition()).getCharSymbol());
         assertEquals('E',level.getObjectAt(level.getPortalExitPosition()).getCharSymbol());
     }
 
+    /**
+     * Test for getObjectAt by checking the object symbol
+     */
     @Test
     public void testMoveObjectBy(){
         Point delta = new Point(0,-1);
@@ -109,6 +157,9 @@ public class GameLevelTest {
         assertEquals('S', level.getObjectAt(new Point(18,9)).getCharSymbol());
     }
 
+    /**
+     * Test if resetGameGrid copies one grid into another
+     */
     @Test
     public void testResetGameGrid(){
         Point delta = new Point(0,-1);
@@ -117,6 +168,9 @@ public class GameLevelTest {
         assertEquals('S', level.getObjectAt(level.getInitialKeeperPosition()).getCharSymbol());
     }
 
+    /**
+     * Test if moveObjectTo moves an object to a give position by checking the symbols
+     */
     @Test
     public void testMoveObjectTo(){
         Point destination = new Point(3,3);
@@ -124,6 +178,9 @@ public class GameLevelTest {
         assertEquals('S', level.getObjectAt(destination).getCharSymbol());
     }
 
+    /**
+     * Test if getTop10Record reads in the top 10 records correctly
+     */
     @Test
     public void testGetTop10Record(){
         List<GameRecord> expectedRecordList = level.getTop10Record();//top 10 of current level

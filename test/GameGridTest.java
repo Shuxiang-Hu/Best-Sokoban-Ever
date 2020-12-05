@@ -9,11 +9,26 @@ import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for GameGrid class
+ */
 public class GameGridTest {
+    /**
+     * Test game grid
+     */
     private GameGrid gameGrid;
+
+    /**
+     * Size of test game grid
+     */
     int column = 3, row = 2;
+
+    /**
+     * Set up test data
+     */
     @Before
     public void setUp(){
+        //initialize the grid
         gameGrid = new GameGrid(column,row);
         for(int i=0;i<column;i++){
             for(int j=0;j<row;j++)
@@ -23,6 +38,9 @@ public class GameGridTest {
         }
     }
 
+    /**
+     * Test if isPointOutOfBound() gives correct result whether a point is out of the bound
+     */
     @Test
     public void testIsPointOutOfBounds(){
         assertFalse(gameGrid.isPointOutOfBounds(0,0));
@@ -34,12 +52,18 @@ public class GameGridTest {
         assertTrue(gameGrid.isPointOutOfBounds(-1,-1));
     }
 
+    /**
+     * Test getters for GameGrid class
+     */
     @Test
     public void testGetter(){
         assertEquals(column, gameGrid.getCOLUMNS());
         assertEquals(row, gameGrid.getROWS());
     }
 
+    /**
+     * Test for getObjectAt() and PutObjectAt(), using char symbols
+     */
     @Test
     public void testGetPutObjectAt(){
         char [] testChars = {'W',' ','C','D','S','P','E','O','='};
@@ -52,6 +76,9 @@ public class GameGridTest {
         assertFalse(gameGrid.putGameObjectAt(GameObjectFactory.fromChar(testChars[0]),column,row));
     }
 
+    /**
+     * Test if getTargetFromSource() throws ArrayIndexOutOfBoundsException exception and message when the point is out of bound
+     */
     @Test
     public void testGetTargetFromSourceException1(){
         try{
@@ -63,6 +90,9 @@ public class GameGridTest {
         }
     }
 
+    /**
+     * Test if getTargetFromSource() throws IllegalArgumentException exception and message when the point is null
+     */
     @Test
     public void testGetTargetFromSourceException2(){
         try{
@@ -73,6 +103,10 @@ public class GameGridTest {
             assertTrue(e.getMessage().contains("Point cannot be null."));
         }
     }
+
+    /**
+     * Test if toString converts a grid to expected string
+     */
     @Test
     public void testToString(){
         String expectedString = ("W".repeat(row)+"\n").repeat(column);

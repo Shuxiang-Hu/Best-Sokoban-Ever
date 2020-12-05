@@ -11,24 +11,30 @@ import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-//    WALL('W'),
-//    FLOOR(' '),
-//    CRATE('C'),
-//    DIAMOND('D'),
-//    KEEPER('S'),
-//    CRATE_ON_DIAMOND('O'),
-//    PORTAL('P'),
-//    PORTAL_EXIT('E'),
-//    DEBUG_OBJECT('=');
+/**
+ * Parameterized tests for GameObject class, its subclasses and its Factory
+ */
 @RunWith(Parameterized.class)
 public class GameObjectTest {
+    /**
+     * Input character symbol
+     */
     private char input;
+
+    /**
+     * Expected symbol of created game object
+     */
     private char expectedOutput;
+
     public GameObjectTest(char inputChar, char expectedOutput){
         this.input=inputChar;
         this.expectedOutput = expectedOutput;
     }
 
+    /**
+     * Initialize parameters
+     * @return a collection of input and expected output pairs
+     */
     @Parameterized.Parameters
     public static Collection setParameters(){
         char [] enumerations = {'W',' ','C','D','S','P','E','O','='};
@@ -53,6 +59,9 @@ public class GameObjectTest {
         });
     }
 
+    /**
+     * Tests is a game object is created with correct symbol character
+     */
     @Test
     public void testFromChar(){
         GameObject testObject = GameObjectFactory.fromChar(input);
