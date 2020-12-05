@@ -1,16 +1,17 @@
-
+# idea
 .idea/
-
+*.iml
 out/
 
-comp2013_cw_shysh1.iml
 
-logs/BestSokobanEverV6.log
+# game output
+logs/
+resource/GameRecords/
+resource/GameLayouts/
 
-logs/BestSokobanEverV6.log.lck
-
+# Mac
 .DS_Store
 
-logs/
 
-resource/GameRecords/
+
+
