@@ -43,6 +43,13 @@ public class GameRecord {
     }
 
     /**
+     * Gets the user name of the player who completed this level
+     * @return  user name of the player to complete this level
+     */
+    public String getUserName() {
+        return userName;
+    }
+    /**
      * Gets the number of moves for the player to complete this level
      * @return  number of moves for the player to complete this level
      */

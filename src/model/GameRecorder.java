@@ -26,7 +26,7 @@ public class GameRecorder {
      */
     public GameRecorder(int levelIndex){
         this.levelIndex = levelIndex;
-        this.recordPath = System.getProperty("user.dir")+ "/resource/GameRecords/Level "+levelIndex+" Record.txt";
+        this.recordPath = System.getProperty("user.dir")+ "/GameRecords/Level "+levelIndex+" Record.txt";
     }
 
     /**
