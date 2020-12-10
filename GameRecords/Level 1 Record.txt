@@ -1,56 +1,40 @@
 Level 1 GameRecord:
-user name=null
-time=0
+user name=user1
+time=10
 number of moves=56
 Level 1 GameRecord:
-user name=null
-time=0
+user name=user2
+time=10
 number of moves=56
 Level 1 GameRecord:
-user name=null
-time=0
+user name=user3
+time=11
 number of moves=62
 Level 1 GameRecord:
-user name=123
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=123
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=Good night
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=Hi Hi Hi
-time=10
-number of moves=56
-Level 1 GameRecord:
-user name=Hi there
-time=11
-number of moves=60
-Level 1 GameRecord:
-user name=999
-time=12
-number of moves=56
-Level 1 GameRecord:
-user name=This is me
-time=12
-number of moves=58
-Level 1 GameRecord:
-user name=444
+user name=user4
 time=13
-number of moves=68
+number of moves=56
 Level 1 GameRecord:
-user name=9999999
+user name=user5
 time=14
-number of moves=68
+number of moves=56
+Level 1 GameRecord:
+user name=user6
+time=15
+number of moves=56
+Level 1 GameRecord:
+user name=user7
+time=30
+number of moves=56
+Level 1 GameRecord:
+user name=user8
+time=44
+number of moves=56
+Level 1 GameRecord:
+user name=user9
+time=45
+number of moves=56
+Level 1 GameRecord:
+user name=user10
+time=110
+number of moves=60

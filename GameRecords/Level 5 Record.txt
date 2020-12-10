@@ -1,0 +1,40 @@
+Level 5 GameRecord:
+user name=user1
+time=10
+number of moves=56
+Level 5 GameRecord:
+user name=user2
+time=10
+number of moves=56
+Level 5 GameRecord:
+user name=user3
+time=11
+number of moves=62
+Level 5 GameRecord:
+user name=user4
+time=13
+number of moves=56
+Level 5 GameRecord:
+user name=user5
+time=14
+number of moves=56
+Level 5 GameRecord:
+user name=user6
+time=15
+number of moves=56
+Level 5 GameRecord:
+user name=user7
+time=30
+number of moves=56
+Level 5 GameRecord:
+user name=user8
+time=44
+number of moves=56
+Level 5 GameRecord:
+user name=user9
+time=45
+number of moves=56
+Level 5 GameRecord:
+user name=user10
+time=110
+number of moves=60
