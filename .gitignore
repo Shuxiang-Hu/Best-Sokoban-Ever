@@ -6,7 +6,7 @@ out/
 
 # game output
 logs/
-resource/GameRecords/
+GameRecords/
 resource/GameLayouts/
 
 # Mac
