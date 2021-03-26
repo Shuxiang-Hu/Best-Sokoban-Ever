@@ -1,6 +1,3 @@
-Shuxiang Hu (shysh1), Tested on Macs, No Build Script, Java 15.0.1, JavaFX 15, JUnit4
-
-
 
 > Maintenance 
 >
